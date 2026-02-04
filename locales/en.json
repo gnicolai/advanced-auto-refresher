@@ -32,7 +32,14 @@
         "selectedElement": "Selected element:",
         "none": "None",
         "currentValue": "Current value:",
-        "error": "Error"
+        "error": "Error",
+        "alertMode": "Alert mode",
+        "alertModeIncrease": "📈 Increase",
+        "alertModeDecrease": "📉 Decrease",
+        "alertModeAny": "🔄 Any change",
+        "alertModeAbove": "⬆️ Above threshold",
+        "alertModeBelow": "⬇️ Below threshold",
+        "thresholdValue": "Threshold value"
     },
     "lists": {
         "title": "Blacklist / Whitelist",

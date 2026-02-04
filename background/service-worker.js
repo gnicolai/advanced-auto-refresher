@@ -259,10 +259,35 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
                     lastValue: settings.contentWatch.lastValue
                 });
 
-                if (response.changed && response.increased) {
-                    shouldAlert = true;
-                    // Update stored value
-                    settings.contentWatch.lastValue = response.currentValue;
+                if (response.success) {
+                    const currentValue = response.currentValue;
+                    const lastValue = settings.contentWatch.lastValue;
+                    const alertMode = settings.contentWatch.alertMode || 'increase';
+                    const threshold = settings.contentWatch.threshold || 0;
+
+                    // Determine if alert should trigger based on mode
+                    if (lastValue !== null) {
+                        switch (alertMode) {
+                            case 'increase':
+                                shouldAlert = currentValue > lastValue;
+                                break;
+                            case 'decrease':
+                                shouldAlert = currentValue < lastValue;
+                                break;
+                            case 'any':
+                                shouldAlert = currentValue !== lastValue;
+                                break;
+                            case 'above':
+                                shouldAlert = currentValue > threshold;
+                                break;
+                            case 'below':
+                                shouldAlert = currentValue < threshold;
+                                break;
+                        }
+                    }
+
+                    // Always update lastValue to track changes properly
+                    settings.contentWatch.lastValue = currentValue;
                     activeTimers.set(tabId, settings);
                     await saveTimerState();
                 }

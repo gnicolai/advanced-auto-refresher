@@ -136,6 +136,24 @@
           <span class="value-label" data-i18n="contentWatch.currentValue">Valore attuale:</span>
           <span class="value-number" id="currentValue">--</span>
         </div>
+
+        <!-- Alert Mode -->
+        <div class="control-group">
+          <label for="alertMode" data-i18n="contentWatch.alertMode">Modalità allarme</label>
+          <select id="alertMode" class="select-field">
+            <option value="increase" data-i18n="contentWatch.alertModeIncrease">📈 Aumento</option>
+            <option value="decrease" data-i18n="contentWatch.alertModeDecrease">📉 Diminuzione</option>
+            <option value="any" data-i18n="contentWatch.alertModeAny">🔄 Qualsiasi cambio</option>
+            <option value="above" data-i18n="contentWatch.alertModeAbove">⬆️ Sopra soglia</option>
+            <option value="below" data-i18n="contentWatch.alertModeBelow">⬇️ Sotto soglia</option>
+          </select>
+        </div>
+
+        <!-- Threshold Input (visible only for threshold modes) -->
+        <div class="control-group threshold-group hidden" id="thresholdGroup">
+          <label for="thresholdValue" data-i18n="contentWatch.thresholdValue">Valore soglia</label>
+          <input type="number" id="thresholdValue" class="input-field" placeholder="0" value="0">
+        </div>
       </div>
     </section>
 

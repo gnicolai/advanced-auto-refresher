@@ -32,6 +32,9 @@ const elements = {
   selectedValue: document.getElementById('selectedValue'),
   currentValue: document.getElementById('currentValue'),
   currentValueDisplay: document.getElementById('currentValueDisplay'),
+  alertMode: document.getElementById('alertMode'),
+  thresholdValue: document.getElementById('thresholdValue'),
+  thresholdGroup: document.getElementById('thresholdGroup'),
 
   // Blacklist/Whitelist
   blacklistToggle: document.getElementById('blacklistToggle'),
@@ -95,7 +98,9 @@ async function loadTabSettings() {
     contentWatch: {
       enabled: false,
       selector: '',
-      lastValue: null
+      lastValue: null,
+      alertMode: 'increase',
+      threshold: 0
     }
   };
 }
@@ -150,6 +155,20 @@ function updateUI() {
       elements.currentValue.textContent = tabSettings.contentWatch.lastValue;
     }
   }
+
+  // Alert Mode
+  const alertMode = tabSettings.contentWatch?.alertMode || 'increase';
+  elements.alertMode.value = alertMode;
+
+  // Show/hide threshold input based on mode
+  if (alertMode === 'above' || alertMode === 'below') {
+    elements.thresholdGroup.classList.remove('hidden');
+  } else {
+    elements.thresholdGroup.classList.add('hidden');
+  }
+
+  // Threshold value
+  elements.thresholdValue.value = tabSettings.contentWatch?.threshold || 0;
 }
 
 // Setup event listeners
@@ -211,6 +230,20 @@ function setupEventListeners() {
 
   // CSS Selector change
   elements.cssSelector.addEventListener('change', saveSettings);
+
+  // Alert mode change
+  elements.alertMode.addEventListener('change', () => {
+    const mode = elements.alertMode.value;
+    if (mode === 'above' || mode === 'below') {
+      elements.thresholdGroup.classList.remove('hidden');
+    } else {
+      elements.thresholdGroup.classList.add('hidden');
+    }
+    saveSettings();
+  });
+
+  // Threshold value change
+  elements.thresholdValue.addEventListener('change', saveSettings);
 
   // Blacklist toggle
   elements.blacklistToggle.addEventListener('click', () => {
@@ -282,7 +315,9 @@ function getSettingsFromUI() {
     contentWatch: {
       enabled: elements.contentWatchEnabled.checked,
       selector: elements.cssSelector.value,
-      lastValue: tabSettings.contentWatch?.lastValue || null
+      lastValue: tabSettings.contentWatch?.lastValue || null,
+      alertMode: elements.alertMode.value || 'increase',
+      threshold: parseInt(elements.thresholdValue.value) || 0
     }
   };
 }
