@@ -1,0 +1,57 @@
+{
+    "appName": "Advanced Auto Refresher",
+    "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+    },
+    "timer": {
+        "title": "Auto-Refresh Timer",
+        "interval": "Interval (seconds)",
+        "start": "Start",
+        "stop": "Stop"
+    },
+    "stochastic": {
+        "mode": "Stochastic mode",
+        "tooltip": "Randomly varies refresh time to avoid detectable patterns",
+        "minLimit": "Minimum limit (seconds)",
+        "distribution": "Distribution",
+        "uniform": "Uniform",
+        "uniformTooltip": "Random time between min and (2×target−min)",
+        "gaussian": "Gaussian",
+        "gaussianTooltip": "Time centered on target with natural variation"
+    },
+    "contentWatch": {
+        "title": "Change Detection",
+        "enable": "Monitor content",
+        "method": "Selection method",
+        "select": "Select",
+        "advanced": "Advanced",
+        "pickElement": "Click to select element",
+        "cssSelector": "CSS Selector",
+        "testSelector": "Test Selector",
+        "selectedElement": "Selected element:",
+        "none": "None",
+        "currentValue": "Current value:",
+        "error": "Error"
+    },
+    "lists": {
+        "title": "Blacklist / Whitelist",
+        "blacklist": "Blacklist",
+        "whitelist": "Whitelist"
+    },
+    "alert": {
+        "newContent": "New content detected!",
+        "stopAlarm": "Stop Alarm"
+    },
+    "footer": {
+        "createdBy": "Created by Giulio Nicolai",
+        "donate": "Donate",
+        "donateText": "Enjoying the extension?"
+    },
+    "picker": {
+        "title": "Select an element to monitor",
+        "hint": "Press ESC to cancel",
+        "selected": "Element selected!",
+        "initialValue": "Initial value:"
+    }
+}

@@ -1,0 +1,57 @@
+{
+    "appName": "Advanced Auto Refresher",
+    "status": {
+        "active": "Activo",
+        "inactive": "Inactivo"
+    },
+    "timer": {
+        "title": "Temporizador Auto-Refresh",
+        "interval": "Intervalo (segundos)",
+        "start": "Iniciar",
+        "stop": "Detener"
+    },
+    "stochastic": {
+        "mode": "Modo estocástico",
+        "tooltip": "Varía aleatoriamente el tiempo de actualización para evitar patrones detectables",
+        "minLimit": "Límite mínimo (segundos)",
+        "distribution": "Distribución",
+        "uniform": "Uniforme",
+        "uniformTooltip": "Tiempo aleatorio entre mín y (2×objetivo−mín)",
+        "gaussian": "Gaussiana",
+        "gaussianTooltip": "Tiempo centrado en el objetivo con variación natural"
+    },
+    "contentWatch": {
+        "title": "Detección de Cambios",
+        "enable": "Monitorear contenido",
+        "method": "Método de selección",
+        "select": "Seleccionar",
+        "advanced": "Avanzado",
+        "pickElement": "Haga clic para seleccionar elemento",
+        "cssSelector": "Selector CSS",
+        "testSelector": "Probar Selector",
+        "selectedElement": "Elemento seleccionado:",
+        "none": "Ninguno",
+        "currentValue": "Valor actual:",
+        "error": "Error"
+    },
+    "lists": {
+        "title": "Lista Negra / Lista Blanca",
+        "blacklist": "Lista Negra",
+        "whitelist": "Lista Blanca"
+    },
+    "alert": {
+        "newContent": "¡Nuevo contenido detectado!",
+        "stopAlarm": "Detener Alarma"
+    },
+    "footer": {
+        "createdBy": "Creado por Giulio Nicolai",
+        "donate": "Donar",
+        "donateText": "¿Te gusta la extensión?"
+    },
+    "picker": {
+        "title": "Seleccione un elemento para monitorear",
+        "hint": "Presione ESC para cancelar",
+        "selected": "¡Elemento seleccionado!",
+        "initialValue": "Valor inicial:"
+    }
+}

@@ -1,0 +1,57 @@
+{
+    "appName": "Advanced Auto Refresher",
+    "status": {
+        "active": "Attivo",
+        "inactive": "Disattivo"
+    },
+    "timer": {
+        "title": "Timer Auto-Refresh",
+        "interval": "Intervallo (secondi)",
+        "start": "Avvia",
+        "stop": "Ferma"
+    },
+    "stochastic": {
+        "mode": "Modalità stocastica",
+        "tooltip": "Varia casualmente il tempo di refresh per evitare pattern rilevabili",
+        "minLimit": "Limite minimo (secondi)",
+        "distribution": "Distribuzione",
+        "uniform": "Uniforme",
+        "uniformTooltip": "Tempo casuale tra min e (2×target−min)",
+        "gaussian": "Gaussiana",
+        "gaussianTooltip": "Tempo centrato sul target con variazione naturale"
+    },
+    "contentWatch": {
+        "title": "Rilevamento Cambiamenti",
+        "enable": "Monitora contenuto",
+        "method": "Metodo selezione",
+        "select": "Seleziona",
+        "advanced": "Avanzato",
+        "pickElement": "Clicca per selezionare elemento",
+        "cssSelector": "Selettore CSS",
+        "testSelector": "Testa Selettore",
+        "selectedElement": "Elemento selezionato:",
+        "none": "Nessuno",
+        "currentValue": "Valore attuale:",
+        "error": "Errore"
+    },
+    "lists": {
+        "title": "Blacklist / Whitelist",
+        "blacklist": "Blacklist",
+        "whitelist": "Whitelist"
+    },
+    "alert": {
+        "newContent": "Nuovo contenuto rilevato!",
+        "stopAlarm": "Ferma Allarme"
+    },
+    "footer": {
+        "createdBy": "Creato da Giulio Nicolai",
+        "donate": "Donate",
+        "donateText": "Ti piace l'estensione?"
+    },
+    "picker": {
+        "title": "Seleziona un elemento da monitorare",
+        "hint": "Premi ESC per annullare",
+        "selected": "Elemento selezionato!",
+        "initialValue": "Valore iniziale:"
+    }
+}

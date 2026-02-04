@@ -1,0 +1,57 @@
+{
+    "appName": "Advanced Auto Refresher",
+    "status": {
+        "active": "Ativo",
+        "inactive": "Inativo"
+    },
+    "timer": {
+        "title": "Temporizador Auto-Refresh",
+        "interval": "Intervalo (segundos)",
+        "start": "Iniciar",
+        "stop": "Parar"
+    },
+    "stochastic": {
+        "mode": "Modo estocástico",
+        "tooltip": "Varia aleatoriamente o tempo de atualização para evitar padrões detectáveis",
+        "minLimit": "Limite mínimo (segundos)",
+        "distribution": "Distribuição",
+        "uniform": "Uniforme",
+        "uniformTooltip": "Tempo aleatório entre mín e (2×alvo−mín)",
+        "gaussian": "Gaussiana",
+        "gaussianTooltip": "Tempo centrado no alvo com variação natural"
+    },
+    "contentWatch": {
+        "title": "Detecção de Mudanças",
+        "enable": "Monitorar conteúdo",
+        "method": "Método de seleção",
+        "select": "Selecionar",
+        "advanced": "Avançado",
+        "pickElement": "Clique para selecionar elemento",
+        "cssSelector": "Seletor CSS",
+        "testSelector": "Testar Seletor",
+        "selectedElement": "Elemento selecionado:",
+        "none": "Nenhum",
+        "currentValue": "Valor atual:",
+        "error": "Erro"
+    },
+    "lists": {
+        "title": "Lista Negra / Lista Branca",
+        "blacklist": "Lista Negra",
+        "whitelist": "Lista Branca"
+    },
+    "alert": {
+        "newContent": "Novo conteúdo detectado!",
+        "stopAlarm": "Parar Alarme"
+    },
+    "footer": {
+        "createdBy": "Criado por Giulio Nicolai",
+        "donate": "Doar",
+        "donateText": "Gostou da extensão?"
+    },
+    "picker": {
+        "title": "Selecione um elemento para monitorar",
+        "hint": "Pressione ESC para cancelar",
+        "selected": "Elemento selecionado!",
+        "initialValue": "Valor inicial:"
+    }
+}

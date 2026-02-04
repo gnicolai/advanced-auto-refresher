@@ -1,0 +1,57 @@
+{
+    "appName": "Advanced Auto Refresher",
+    "status": {
+        "active": "نشط",
+        "inactive": "غير نشط"
+    },
+    "timer": {
+        "title": "مؤقت التحديث التلقائي",
+        "interval": "الفاصل الزمني (ثواني)",
+        "start": "ابدأ",
+        "stop": "توقف"
+    },
+    "stochastic": {
+        "mode": "الوضع العشوائي",
+        "tooltip": "يغير وقت التحديث عشوائياً لتجنب الأنماط القابلة للكشف",
+        "minLimit": "الحد الأدنى (ثواني)",
+        "distribution": "التوزيع",
+        "uniform": "منتظم",
+        "uniformTooltip": "وقت عشوائي بين الحد الأدنى و (2×الهدف−الحد الأدنى)",
+        "gaussian": "غاوسي",
+        "gaussianTooltip": "وقت متمركز على الهدف مع تباين طبيعي"
+    },
+    "contentWatch": {
+        "title": "كشف التغييرات",
+        "enable": "مراقبة المحتوى",
+        "method": "طريقة الاختيار",
+        "select": "اختر",
+        "advanced": "متقدم",
+        "pickElement": "انقر لاختيار عنصر",
+        "cssSelector": "محدد CSS",
+        "testSelector": "اختبار المحدد",
+        "selectedElement": "العنصر المحدد:",
+        "none": "لا شيء",
+        "currentValue": "القيمة الحالية:",
+        "error": "خطأ"
+    },
+    "lists": {
+        "title": "القائمة السوداء / القائمة البيضاء",
+        "blacklist": "القائمة السوداء",
+        "whitelist": "القائمة البيضاء"
+    },
+    "alert": {
+        "newContent": "تم اكتشاف محتوى جديد!",
+        "stopAlarm": "إيقاف التنبيه"
+    },
+    "footer": {
+        "createdBy": "تم الإنشاء بواسطة Giulio Nicolai",
+        "donate": "تبرع",
+        "donateText": "هل أعجبك الامتداد؟"
+    },
+    "picker": {
+        "title": "اختر عنصراً للمراقبة",
+        "hint": "اضغط ESC للإلغاء",
+        "selected": "تم اختيار العنصر!",
+        "initialValue": "القيمة الأولية:"
+    }
+}

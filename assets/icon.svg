@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="58" fill="url(#grad)"/>
+  
+  <!-- Refresh arrows -->
+  <g fill="none" stroke="white" stroke-width="8" stroke-linecap="round">
+    <!-- Top arc -->
+    <path d="M 64 20 A 44 44 0 0 1 100 80"/>
+    <!-- Arrow head top -->
+    <path d="M 92 68 L 100 80 L 112 75"/>
+    
+    <!-- Bottom arc -->
+    <path d="M 64 108 A 44 44 0 0 1 28 48"/>
+    <!-- Arrow head bottom -->
+    <path d="M 36 60 L 28 48 L 16 53"/>
+  </g>
+  
+  <!-- Clock in center -->
+  <circle cx="64" cy="64" r="8" fill="white"/>
+  <line x1="64" y1="64" x2="64" y2="44" stroke="white" stroke-width="5" stroke-linecap="round"/>
+  <line x1="64" y1="64" x2="80" y2="64" stroke="white" stroke-width="5" stroke-linecap="round"/>
+</svg>

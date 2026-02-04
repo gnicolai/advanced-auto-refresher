@@ -1,0 +1,57 @@
+{
+    "appName": "Advanced Auto Refresher",
+    "status": {
+        "active": "Aktywny",
+        "inactive": "Nieaktywny"
+    },
+    "timer": {
+        "title": "Timer Auto-Odświeżania",
+        "interval": "Interwał (sekundy)",
+        "start": "Uruchom",
+        "stop": "Zatrzymaj"
+    },
+    "stochastic": {
+        "mode": "Tryb stochastyczny",
+        "tooltip": "Losowo zmienia czas odświeżania, aby uniknąć wykrywalnych wzorców",
+        "minLimit": "Limit minimalny (sekundy)",
+        "distribution": "Rozkład",
+        "uniform": "Równomierny",
+        "uniformTooltip": "Losowy czas między min a (2×cel−min)",
+        "gaussian": "Gaussowski",
+        "gaussianTooltip": "Czas wyśrodkowany na celu z naturalną zmiennością"
+    },
+    "contentWatch": {
+        "title": "Wykrywanie Zmian",
+        "enable": "Monitoruj zawartość",
+        "method": "Metoda wyboru",
+        "select": "Wybierz",
+        "advanced": "Zaawansowane",
+        "pickElement": "Kliknij, aby wybrać element",
+        "cssSelector": "Selektor CSS",
+        "testSelector": "Testuj Selektor",
+        "selectedElement": "Wybrany element:",
+        "none": "Brak",
+        "currentValue": "Aktualna wartość:",
+        "error": "Błąd"
+    },
+    "lists": {
+        "title": "Czarna Lista / Biała Lista",
+        "blacklist": "Czarna Lista",
+        "whitelist": "Biała Lista"
+    },
+    "alert": {
+        "newContent": "Wykryto nową zawartość!",
+        "stopAlarm": "Zatrzymaj Alarm"
+    },
+    "footer": {
+        "createdBy": "Stworzony przez Giulio Nicolai",
+        "donate": "Wesprzyj",
+        "donateText": "Podoba Ci się rozszerzenie?"
+    },
+    "picker": {
+        "title": "Wybierz element do monitorowania",
+        "hint": "Naciśnij ESC, aby anulować",
+        "selected": "Element wybrany!",
+        "initialValue": "Wartość początkowa:"
+    }
+}

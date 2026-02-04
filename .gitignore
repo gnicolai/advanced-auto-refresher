@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+release/
+backups/
+
+# Development files
+*.log
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp

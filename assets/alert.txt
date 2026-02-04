@@ -1,0 +1,3 @@
+<!-- Alert sound placeholder - Web Audio API is used as fallback -->
+<!-- This file signals to the extension that audio assets exist -->
+<!-- The actual siren sound is generated programmatically via Web Audio API -->

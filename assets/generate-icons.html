@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Generate Icons</title>
+    <style>
+        canvas {
+            border: 1px solid #ccc;
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Extension Icons Generator</h1>
+    <p>Right-click on each canvas and save as PNG with the corresponding name.</p>
+
+    <h3>icon16.png</h3>
+    <canvas id="icon16" width="16" height="16"></canvas>
+
+    <h3>icon48.png</h3>
+    <canvas id="icon48" width="48" height="48"></canvas>
+
+    <h3>icon128.png</h3>
+    <canvas id="icon128" width="128" height="128"></canvas>
+
+    <script>
+        function drawIcon(canvas) {
+            const ctx = canvas.getContext('2d');
+            const size = canvas.width;
+            const center = size / 2;
+            const radius = size * 0.35;
+
+            // Clear
+            ctx.clearRect(0, 0, size, size);
+
+            // Background circle with gradient
+            const bgGrad = ctx.createLinearGradient(0, 0, size, size);
+            bgGrad.addColorStop(0, '#6366f1');
+            bgGrad.addColorStop(1, '#8b5cf6');
+
+            ctx.beginPath();
+            ctx.arc(center, center, size * 0.45, 0, Math.PI * 2);
+            ctx.fillStyle = bgGrad;
+            ctx.fill();
+
+            // Refresh arrows
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = size * 0.08;
+            ctx.lineCap = 'round';
+
+            // Top arrow arc
+            ctx.beginPath();
+            ctx.arc(center, center, radius, -Math.PI * 0.8, Math.PI * 0.1);
+            ctx.stroke();
+
+            // Bottom arrow arc
+            ctx.beginPath();
+            ctx.arc(center, center, radius, Math.PI * 0.2, Math.PI * 1.1);
+            ctx.stroke();
+
+            // Arrow heads
+            const arrowSize = size * 0.12;
+
+            // Top arrow head
+            const topAngle = Math.PI * 0.1;
+            const topX = center + radius * Math.cos(topAngle);
+            const topY = center + radius * Math.sin(topAngle);
+            ctx.beginPath();
+            ctx.moveTo(topX + arrowSize * 0.7, topY - arrowSize);
+            ctx.lineTo(topX, topY);
+            ctx.lineTo(topX - arrowSize * 0.5, topY - arrowSize * 0.8);
+            ctx.stroke();
+
+            // Bottom arrow head
+            const bottomAngle = Math.PI * 1.1;
+            const bottomX = center + radius * Math.cos(bottomAngle);
+            const bottomY = center + radius * Math.sin(bottomAngle);
+            ctx.beginPath();
+            ctx.moveTo(bottomX - arrowSize * 0.7, bottomY + arrowSize);
+            ctx.lineTo(bottomX, bottomY);
+            ctx.lineTo(bottomX + arrowSize * 0.5, bottomY + arrowSize * 0.8);
+            ctx.stroke();
+
+            // Center clock hand (optional for larger sizes)
+            if (size >= 48) {
+                ctx.beginPath();
+                ctx.arc(center, center, size * 0.05, 0, Math.PI * 2);
+                ctx.fillStyle = 'white';
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.moveTo(center, center);
+                ctx.lineTo(center, center - size * 0.15);
+                ctx.lineWidth = size * 0.04;
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(center, center);
+                ctx.lineTo(center + size * 0.1, center);
+                ctx.stroke();
+            }
+        }
+
+        drawIcon(document.getElementById('icon16'));
+        drawIcon(document.getElementById('icon48'));
+        drawIcon(document.getElementById('icon128'));
+    </script>
+</body>
+
+</html>
