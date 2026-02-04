@@ -32,7 +32,14 @@
         "selectedElement": "Ausgewähltes Element:",
         "none": "Keines",
         "currentValue": "Aktueller Wert:",
-        "error": "Fehler"
+        "error": "Fehler",
+        "alertMode": "Alarmmodus",
+        "alertModeIncrease": "📈 Erhöhung",
+        "alertModeDecrease": "📉 Verringerung",
+        "alertModeAny": "🔄 Jede Änderung",
+        "alertModeAbove": "⬆️ Über Schwellenwert",
+        "alertModeBelow": "⬇️ Unter Schwellenwert",
+        "thresholdValue": "Schwellenwert"
     },
     "lists": {
         "title": "Schwarze Liste / Weiße Liste",

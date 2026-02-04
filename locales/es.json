@@ -32,7 +32,14 @@
         "selectedElement": "Elemento seleccionado:",
         "none": "Ninguno",
         "currentValue": "Valor actual:",
-        "error": "Error"
+        "error": "Error",
+        "alertMode": "Modo de alerta",
+        "alertModeIncrease": "📈 Aumento",
+        "alertModeDecrease": "📉 Disminución",
+        "alertModeAny": "🔄 Cualquier cambio",
+        "alertModeAbove": "⬆️ Por encima del umbral",
+        "alertModeBelow": "⬇️ Por debajo del umbral",
+        "thresholdValue": "Valor umbral"
     },
     "lists": {
         "title": "Lista Negra / Lista Blanca",

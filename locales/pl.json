@@ -32,7 +32,14 @@
         "selectedElement": "Wybrany element:",
         "none": "Brak",
         "currentValue": "Aktualna wartość:",
-        "error": "Błąd"
+        "error": "Błąd",
+        "alertMode": "Tryb alarmu",
+        "alertModeIncrease": "📈 Wzrost",
+        "alertModeDecrease": "📉 Spadek",
+        "alertModeAny": "🔄 Dowolna zmiana",
+        "alertModeAbove": "⬆️ Powyżej progu",
+        "alertModeBelow": "⬇️ Poniżej progu",
+        "thresholdValue": "Wartość progowa"
     },
     "lists": {
         "title": "Czarna Lista / Biała Lista",
