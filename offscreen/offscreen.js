@@ -23,7 +23,17 @@ chrome.runtime.onMessage.addListener((message) => {
 
 // Play audio
 function playAudio(audioUrl) {
-    if (isPlaying) return;
+    // Stop any existing audio first to allow replay
+    if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+        audio = null;
+    }
+    if (oscillator) {
+        oscillator.stop();
+        oscillator = null;
+    }
+    isPlaying = false;
 
     try {
         audio = new Audio(audioUrl);
