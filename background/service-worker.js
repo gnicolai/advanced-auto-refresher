@@ -160,6 +160,9 @@ async function startTimer(tabId, tabUrl, settings) {
     // Create alarm
     await chrome.alarms.create(`refresh_${tabId}`, { delayInMinutes: nextInterval / 60000 });
 
+    // Save state immediately for persistence
+    await saveTimerState();
+
     // Update badge
     updateBadge(tabId, nextInterval);
 
@@ -240,17 +243,25 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
     // If settings not in memory (service worker was restarted), try to reload from storage
     if (!settings) {
         try {
-            const tab = await chrome.tabs.get(tabId);
-            if (tab?.url) {
-                const result = await chrome.storage.local.get(['activeTimers']);
-                const savedTimers = result.activeTimers || {};
+            const result = await chrome.storage.local.get(['activeTimers', 'activeTimersByTabId']);
 
-                // Try to find settings by URL
-                if (savedTimers[tab.url]) {
-                    settings = savedTimers[tab.url];
-                    settings.tabUrl = tab.url;
-                    activeTimers.set(tabId, settings);
-                    console.log('Restored timer settings from storage for tab:', tabId);
+            // First, try to find by tabId (most reliable)
+            const savedByTabId = result.activeTimersByTabId || {};
+            if (savedByTabId[tabId]) {
+                settings = savedByTabId[tabId];
+                activeTimers.set(tabId, settings);
+                console.log('Restored timer from tabId storage for tab:', tabId);
+            } else {
+                // Fallback: try to find by current tab URL
+                const tab = await chrome.tabs.get(tabId);
+                if (tab?.url) {
+                    const savedByUrl = result.activeTimers || {};
+                    if (savedByUrl[tab.url]) {
+                        settings = savedByUrl[tab.url];
+                        settings.tabUrl = tab.url;
+                        activeTimers.set(tabId, settings);
+                        console.log('Restored timer from URL storage for tab:', tabId);
+                    }
                 }
             }
         } catch (e) {
@@ -656,17 +667,25 @@ async function handleContentChange(tabId, newValue, oldValue) {
     return { success: true };
 }
 
-// Save timer state to storage
+// Save timer state to storage (save by both tabId and URL for robust recovery)
 async function saveTimerState() {
-    const timerData = {};
+    const timerDataByUrl = {};
+    const timerDataByTabId = {};
 
     for (const [tabId, settings] of activeTimers) {
+        // Save by tabId for reliable recovery
+        timerDataByTabId[tabId] = { ...settings, tabId };
+
+        // Also save by URL for URL-based matching
         if (settings.tabUrl) {
-            timerData[settings.tabUrl] = settings;
+            timerDataByUrl[settings.tabUrl] = { ...settings, tabId };
         }
     }
 
-    await chrome.storage.local.set({ activeTimers: timerData });
+    await chrome.storage.local.set({
+        activeTimers: timerDataByUrl,
+        activeTimersByTabId: timerDataByTabId
+    });
 }
 
 // Tab removed handler
