@@ -348,18 +348,32 @@ async function checkBlacklist(url) {
     return false;
 }
 
-// Simple pattern matching
+// Pattern matching - supports wildcards (*) and substring matching
 function matchPattern(url, pattern) {
-    // Convert pattern to regex
+    if (!url || !pattern) return false;
+
+    // Trim whitespace
+    pattern = pattern.trim();
+    url = url.trim();
+
+    // If pattern has no wildcards, do simple substring match (case-insensitive)
+    if (!pattern.includes('*')) {
+        return url.toLowerCase().includes(pattern.toLowerCase());
+    }
+
+    // Convert wildcard pattern to regex
+    // Escape special regex chars except *
     const regexPattern = pattern
-        .replace(/[.+?^${}()|[\]\\]/g, '\\$&') // Escape special chars except *
-        .replace(/\*/g, '.*'); // Convert * to .*
+        .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+        .replace(/\*/g, '.*');
 
     try {
-        const regex = new RegExp(`^${regexPattern}$`, 'i');
+        // Use substring matching (no ^ or $) for more flexible matching
+        const regex = new RegExp(regexPattern, 'i');
         return regex.test(url);
     } catch {
-        return false;
+        // If regex fails, fall back to simple includes
+        return url.toLowerCase().includes(pattern.toLowerCase().replace(/\*/g, ''));
     }
 }
 
