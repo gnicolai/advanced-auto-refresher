@@ -55,6 +55,7 @@ const elements = {
   telegramChatId: document.getElementById('telegramChatId'),
   testTelegram: document.getElementById('testTelegram'),
   telegramStatus: document.getElementById('telegramStatus'),
+  telegramToggleLabel: document.getElementById('telegramToggleLabel'),
 
   // Alert
   alertOverlay: document.getElementById('alertOverlay'),
@@ -290,6 +291,9 @@ function setupEventListeners() {
     elements.telegramOptions.classList.toggle('hidden', !elements.telegramEnabled.checked);
     saveTelegramSettings();
   });
+
+  // Prevent toggle label from triggering parent click
+  elements.telegramToggleLabel.addEventListener('click', (e) => e.stopPropagation());
 
   // Telegram inputs - save on change
   elements.telegramBotToken.addEventListener('change', saveTelegramSettings);
