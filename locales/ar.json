@@ -50,6 +50,21 @@
         "blacklistPlaceholder": "*checkout*",
         "whitelistPlaceholder": "*deals*"
     },
+    "telegram": {
+        "title": "إشعارات تيليجرام",
+        "howtoTitle": "📖 كيفية إعداد بوت تيليجرام",
+        "howtoStep1": "افتح تيليجرام وابحث عن <strong>@BotFather</strong>",
+        "howtoStep2": "أرسل <code>/newbot</code> واتبع التعليمات",
+        "howtoStep3": "انسخ <strong>الرمز</strong> الذي تتلقاه",
+        "howtoStep4": "ابحث عن <strong>@userinfobot</strong> وأرسل رسالة",
+        "howtoStep5": "انسخ <strong>معرف الدردشة</strong> الرقمي الخاص بك",
+        "howtoStep6": "الصق كليهما أدناه واضغط \"اختبار\"",
+        "botToken": "رمز البوت",
+        "botTokenPlaceholder": "123456789:ABCdefGHIjklMNOpqrsTUVwxyz",
+        "chatId": "معرف الدردشة",
+        "chatIdPlaceholder": "123456789",
+        "testButton": "اختبار الإشعار"
+    },
     "alert": {
         "newContent": "تم اكتشاف محتوى جديد!",
         "stopAlarm": "إيقاف التنبيه"

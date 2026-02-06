@@ -48,6 +48,14 @@ const elements = {
   tabs: document.querySelectorAll('.tab'),
   tabContents: document.querySelectorAll('.tab-content'),
 
+  // Telegram
+  telegramEnabled: document.getElementById('telegramEnabled'),
+  telegramOptions: document.getElementById('telegramOptions'),
+  telegramBotToken: document.getElementById('telegramBotToken'),
+  telegramChatId: document.getElementById('telegramChatId'),
+  testTelegram: document.getElementById('testTelegram'),
+  telegramStatus: document.getElementById('telegramStatus'),
+
   // Alert
   alertOverlay: document.getElementById('alertOverlay'),
   stopAlert: document.getElementById('stopAlert')
@@ -77,6 +85,9 @@ async function init() {
 
   // Load blacklist/whitelist
   await loadUrlLists();
+
+  // Load Telegram settings
+  await loadTelegramSettings();
 
   // Update UI based on settings
   updateUI();
@@ -274,6 +285,19 @@ function setupEventListeners() {
     if (e.key === 'Enter') addUrl('whitelist');
   });
 
+  // Telegram toggle
+  elements.telegramEnabled.addEventListener('change', () => {
+    elements.telegramOptions.classList.toggle('hidden', !elements.telegramEnabled.checked);
+    saveTelegramSettings();
+  });
+
+  // Telegram inputs - save on change
+  elements.telegramBotToken.addEventListener('change', saveTelegramSettings);
+  elements.telegramChatId.addEventListener('change', saveTelegramSettings);
+
+  // Test Telegram button
+  elements.testTelegram.addEventListener('click', testTelegramNotification);
+
   // Stop alert
   elements.stopAlert.addEventListener('click', stopAlert);
 
@@ -430,6 +454,76 @@ function showAlertOverlay() {
 async function stopAlert() {
   elements.alertOverlay.classList.add('hidden');
   await chrome.runtime.sendMessage({ type: 'STOP_ALERT' });
+}
+
+// Load Telegram settings
+async function loadTelegramSettings() {
+  const result = await chrome.storage.sync.get(['telegramSettings']);
+  const settings = result.telegramSettings || { enabled: false, botToken: '', chatId: '' };
+
+  elements.telegramEnabled.checked = settings.enabled;
+  elements.telegramBotToken.value = settings.botToken || '';
+  elements.telegramChatId.value = settings.chatId || '';
+  elements.telegramOptions.classList.toggle('hidden', !settings.enabled);
+}
+
+// Save Telegram settings
+async function saveTelegramSettings() {
+  const settings = {
+    enabled: elements.telegramEnabled.checked,
+    botToken: elements.telegramBotToken.value.trim(),
+    chatId: elements.telegramChatId.value.trim()
+  };
+  await chrome.storage.sync.set({ telegramSettings: settings });
+}
+
+// Test Telegram notification
+async function testTelegramNotification() {
+  const botToken = elements.telegramBotToken.value.trim();
+  const chatId = elements.telegramChatId.value.trim();
+
+  if (!botToken || !chatId) {
+    showTelegramStatus('error', 'Inserisci Bot Token e Chat ID');
+    return;
+  }
+
+  showTelegramStatus('loading', 'Invio in corso...');
+
+  try {
+    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: '✅ *Advanced Auto Refresher*\n\n🧪 Test notifica riuscito!\n\nLe notifiche Telegram sono configurate correttamente.',
+        parse_mode: 'Markdown'
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.ok) {
+      showTelegramStatus('success', '✅ Notifica inviata con successo!');
+    } else {
+      showTelegramStatus('error', `❌ Errore: ${data.description || 'Sconosciuto'}`);
+    }
+  } catch (error) {
+    showTelegramStatus('error', `❌ Errore di rete: ${error.message}`);
+  }
+}
+
+// Show Telegram status message
+function showTelegramStatus(type, message) {
+  elements.telegramStatus.textContent = message;
+  elements.telegramStatus.className = `telegram-status ${type}`;
+  elements.telegramStatus.classList.remove('hidden');
+
+  // Auto-hide success after 3 seconds
+  if (type === 'success') {
+    setTimeout(() => {
+      elements.telegramStatus.classList.add('hidden');
+    }, 3000);
+  }
 }
 
 // Initialize

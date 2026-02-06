@@ -157,6 +157,56 @@
       </div>
     </section>
 
+    <!-- Telegram Notifications -->
+    <section class="card" id="telegramSection">
+      <div class="section-header" data-toggle="telegramOptions">
+        <div class="section-title">
+          <span class="icon">📱</span>
+          <span data-i18n="telegram.title">Telegram Notifications</span>
+        </div>
+        <label class="toggle-switch" onclick="event.stopPropagation()">
+          <input type="checkbox" id="telegramEnabled">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="telegram-options hidden" id="telegramOptions">
+        <!-- How to setup guide (collapsible) -->
+        <details class="telegram-howto">
+          <summary data-i18n="telegram.howtoTitle">📖 Come configurare il bot Telegram</summary>
+          <div class="howto-content">
+            <ol>
+              <li data-i18n="telegram.howtoStep1">Apri Telegram e cerca <strong>@BotFather</strong></li>
+              <li data-i18n="telegram.howtoStep2">Invia <code>/newbot</code> e segui le istruzioni</li>
+              <li data-i18n="telegram.howtoStep3">Copia il <strong>Token</strong> che ricevi</li>
+              <li data-i18n="telegram.howtoStep4">Cerca <strong>@userinfobot</strong> e invia un messaggio</li>
+              <li data-i18n="telegram.howtoStep5">Copia il tuo <strong>Chat ID</strong> numerico</li>
+              <li data-i18n="telegram.howtoStep6">Incolla entrambi qui sotto e premi "Test"</li>
+            </ol>
+          </div>
+        </details>
+
+        <div class="control-group">
+          <label for="telegramBotToken" data-i18n="telegram.botToken">Bot Token</label>
+          <input type="password" id="telegramBotToken" class="input-field"
+            placeholder="123456789:ABCdefGHIjklMNOpqrsTUVwxyz" data-i18n-placeholder="telegram.botTokenPlaceholder">
+        </div>
+
+        <div class="control-group">
+          <label for="telegramChatId" data-i18n="telegram.chatId">Chat ID</label>
+          <input type="text" id="telegramChatId" class="input-field" placeholder="123456789"
+            data-i18n-placeholder="telegram.chatIdPlaceholder">
+        </div>
+
+        <button id="testTelegram" class="btn btn-secondary btn-full">
+          <span>🧪</span>
+          <span data-i18n="telegram.testButton">Testa Notifica</span>
+        </button>
+
+        <div class="telegram-status hidden" id="telegramStatus"></div>
+      </div>
+    </section>
+
     <!-- Blacklist -->
     <section class="section collapsible">
       <h2 class="section-title clickable" id="blacklistToggle">
@@ -171,18 +221,22 @@
         </div>
 
         <div class="tab-content active" id="blacklistTab">
-          <p class="tab-description" data-i18n="lists.blacklistDesc">🚫 Il refresh verrà saltato su questi URL (es: pagine di checkout, login)</p>
+          <p class="tab-description" data-i18n="lists.blacklistDesc">🚫 Il refresh verrà saltato su questi URL (es:
+            pagine di checkout, login)</p>
           <div class="url-input-row">
-            <input type="text" id="blacklistUrl" placeholder="*checkout*" class="input-field" data-i18n-placeholder="lists.blacklistPlaceholder">
+            <input type="text" id="blacklistUrl" placeholder="*checkout*" class="input-field"
+              data-i18n-placeholder="lists.blacklistPlaceholder">
             <button id="addBlacklist" class="btn btn-secondary btn-icon-only">+</button>
           </div>
           <ul class="url-list" id="blacklistList"></ul>
         </div>
 
         <div class="tab-content" id="whitelistTab">
-          <p class="tab-description" data-i18n="lists.whitelistDesc">✅ Questi URL ignorano la blacklist (ha priorità)</p>
+          <p class="tab-description" data-i18n="lists.whitelistDesc">✅ Questi URL ignorano la blacklist (ha priorità)
+          </p>
           <div class="url-input-row">
-            <input type="text" id="whitelistUrl" placeholder="*deals*" class="input-field" data-i18n-placeholder="lists.whitelistPlaceholder">
+            <input type="text" id="whitelistUrl" placeholder="*deals*" class="input-field"
+              data-i18n-placeholder="lists.whitelistPlaceholder">
             <button id="addWhitelist" class="btn btn-secondary btn-icon-only">+</button>
           </div>
           <ul class="url-list" id="whitelistList"></ul>

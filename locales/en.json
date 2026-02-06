@@ -50,6 +50,21 @@
         "blacklistPlaceholder": "*checkout*",
         "whitelistPlaceholder": "*deals*"
     },
+    "telegram": {
+        "title": "Telegram Notifications",
+        "howtoTitle": "📖 How to setup Telegram bot",
+        "howtoStep1": "Open Telegram and search for <strong>@BotFather</strong>",
+        "howtoStep2": "Send <code>/newbot</code> and follow the instructions",
+        "howtoStep3": "Copy the <strong>Token</strong> you receive",
+        "howtoStep4": "Search for <strong>@userinfobot</strong> and send a message",
+        "howtoStep5": "Copy your numeric <strong>Chat ID</strong>",
+        "howtoStep6": "Paste both below and press \"Test\"",
+        "botToken": "Bot Token",
+        "botTokenPlaceholder": "123456789:ABCdefGHIjklMNOpqrsTUVwxyz",
+        "chatId": "Chat ID",
+        "chatIdPlaceholder": "123456789",
+        "testButton": "Test Notification"
+    },
     "alert": {
         "newContent": "New content detected!",
         "stopAlarm": "Stop Alarm"

@@ -50,6 +50,21 @@
         "blacklistPlaceholder": "*checkout*",
         "whitelistPlaceholder": "*deals*"
     },
+    "telegram": {
+        "title": "Notifiche Telegram",
+        "howtoTitle": "📖 Come configurare il bot Telegram",
+        "howtoStep1": "Apri Telegram e cerca <strong>@BotFather</strong>",
+        "howtoStep2": "Invia <code>/newbot</code> e segui le istruzioni",
+        "howtoStep3": "Copia il <strong>Token</strong> che ricevi",
+        "howtoStep4": "Cerca <strong>@userinfobot</strong> e invia un messaggio",
+        "howtoStep5": "Copia il tuo <strong>Chat ID</strong> numerico",
+        "howtoStep6": "Incolla entrambi qui sotto e premi \"Test\"",
+        "botToken": "Bot Token",
+        "botTokenPlaceholder": "123456789:ABCdefGHIjklMNOpqrsTUVwxyz",
+        "chatId": "Chat ID",
+        "chatIdPlaceholder": "123456789",
+        "testButton": "Testa Notifica"
+    },
     "alert": {
         "newContent": "Nuovo contenuto rilevato!",
         "stopAlarm": "Ferma Allarme"

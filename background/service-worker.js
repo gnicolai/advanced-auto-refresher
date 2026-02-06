@@ -312,6 +312,8 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
         // Play alert if content changed
         if (shouldAlert) {
             playAlertSound();
+            // Send Telegram notification
+            sendTelegramNotification(currentUrl, settings.contentWatch.lastValue, response?.currentValue);
             // Notify popup if open
             chrome.runtime.sendMessage({ type: 'ALERT_TRIGGERED' }).catch(() => { });
         }
@@ -504,6 +506,48 @@ function stopAlertSound() {
         type: 'STOP_AUDIO',
         target: 'offscreen'
     }).catch(() => { });
+}
+
+// Send Telegram notification
+async function sendTelegramNotification(url, oldValue, newValue) {
+    try {
+        // Get Telegram settings
+        const result = await chrome.storage.sync.get(['telegramSettings']);
+        const settings = result.telegramSettings;
+
+        // Check if Telegram is enabled and configured
+        if (!settings?.enabled || !settings?.botToken || !settings?.chatId) {
+            return;
+        }
+
+        // Build message
+        const message = `🔔 *Alert: Content Changed!*
+
+📊 *Value:* ${oldValue || 'N/A'} → ${newValue || 'N/A'}
+🔗 *URL:* ${url || 'Unknown'}
+⏰ *Time:* ${new Date().toLocaleString()}
+
+_Advanced Auto Refresher_`;
+
+        // Send to Telegram
+        const response = await fetch(`https://api.telegram.org/bot${settings.botToken}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: settings.chatId,
+                text: message,
+                parse_mode: 'Markdown'
+            })
+        });
+
+        const data = await response.json();
+
+        if (!data.ok) {
+            console.log('Telegram notification failed:', data.description);
+        }
+    } catch (error) {
+        console.log('Telegram notification error:', error.message);
+    }
 }
 
 // Handle selector picked from content script

@@ -50,6 +50,21 @@
         "blacklistPlaceholder": "*checkout*",
         "whitelistPlaceholder": "*deals*"
     },
+    "telegram": {
+        "title": "Сповіщення Telegram",
+        "howtoTitle": "📖 Як налаштувати Telegram бота",
+        "howtoStep1": "Відкрийте Telegram і знайдіть <strong>@BotFather</strong>",
+        "howtoStep2": "Надішліть <code>/newbot</code> і слідуйте інструкціям",
+        "howtoStep3": "Скопіюйте <strong>Token</strong> який ви отримаєте",
+        "howtoStep4": "Знайдіть <strong>@userinfobot</strong> і надішліть повідомлення",
+        "howtoStep5": "Скопіюйте ваш числовий <strong>Chat ID</strong>",
+        "howtoStep6": "Вставте обидва нижче і натисніть \"Test\"",
+        "botToken": "Токен Бота",
+        "botTokenPlaceholder": "123456789:ABCdefGHIjklMNOpqrsTUVwxyz",
+        "chatId": "Chat ID",
+        "chatIdPlaceholder": "123456789",
+        "testButton": "Тест Сповіщення"
+    },
     "alert": {
         "newContent": "Виявлено новий вміст!",
         "stopAlarm": "Зупинити Сигнал"
