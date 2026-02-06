@@ -171,16 +171,18 @@
         </div>
 
         <div class="tab-content active" id="blacklistTab">
+          <p class="tab-description" data-i18n="lists.blacklistDesc">🚫 Il refresh verrà saltato su questi URL (es: pagine di checkout, login)</p>
           <div class="url-input-row">
-            <input type="text" id="blacklistUrl" placeholder="*://example.com/*" class="input-field">
+            <input type="text" id="blacklistUrl" placeholder="*checkout*" class="input-field" data-i18n-placeholder="lists.blacklistPlaceholder">
             <button id="addBlacklist" class="btn btn-secondary btn-icon-only">+</button>
           </div>
           <ul class="url-list" id="blacklistList"></ul>
         </div>
 
         <div class="tab-content" id="whitelistTab">
+          <p class="tab-description" data-i18n="lists.whitelistDesc">✅ Questi URL ignorano la blacklist (ha priorità)</p>
           <div class="url-input-row">
-            <input type="text" id="whitelistUrl" placeholder="*://example.com/*" class="input-field">
+            <input type="text" id="whitelistUrl" placeholder="*deals*" class="input-field" data-i18n-placeholder="lists.whitelistPlaceholder">
             <button id="addWhitelist" class="btn btn-secondary btn-icon-only">+</button>
           </div>
           <ul class="url-list" id="whitelistList"></ul>

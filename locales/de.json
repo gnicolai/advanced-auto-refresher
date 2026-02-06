@@ -44,7 +44,11 @@
     "lists": {
         "title": "Schwarze Liste / Weiße Liste",
         "blacklist": "Schwarze Liste",
-        "whitelist": "Weiße Liste"
+        "whitelist": "Weiße Liste",
+        "blacklistDesc": "🚫 Aktualisierung wird bei diesen URLs übersprungen (z.B. Kasse, Login)",
+        "whitelistDesc": "✅ Diese URLs überschreiben die schwarze Liste (Priorität)",
+        "blacklistPlaceholder": "*checkout*",
+        "whitelistPlaceholder": "*deals*"
     },
     "alert": {
         "newContent": "Neuer Inhalt erkannt!",

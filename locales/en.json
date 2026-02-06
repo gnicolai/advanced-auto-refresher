@@ -44,7 +44,11 @@
     "lists": {
         "title": "Blacklist / Whitelist",
         "blacklist": "Blacklist",
-        "whitelist": "Whitelist"
+        "whitelist": "Whitelist",
+        "blacklistDesc": "🚫 Refresh will be skipped on these URLs (e.g. checkout, login)",
+        "whitelistDesc": "✅ These URLs override the blacklist (has priority)",
+        "blacklistPlaceholder": "*checkout*",
+        "whitelistPlaceholder": "*deals*"
     },
     "alert": {
         "newContent": "New content detected!",

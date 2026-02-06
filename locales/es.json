@@ -44,7 +44,11 @@
     "lists": {
         "title": "Lista Negra / Lista Blanca",
         "blacklist": "Lista Negra",
-        "whitelist": "Lista Blanca"
+        "whitelist": "Lista Blanca",
+        "blacklistDesc": "🚫 El refresh se omitirá en estas URL (ej: checkout, login)",
+        "whitelistDesc": "✅ Estas URL ignoran la lista negra (tiene prioridad)",
+        "blacklistPlaceholder": "*checkout*",
+        "whitelistPlaceholder": "*deals*"
     },
     "alert": {
         "newContent": "¡Nuevo contenido detectado!",
