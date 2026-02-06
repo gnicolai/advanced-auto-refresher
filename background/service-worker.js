@@ -235,9 +235,34 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
     if (!alarm.name.startsWith('refresh_')) return;
 
     const tabId = parseInt(alarm.name.replace('refresh_', ''));
-    const settings = activeTimers.get(tabId);
+    let settings = activeTimers.get(tabId);
 
-    if (!settings || !settings.isActive) return;
+    // If settings not in memory (service worker was restarted), try to reload from storage
+    if (!settings) {
+        try {
+            const tab = await chrome.tabs.get(tabId);
+            if (tab?.url) {
+                const result = await chrome.storage.local.get(['activeTimers']);
+                const savedTimers = result.activeTimers || {};
+
+                // Try to find settings by URL
+                if (savedTimers[tab.url]) {
+                    settings = savedTimers[tab.url];
+                    settings.tabUrl = tab.url;
+                    activeTimers.set(tabId, settings);
+                    console.log('Restored timer settings from storage for tab:', tabId);
+                }
+            }
+        } catch (e) {
+            console.log('Could not restore timer settings:', e.message);
+        }
+    }
+
+    if (!settings || !settings.isActive) {
+        // Timer was stopped, clear the alarm
+        await chrome.alarms.clear(alarm.name);
+        return;
+    }
 
     // Check blacklist - use CURRENT tab URL, not stored URL
     let currentUrl = settings.tabUrl;
@@ -245,6 +270,12 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
         const tab = await chrome.tabs.get(tabId);
         if (tab?.url) {
             currentUrl = tab.url;
+            // Update stored URL if changed
+            if (settings.tabUrl !== tab.url) {
+                settings.tabUrl = tab.url;
+                activeTimers.set(tabId, settings);
+                await saveTimerState();
+            }
         }
     } catch (e) {
         console.log('Could not get current tab URL, using stored URL');
