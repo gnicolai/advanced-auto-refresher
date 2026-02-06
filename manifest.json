@@ -1,14 +1,13 @@
 {
   "manifest_version": 3,
   "name": "Advanced Auto Refresher",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Auto-refresh tabs with stochastic timing and content change detection",
   "permissions": [
     "tabs",
     "storage",
     "alarms",
     "activeTab",
-    "scripting",
     "offscreen"
   ],
   "host_permissions": [
