@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.0.0-blue.svg" alt="Version">
+  <img src="https://img.shields.io/badge/version-1.0.5-blue.svg" alt="Version">
   <img src="https://img.shields.io/badge/manifest-v3-green.svg" alt="Manifest V3">
   <img src="https://img.shields.io/badge/languages-9-orange.svg" alt="Languages">
   <img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License">
@@ -34,8 +34,15 @@
 
 ### 🔔 Content Change Detection
 - **Visual element picker** - just click to select what to monitor
+- **Multiple alert modes** - increase, decrease, any change, above/below threshold
 - **Audio alerts** when monitored content changes
 - Perfect for stock tracking, availability checks, auction bidding
+
+### 📱 Telegram Notifications
+- **Get alerts on your phone** via Telegram bot
+- **Easy setup** with step-by-step guide included
+- **No backend required** - uses your own bot directly
+- Works alongside audio alerts
 
 ### 🛡️ Blacklist & Whitelist
 - Exclude specific URLs from auto-refresh
@@ -129,8 +136,15 @@ MIT License - feel free to use, modify, and distribute.
 
 #### 🔔 Rilevamento Cambiamenti
 - **Selettore visuale** - clicca per scegliere cosa monitorare
+- **Modalità multiple** - aumento, diminuzione, qualsiasi cambio, sopra/sotto soglia
 - **Avvisi audio** quando il contenuto cambia
 - Perfetto per Amazon Vine, tracking disponibilità, aste
+
+#### 📱 Notifiche Telegram
+- **Ricevi alert sul telefono** tramite bot Telegram
+- **Setup facile** con guida passo-passo inclusa
+- **Nessun backend richiesto** - usa direttamente il tuo bot
+- Funziona insieme agli avvisi audio
 
 #### 🛡️ Blacklist & Whitelist
 - Escludi URL specifici dal refresh automatico
