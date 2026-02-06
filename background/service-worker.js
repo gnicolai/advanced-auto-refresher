@@ -239,10 +239,20 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 
     if (!settings || !settings.isActive) return;
 
-    // Check blacklist
-    const isBlacklisted = await checkBlacklist(settings.tabUrl);
+    // Check blacklist - use CURRENT tab URL, not stored URL
+    let currentUrl = settings.tabUrl;
+    try {
+        const tab = await chrome.tabs.get(tabId);
+        if (tab?.url) {
+            currentUrl = tab.url;
+        }
+    } catch (e) {
+        console.log('Could not get current tab URL, using stored URL');
+    }
+
+    const isBlacklisted = await checkBlacklist(currentUrl);
     if (isBlacklisted) {
-        console.log('Tab is blacklisted, skipping refresh');
+        console.log('Tab is blacklisted, skipping refresh:', currentUrl);
         scheduleNextRefresh(tabId, settings);
         return;
     }
