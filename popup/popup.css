@@ -598,6 +598,59 @@ body {
 }
 
 /* Tooltip */
+
+/* Inline Checkbox (Telegram style) */
+.checkbox-inline {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    margin-right: var(--spacing-sm);
+}
+
+.checkbox-inline input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    height: 20px;
+    width: 20px;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-fast);
+}
+
+.checkbox-inline:hover input~.checkmark {
+    border-color: var(--accent-primary);
+}
+
+.checkbox-inline input:checked~.checkmark {
+    background-color: var(--accent-primary);
+    border-color: var(--accent-primary);
+}
+
+.checkmark:after {
+    content: "";
+    display: none;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg) translateY(-1px);
+}
+
+.checkbox-inline input:checked~.checkmark:after {
+    display: block;
+}
+
 .tooltip {
     display: inline-flex;
     align-items: center;
