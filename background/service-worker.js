@@ -362,10 +362,25 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 
     } catch (error) {
         console.error('Failed to refresh tab:', error);
-        // Tab might be closed, clean up
-        await stopTimer(tabId);
-        await saveTimerState();
-        return;
+
+        // CRITICAL: Only stop timer if tab is actually closed
+        // Tab might be discarded/suspended, so check if it still exists
+        try {
+            const tab = await chrome.tabs.get(tabId);
+            if (tab) {
+                // Tab exists but reload failed (maybe discarded/suspended)
+                // Don't stop timer, just reschedule
+                console.log('Tab exists but reload failed, rescheduling:', tabId);
+                scheduleNextRefresh(tabId, settings);
+                return;
+            }
+        } catch (tabError) {
+            // Tab truly doesn't exist, stop timer
+            console.log('Tab closed, stopping timer:', tabId);
+            await stopTimer(tabId);
+            await saveTimerState();
+            return;
+        }
     }
 
     // Schedule next refresh
