@@ -355,7 +355,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
         if (shouldAlert) {
             playAlertSound();
             // Send Telegram notification
-            sendTelegramNotification(currentUrl, settings.contentWatch.lastValue, response?.currentValue);
+            await sendTelegramNotification(currentUrl, settings.contentWatch.lastValue, response?.currentValue);
             // Notify popup if open
             chrome.runtime.sendMessage({ type: 'ALERT_TRIGGERED' }).catch(() => { });
         }
@@ -577,14 +577,23 @@ async function sendTelegramNotification(url, oldValue, newValue) {
             return;
         }
 
-        // Build message
-        const message = `🔔 *Alert: Content Changed!*
+        // Helper to escape HTML characters for Telegram
+        const escapeHtml = (unsafe) => {
+            if (!unsafe) return unsafe;
+            return String(unsafe)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
+        };
 
-📊 *Value:* ${oldValue || 'N/A'} → ${newValue || 'N/A'}
-🔗 *URL:* ${url || 'Unknown'}
-⏰ *Time:* ${new Date().toLocaleString()}
+        // Build message (using HTML for safety against special chars in values)
+        const message = `🔔 <b>Alert: Content Changed!</b>
 
-_Advanced Auto Refresher_`;
+📊 <b>Value:</b> ${escapeHtml(oldValue) || 'N/A'} → ${escapeHtml(newValue) || 'N/A'}
+🔗 <b>URL:</b> ${escapeHtml(url) || 'Unknown'}
+⏰ <b>Time:</b> ${new Date().toLocaleString()}
+
+<i>Advanced Auto Refresher</i>`;
 
         // Send to Telegram
         const response = await fetch(`https://api.telegram.org/bot${settings.botToken}/sendMessage`, {
@@ -593,7 +602,7 @@ _Advanced Auto Refresher_`;
             body: JSON.stringify({
                 chat_id: settings.chatId,
                 text: message,
-                parse_mode: 'Markdown'
+                parse_mode: 'HTML'
             })
         });
 
@@ -601,6 +610,8 @@ _Advanced Auto Refresher_`;
 
         if (!data.ok) {
             console.log('Telegram notification failed:', data.description);
+        } else {
+            console.log('Telegram notification sent successfully');
         }
     } catch (error) {
         console.log('Telegram notification error:', error.message);
