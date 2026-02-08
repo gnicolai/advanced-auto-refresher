@@ -586,11 +586,20 @@ async function sendTelegramNotification(url, oldValue, newValue) {
                 .replace(/>/g, "&gt;");
         };
 
+        // Helper to truncate long text
+        const truncate = (str, n) => {
+            return (str && str.length > n) ? str.substr(0, n - 1) + '...' : str;
+        };
+
+        const safeOld = escapeHtml(truncate(oldValue, 1000));
+        const safeNew = escapeHtml(truncate(newValue, 1000));
+        const safeUrl = escapeHtml(url);
+
         // Build message (using HTML for safety against special chars in values)
         const message = `🔔 <b>Alert: Content Changed!</b>
 
-📊 <b>Value:</b> ${escapeHtml(oldValue) || 'N/A'} → ${escapeHtml(newValue) || 'N/A'}
-🔗 <b>URL:</b> ${escapeHtml(url) || 'Unknown'}
+📊 <b>Value:</b> ${safeOld || 'N/A'} → ${safeNew || 'N/A'}
+🔗 <b>URL:</b> ${safeUrl || 'Unknown'}
 ⏰ <b>Time:</b> ${new Date().toLocaleString()}
 
 <i>Advanced Auto Refresher</i>`;
