@@ -619,11 +619,32 @@ async function sendTelegramNotification(url, oldValue, newValue) {
 
         if (!data.ok) {
             console.log('Telegram notification failed:', data.description);
+            await chrome.storage.local.set({
+                telegramLastStatus: {
+                    success: false,
+                    time: Date.now(),
+                    error: data.description || 'Unknown API Error'
+                }
+            });
         } else {
             console.log('Telegram notification sent successfully');
+            await chrome.storage.local.set({
+                telegramLastStatus: {
+                    success: true,
+                    time: Date.now(),
+                    message: 'Last notification sent successfully'
+                }
+            });
         }
     } catch (error) {
         console.log('Telegram notification error:', error.message);
+        await chrome.storage.local.set({
+            telegramLastStatus: {
+                success: false,
+                time: Date.now(),
+                error: error.message || 'Network/Script Error'
+            }
+        });
     }
 }
 

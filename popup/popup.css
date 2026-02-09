@@ -1132,3 +1132,37 @@ body {
     color: var(--accent-primary);
     border: 1px solid rgba(99, 102, 241, 0.3);
 }
+
+/* Last Status Display */
+.last-status {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    text-align: left;
+    border-left: 3px solid transparent;
+    background-color: var(--bg-tertiary);
+    line-height: 1.4;
+}
+
+.last-status.success {
+    border-left-color: var(--success);
+    color: var(--text-primary);
+}
+
+.last-status.error {
+    border-left-color: var(--error);
+    color: var(--text-primary);
+}
+
+.last-status .time {
+    font-size: 10px;
+    color: var(--text-secondary);
+    display: block;
+    margin-bottom: 2px;
+    opacity: 0.8;
+}
+
+.last-status .message {
+    font-weight: 500;
+}

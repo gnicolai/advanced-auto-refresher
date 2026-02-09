@@ -469,6 +469,9 @@ async function loadTelegramSettings() {
   elements.telegramBotToken.value = settings.botToken || '';
   elements.telegramChatId.value = settings.chatId || '';
   elements.telegramOptions.classList.toggle('hidden', !settings.enabled);
+
+  // Load last status
+  await loadLastTelegramStatus();
 }
 
 // Save Telegram settings
@@ -514,6 +517,32 @@ async function testTelegramNotification() {
   } catch (error) {
     showTelegramStatus('error', `❌ Errore di rete: ${error.message}`);
   }
+}
+
+// Load and display last automatic notification status
+async function loadLastTelegramStatus() {
+  const result = await chrome.storage.local.get(['telegramLastStatus']);
+  const status = result.telegramLastStatus;
+
+  const statusEl = document.getElementById('lastNotificationStatus');
+  if (!statusEl) return;
+
+  if (!status) {
+    statusEl.classList.add('hidden');
+    return;
+  }
+
+  statusEl.classList.remove('hidden', 'success', 'error');
+  statusEl.classList.add(status.success ? 'success' : 'error');
+
+  const date = new Date(status.time).toLocaleString();
+  const icon = status.success ? '✅' : '❌';
+  const text = status.success ? (status.message || 'Inviata con successo') : (status.error || 'Fallita');
+
+  statusEl.innerHTML = `
+    <span class="time">${date}</span>
+    <div class="message">${icon} Ultimo invio automatico: ${text}</div>
+  `;
 }
 
 // Show Telegram status message
