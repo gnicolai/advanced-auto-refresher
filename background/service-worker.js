@@ -302,6 +302,8 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
     try {
         // If content watch is enabled, check for changes before refresh
         let shouldAlert = false;
+        let contentOldValue = null;
+        let contentNewValue = null;
 
         if (settings.contentWatch?.enabled && settings.contentWatch?.selector) {
             try {
@@ -316,6 +318,10 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
                     const lastValue = settings.contentWatch.lastValue;
                     const alertMode = settings.contentWatch.alertMode || 'increase';
                     const threshold = settings.contentWatch.threshold || 0;
+
+                    // Save old and new values BEFORE updating lastValue
+                    contentOldValue = lastValue;
+                    contentNewValue = currentValue;
 
                     // Determine if alert should trigger based on mode
                     if (lastValue !== null) {
@@ -354,8 +360,8 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
         // Play alert if content changed
         if (shouldAlert) {
             playAlertSound();
-            // Send Telegram notification
-            await sendTelegramNotification(currentUrl, settings.contentWatch.lastValue, response?.currentValue);
+            // Send Telegram notification (using outer-scoped values)
+            await sendTelegramNotification(currentUrl, contentOldValue, contentNewValue);
             // Notify popup if open
             chrome.runtime.sendMessage({ type: 'ALERT_TRIGGERED' }).catch(() => { });
         }
