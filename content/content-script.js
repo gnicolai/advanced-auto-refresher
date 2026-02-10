@@ -7,8 +7,6 @@
 let isPickerActive = false;
 let pickerOverlay = null;
 let highlightedElement = null;
-let storedSelector = null;
-let storedValue = null;
 
 // Message handler
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -179,9 +177,6 @@ function handleClick(e) {
     const textContent = targetElement.textContent.trim();
     const numericValue = extractNumbers(textContent);
 
-    // Store for future use
-    storedSelector = selector;
-    storedValue = numericValue;
 
     // Send to background
     chrome.runtime.sendMessage({
@@ -355,8 +350,6 @@ function checkContent(selector, lastValue) {
 
         return {
             success: true,
-            changed: changed,
-            increased: increased,
             currentValue: currentValue,
             previousValue: lastValue
         };

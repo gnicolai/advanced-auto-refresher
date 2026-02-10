@@ -6,8 +6,7 @@
 // Storage for active timers
 const activeTimers = new Map();
 
-// Audio element for alerts
-let alertAudio = null;
+// Alert state
 let isAlertPlaying = false;
 
 // Initialize
@@ -74,9 +73,6 @@ async function handleMessage(message, sender) {
         case 'STOP_ALERT':
             stopAlertSound();
             return { success: true };
-
-        case 'CONTENT_CHANGED':
-            return handleContentChange(message.tabId, message.newValue, message.oldValue);
 
         case 'SELECTOR_PICKED':
             // Use sender.tab for correct tabId and URL
@@ -186,8 +182,14 @@ async function stopTimer(tabId) {
     activeTimers.delete(tabId);
     await chrome.alarms.clear(`refresh_${tabId}`);
 
+    // Clear countdown interval
+    if (countdownIntervals.has(tabId)) {
+        clearInterval(countdownIntervals.get(tabId));
+        countdownIntervals.delete(tabId);
+    }
+
     // Clear badge
-    await chrome.action.setBadgeText({ text: '', tabId });
+    try { await chrome.action.setBadgeText({ text: '', tabId }); } catch { }
 
     return { success: true };
 }
@@ -686,14 +688,8 @@ async function handleSelectorPicked(tabId, tabUrl, selector, value) {
     // Save to activeTimers
     activeTimers.set(tabId, settings);
 
-    // Also save directly to storage for persistence
+    // Save to storage for persistence
     await saveTimerState();
-
-    // Additionally save to storage by URL for when popup reopens
-    const result = await chrome.storage.local.get(['activeTimers']);
-    const savedTimers = result.activeTimers || {};
-    savedTimers[tabUrl] = settings;
-    await chrome.storage.local.set({ activeTimers: savedTimers });
 
     console.log('Selector saved:', { tabId, tabUrl, selector, value });
 
@@ -707,27 +703,7 @@ async function handleSelectorPicked(tabId, tabUrl, selector, value) {
     return { success: true };
 }
 
-// Handle content change
-async function handleContentChange(tabId, newValue, oldValue) {
-    if (newValue > oldValue) {
-        playAlertSound();
-        chrome.runtime.sendMessage({
-            type: 'ALERT_TRIGGERED',
-            newValue,
-            oldValue
-        }).catch(() => { });
-    }
 
-    // Update stored value
-    const settings = activeTimers.get(tabId);
-    if (settings?.contentWatch) {
-        settings.contentWatch.lastValue = newValue;
-        activeTimers.set(tabId, settings);
-        await saveTimerState();
-    }
-
-    return { success: true };
-}
 
 // Save timer state to storage (save by both tabId and URL for robust recovery)
 async function saveTimerState() {

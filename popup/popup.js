@@ -92,6 +92,12 @@ async function init() {
 
   // Update UI based on settings
   updateUI();
+
+  // Set version from manifest
+  const versionEl = document.getElementById('versionText');
+  if (versionEl) {
+    versionEl.textContent = 'v' + chrome.runtime.getManifest().version;
+  }
 }
 
 // Load settings for current tab
@@ -502,8 +508,8 @@ async function testTelegramNotification() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         chat_id: chatId,
-        text: '✅ *Advanced Auto Refresher*\n\n🧪 Test notifica riuscito!\n\nLe notifiche Telegram sono configurate correttamente.',
-        parse_mode: 'Markdown'
+        text: '✅ <b>Advanced Auto Refresher</b>\n\n🧪 Test notifica riuscito!\n\nLe notifiche Telegram sono configurate correttamente.',
+        parse_mode: 'HTML'
       })
     });
 
