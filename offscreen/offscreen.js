@@ -5,6 +5,9 @@
 
 let audio = null;
 let isPlaying = false;
+let audioContext = null;
+let oscillator = null;
+let gainNode = null;
 
 // Listen for messages from service worker
 chrome.runtime.onMessage.addListener((message) => {
@@ -42,6 +45,7 @@ function playAudio(audioUrl) {
 
         audio.onended = () => {
             isPlaying = false;
+            chrome.runtime.sendMessage({ type: 'AUDIO_ENDED' }).catch(() => { });
         };
 
         audio.onerror = (e) => {
@@ -83,10 +87,7 @@ function stopAudio() {
     }
 }
 
-// Variables for generated alarm
-let audioContext = null;
-let oscillator = null;
-let gainNode = null;
+
 
 // Generate alarm sound using Web Audio API (fallback)
 function playGeneratedAlarm() {

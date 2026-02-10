@@ -74,6 +74,10 @@ async function handleMessage(message, sender) {
             stopAlertSound();
             return { success: true };
 
+        case 'AUDIO_ENDED':
+            isAlertPlaying = false;
+            return { success: true };
+
         case 'SELECTOR_PICKED':
             // Use sender.tab for correct tabId and URL
             return handleSelectorPicked(sender.tab?.id, sender.tab?.url, message.selector, message.value);
@@ -516,6 +520,9 @@ function playAlertSound() {
     if (isAlertPlaying) return;
 
     isAlertPlaying = true;
+
+    // Auto-reset after 30s as safety net
+    setTimeout(() => { isAlertPlaying = false; }, 30000);
 
     // Create audio context and play siren sound
     const audioUrl = chrome.runtime.getURL('assets/alert.mp3');
