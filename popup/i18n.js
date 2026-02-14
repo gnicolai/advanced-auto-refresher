@@ -37,7 +37,7 @@ function detectBrowserLanguage() {
 async function loadTranslations(lang) {
     const chromeCode = LANGUAGES[lang]?.chrome || lang;
     try {
-        const url = chrome.runtime.getURL(`_locales/${chromeCode}/messages.json`);
+        const url = chrome.runtime.getURL(`i18n/${chromeCode}/messages.json`);
         const response = await fetch(url);
         if (!response.ok) throw new Error(`Failed to load ${url}: ${response.status}`);
         const messages = await response.json();

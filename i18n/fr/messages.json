@@ -1,0 +1,194 @@
+{
+    "appDesc":  {
+                    "message":  "Rafraichissement automatique avec timing stochastique et detection de changements"
+                },
+    "appName":  {
+                    "message":  "Advanced Auto Refresher"
+                },
+    "status_active":  {
+                          "message":  "Actif"
+                      },
+    "status_inactive":  {
+                            "message":  "Inactif"
+                        },
+    "timer_title":  {
+                        "message":  "Minuterie Auto-Refresh"
+                    },
+    "timer_interval":  {
+                           "message":  "Intervalle (secondes)"
+                       },
+    "timer_start":  {
+                        "message":  "Démarrer"
+                    },
+    "timer_stop":  {
+                       "message":  "Arrêter"
+                   },
+    "stochastic_mode":  {
+                            "message":  "Mode stochastique"
+                        },
+    "stochastic_tooltip":  {
+                               "message":  "Varie aléatoirement le temps de rafraîchissement pour éviter les modèles détectables"
+                           },
+    "stochastic_minLimit":  {
+                                "message":  "Limite minimum (secondes)"
+                            },
+    "stochastic_distribution":  {
+                                    "message":  "Distribution"
+                                },
+    "stochastic_uniform":  {
+                               "message":  "Uniforme"
+                           },
+    "stochastic_uniformTooltip":  {
+                                      "message":  "Temps aléatoire entre min et (2×cible−min)"
+                                  },
+    "stochastic_gaussian":  {
+                                "message":  "Gaussienne"
+                            },
+    "stochastic_gaussianTooltip":  {
+                                       "message":  "Temps centré sur la cible avec variation naturelle"
+                                   },
+    "contentWatch_title":  {
+                               "message":  "Détection de Changements"
+                           },
+    "contentWatch_enable":  {
+                                "message":  "Surveiller le contenu"
+                            },
+    "contentWatch_method":  {
+                                "message":  "Méthode de sélection"
+                            },
+    "contentWatch_select":  {
+                                "message":  "Sélectionner"
+                            },
+    "contentWatch_advanced":  {
+                                  "message":  "Avancé"
+                              },
+    "contentWatch_pickElement":  {
+                                     "message":  "Cliquez pour sélectionner un élément"
+                                 },
+    "contentWatch_cssSelector":  {
+                                     "message":  "Sélecteur CSS"
+                                 },
+    "contentWatch_testSelector":  {
+                                      "message":  "Tester Sélecteur"
+                                  },
+    "contentWatch_selectedElement":  {
+                                         "message":  "Élément sélectionné:"
+                                     },
+    "contentWatch_none":  {
+                              "message":  "Aucun"
+                          },
+    "contentWatch_currentValue":  {
+                                      "message":  "Valeur actuelle:"
+                                  },
+    "contentWatch_error":  {
+                               "message":  "Erreur"
+                           },
+    "contentWatch_alertMode":  {
+                                   "message":  "Mode d\u0027alerte"
+                               },
+    "contentWatch_alertModeIncrease":  {
+                                           "message":  "📈 Augmentation"
+                                       },
+    "contentWatch_alertModeDecrease":  {
+                                           "message":  "📉 Diminution"
+                                       },
+    "contentWatch_alertModeAny":  {
+                                      "message":  "🔄 Tout changement"
+                                  },
+    "contentWatch_alertModeAbove":  {
+                                        "message":  "⬆️ Au-dessus du seuil"
+                                    },
+    "contentWatch_alertModeBelow":  {
+                                        "message":  "⬇️ En-dessous du seuil"
+                                    },
+    "contentWatch_thresholdValue":  {
+                                        "message":  "Valeur seuil"
+                                    },
+    "lists_title":  {
+                        "message":  "Liste noire / Liste blanche"
+                    },
+    "lists_blacklist":  {
+                            "message":  "Liste noire"
+                        },
+    "lists_whitelist":  {
+                            "message":  "Liste blanche"
+                        },
+    "lists_blacklistDesc":  {
+                                "message":  "🚫 Le refresh sera ignoré sur ces URL (ex: paiement, connexion)"
+                            },
+    "lists_whitelistDesc":  {
+                                "message":  "✅ Ces URL ignorent la liste noire (prioritaire)"
+                            },
+    "lists_blacklistPlaceholder":  {
+                                       "message":  "*checkout*"
+                                   },
+    "lists_whitelistPlaceholder":  {
+                                       "message":  "*deals*"
+                                   },
+    "telegram_title":  {
+                           "message":  "Notifications Telegram"
+                       },
+    "telegram_howtoTitle":  {
+                                "message":  "📖 Comment configurer le bot Telegram"
+                            },
+    "telegram_howtoStep1":  {
+                                "message":  "Ouvrez Telegram et recherchez \u003cstrong\u003e@BotFather\u003c/strong\u003e"
+                            },
+    "telegram_howtoStep2":  {
+                                "message":  "Envoyez \u003ccode\u003e/newbot\u003c/code\u003e et suivez les instructions"
+                            },
+    "telegram_howtoStep3":  {
+                                "message":  "Copiez le \u003cstrong\u003eToken\u003c/strong\u003e que vous recevez"
+                            },
+    "telegram_howtoStep4":  {
+                                "message":  "Recherchez \u003cstrong\u003e@userinfobot\u003c/strong\u003e et envoyez un message"
+                            },
+    "telegram_howtoStep5":  {
+                                "message":  "Copiez votre \u003cstrong\u003eChat ID\u003c/strong\u003e numérique"
+                            },
+    "telegram_howtoStep6":  {
+                                "message":  "Collez les deux ci-dessous et appuyez sur \"Test\""
+                            },
+    "telegram_botToken":  {
+                              "message":  "Token du Bot"
+                          },
+    "telegram_botTokenPlaceholder":  {
+                                         "message":  "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+                                     },
+    "telegram_chatId":  {
+                            "message":  "Chat ID"
+                        },
+    "telegram_chatIdPlaceholder":  {
+                                       "message":  "123456789"
+                                   },
+    "telegram_testButton":  {
+                                "message":  "Tester la Notification"
+                            },
+    "alert_newContent":  {
+                             "message":  "Nouveau contenu détecté!"
+                         },
+    "alert_stopAlarm":  {
+                            "message":  "Arrêter l\u0027alarme"
+                        },
+    "footer_createdBy":  {
+                             "message":  "Créé par Giulio Nicolai"
+                         },
+    "footer_donate":  {
+                          "message":  "Faire un don"
+                      },
+    "footer_donateText":  {
+                              "message":  "Vous aimez l\u0027extension?"
+                          },
+    "picker_title":  {
+                         "message":  "Sélectionnez un élément à surveiller"
+                     },
+    "picker_hint":  {
+                        "message":  "Appuyez sur ESC pour annuler"
+                    },
+    "picker_selected":  {
+                            "message":  "Élément sélectionné!"
+                        },
+    "picker_initialValue":  {
+                                "message":  "Valeur initiale:"
+                            }
+}
