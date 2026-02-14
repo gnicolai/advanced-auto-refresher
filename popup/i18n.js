@@ -1,8 +1,6 @@
-/**
- * Advanced Auto Refresher - Internationalization Module
- * Hybrid approach: uses Chrome _locales/*/messages.json format
-    * but supports runtime language switching via fetch
-        */
+// Advanced Auto Refresher - Internationalization Module
+// Hybrid approach: uses Chrome _locales messages.json format
+// but supports runtime language switching via fetch
 
 // Supported languages with flag emojis
 const LANGUAGES = {
