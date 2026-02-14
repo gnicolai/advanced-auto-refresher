@@ -69,9 +69,13 @@ let tabSettings = null;
 
 // Initialize popup
 async function init() {
-  // Initialize internationalization
-  await window.i18n.init();
-  window.i18n.createLanguageSelector(document.getElementById('languageSelector'));
+  // Initialize internationalization (non-blocking - popup must work even if i18n fails)
+  try {
+    await window.i18n.init();
+    window.i18n.createLanguageSelector(document.getElementById('languageSelector'));
+  } catch (e) {
+    console.error('i18n initialization failed, continuing with defaults:', e);
+  }
 
   // Get current tab
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
