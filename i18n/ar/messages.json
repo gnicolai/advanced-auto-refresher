@@ -1,194 +1,221 @@
 {
-    "appDesc":  {
-                    "message":  "Automatic refresh with stochastic timing and content change detection"
-                },
-    "appName":  {
-                    "message":  "Advanced Auto Refresher"
-                },
-    "status_active":  {
-                          "message":  "نشط"
-                      },
-    "status_inactive":  {
-                            "message":  "غير نشط"
-                        },
-    "timer_title":  {
-                        "message":  "مؤقت التحديث التلقائي"
-                    },
-    "timer_interval":  {
-                           "message":  "الفاصل الزمني (ثواني)"
-                       },
-    "timer_start":  {
-                        "message":  "ابدأ"
-                    },
-    "timer_stop":  {
-                       "message":  "توقف"
-                   },
-    "stochastic_mode":  {
-                            "message":  "الوضع العشوائي"
-                        },
-    "stochastic_tooltip":  {
-                               "message":  "يغير وقت التحديث عشوائياً لتجنب الأنماط القابلة للكشف"
-                           },
-    "stochastic_minLimit":  {
-                                "message":  "الحد الأدنى (ثواني)"
-                            },
-    "stochastic_distribution":  {
-                                    "message":  "التوزيع"
-                                },
-    "stochastic_uniform":  {
-                               "message":  "منتظم"
-                           },
-    "stochastic_uniformTooltip":  {
-                                      "message":  "وقت عشوائي بين الحد الأدنى و (2×الهدف−الحد الأدنى)"
-                                  },
-    "stochastic_gaussian":  {
-                                "message":  "غاوسي"
-                            },
-    "stochastic_gaussianTooltip":  {
-                                       "message":  "وقت متمركز على الهدف مع تباين طبيعي"
-                                   },
-    "contentWatch_title":  {
-                               "message":  "كشف التغييرات"
-                           },
-    "contentWatch_enable":  {
-                                "message":  "مراقبة المحتوى"
-                            },
-    "contentWatch_method":  {
-                                "message":  "طريقة الاختيار"
-                            },
-    "contentWatch_select":  {
-                                "message":  "اختر"
-                            },
-    "contentWatch_advanced":  {
-                                  "message":  "متقدم"
-                              },
-    "contentWatch_pickElement":  {
-                                     "message":  "انقر لاختيار عنصر"
-                                 },
-    "contentWatch_cssSelector":  {
-                                     "message":  "محدد CSS"
-                                 },
-    "contentWatch_testSelector":  {
-                                      "message":  "اختبار المحدد"
-                                  },
-    "contentWatch_selectedElement":  {
-                                         "message":  "العنصر المحدد:"
-                                     },
-    "contentWatch_none":  {
-                              "message":  "لا شيء"
-                          },
-    "contentWatch_currentValue":  {
-                                      "message":  "القيمة الحالية:"
-                                  },
-    "contentWatch_error":  {
-                               "message":  "خطأ"
-                           },
-    "contentWatch_alertMode":  {
-                                   "message":  "وضع التنبيه"
-                               },
-    "contentWatch_alertModeIncrease":  {
-                                           "message":  "📈 زيادة"
-                                       },
-    "contentWatch_alertModeDecrease":  {
-                                           "message":  "📉 نقصان"
-                                       },
-    "contentWatch_alertModeAny":  {
-                                      "message":  "🔄 أي تغيير"
-                                  },
-    "contentWatch_alertModeAbove":  {
-                                        "message":  "⬆️ فوق الحد"
-                                    },
-    "contentWatch_alertModeBelow":  {
-                                        "message":  "⬇️ تحت الحد"
-                                    },
-    "contentWatch_thresholdValue":  {
-                                        "message":  "قيمة الحد"
-                                    },
-    "lists_title":  {
-                        "message":  "القائمة السوداء / القائمة البيضاء"
-                    },
-    "lists_blacklist":  {
-                            "message":  "القائمة السوداء"
-                        },
-    "lists_whitelist":  {
-                            "message":  "القائمة البيضاء"
-                        },
-    "lists_blacklistDesc":  {
-                                "message":  "🚫 سيتم تخطي التحديث في هذه الروابط (مثل: الدفع، تسجيل الدخول)"
-                            },
-    "lists_whitelistDesc":  {
-                                "message":  "✅ هذه الروابط تتجاوز القائمة السوداء (لها الأولوية)"
-                            },
-    "lists_blacklistPlaceholder":  {
-                                       "message":  "*checkout*"
-                                   },
-    "lists_whitelistPlaceholder":  {
-                                       "message":  "*deals*"
-                                   },
-    "telegram_title":  {
-                           "message":  "إشعارات تيليجرام"
-                       },
-    "telegram_howtoTitle":  {
-                                "message":  "📖 كيفية إعداد بوت تيليجرام"
-                            },
-    "telegram_howtoStep1":  {
-                                "message":  "افتح تيليجرام وابحث عن \u003cstrong\u003e@BotFather\u003c/strong\u003e"
-                            },
-    "telegram_howtoStep2":  {
-                                "message":  "أرسل \u003ccode\u003e/newbot\u003c/code\u003e واتبع التعليمات"
-                            },
-    "telegram_howtoStep3":  {
-                                "message":  "انسخ \u003cstrong\u003eالرمز\u003c/strong\u003e الذي تتلقاه"
-                            },
-    "telegram_howtoStep4":  {
-                                "message":  "ابحث عن \u003cstrong\u003e@userinfobot\u003c/strong\u003e وأرسل رسالة"
-                            },
-    "telegram_howtoStep5":  {
-                                "message":  "انسخ \u003cstrong\u003eمعرف الدردشة\u003c/strong\u003e الرقمي الخاص بك"
-                            },
-    "telegram_howtoStep6":  {
-                                "message":  "الصق كليهما أدناه واضغط \"اختبار\""
-                            },
-    "telegram_botToken":  {
-                              "message":  "رمز البوت"
-                          },
-    "telegram_botTokenPlaceholder":  {
-                                         "message":  "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
-                                     },
-    "telegram_chatId":  {
-                            "message":  "معرف الدردشة"
-                        },
-    "telegram_chatIdPlaceholder":  {
-                                       "message":  "123456789"
-                                   },
-    "telegram_testButton":  {
-                                "message":  "اختبار الإشعار"
-                            },
-    "alert_newContent":  {
-                             "message":  "تم اكتشاف محتوى جديد!"
-                         },
-    "alert_stopAlarm":  {
-                            "message":  "إيقاف التنبيه"
-                        },
-    "footer_createdBy":  {
-                             "message":  "تم الإنشاء بواسطة Giulio Nicolai"
-                         },
-    "footer_donate":  {
-                          "message":  "تبرع"
-                      },
-    "footer_donateText":  {
-                              "message":  "هل أعجبك الامتداد؟"
-                          },
-    "picker_title":  {
-                         "message":  "اختر عنصراً للمراقبة"
-                     },
-    "picker_hint":  {
-                        "message":  "اضغط ESC للإلغاء"
-                    },
-    "picker_selected":  {
-                            "message":  "تم اختيار العنصر!"
-                        },
-    "picker_initialValue":  {
-                                "message":  "القيمة الأولية:"
-                            }
+    "appDesc": {
+        "message": "Automatic refresh with stochastic timing and content change detection"
+    },
+    "appName": {
+        "message": "Advanced Auto Refresher"
+    },
+    "status_active": {
+        "message": "نشط"
+    },
+    "status_inactive": {
+        "message": "غير نشط"
+    },
+    "timer_title": {
+        "message": "مؤقت التحديث التلقائي"
+    },
+    "timer_interval": {
+        "message": "الفاصل الزمني (ثواني)"
+    },
+    "timer_start": {
+        "message": "ابدأ"
+    },
+    "timer_stop": {
+        "message": "توقف"
+    },
+    "stochastic_mode": {
+        "message": "الوضع العشوائي"
+    },
+    "stochastic_tooltip": {
+        "message": "يغير وقت التحديث عشوائياً لتجنب الأنماط القابلة للكشف"
+    },
+    "stochastic_minLimit": {
+        "message": "الحد الأدنى (ثواني)"
+    },
+    "stochastic_distribution": {
+        "message": "التوزيع"
+    },
+    "stochastic_uniform": {
+        "message": "منتظم"
+    },
+    "stochastic_uniformTooltip": {
+        "message": "وقت عشوائي بين الحد الأدنى و (2×الهدف−الحد الأدنى)"
+    },
+    "stochastic_gaussian": {
+        "message": "غاوسي"
+    },
+    "stochastic_gaussianTooltip": {
+        "message": "وقت متمركز على الهدف مع تباين طبيعي"
+    },
+    "contentWatch_title": {
+        "message": "كشف التغييرات"
+    },
+    "contentWatch_enable": {
+        "message": "مراقبة المحتوى"
+    },
+    "contentWatch_method": {
+        "message": "طريقة الاختيار"
+    },
+    "contentWatch_select": {
+        "message": "اختر"
+    },
+    "contentWatch_advanced": {
+        "message": "متقدم"
+    },
+    "contentWatch_pickElement": {
+        "message": "انقر لاختيار عنصر"
+    },
+    "contentWatch_cssSelector": {
+        "message": "محدد CSS"
+    },
+    "contentWatch_testSelector": {
+        "message": "اختبار المحدد"
+    },
+    "contentWatch_selectedElement": {
+        "message": "العنصر المحدد:"
+    },
+    "contentWatch_none": {
+        "message": "لا شيء"
+    },
+    "contentWatch_currentValue": {
+        "message": "القيمة الحالية:"
+    },
+    "contentWatch_error": {
+        "message": "خطأ"
+    },
+    "contentWatch_alertMode": {
+        "message": "وضع التنبيه"
+    },
+    "contentWatch_alertModeIncrease": {
+        "message": "📈 زيادة"
+    },
+    "contentWatch_alertModeDecrease": {
+        "message": "📉 نقصان"
+    },
+    "contentWatch_alertModeAny": {
+        "message": "🔄 أي تغيير"
+    },
+    "contentWatch_alertModeAbove": {
+        "message": "⬆️ فوق الحد"
+    },
+    "contentWatch_alertModeBelow": {
+        "message": "⬇️ تحت الحد"
+    },
+    "contentWatch_thresholdValue": {
+        "message": "قيمة الحد"
+    },
+    "lists_title": {
+        "message": "القائمة السوداء / القائمة البيضاء"
+    },
+    "lists_blacklist": {
+        "message": "القائمة السوداء"
+    },
+    "lists_whitelist": {
+        "message": "القائمة البيضاء"
+    },
+    "lists_blacklistDesc": {
+        "message": "🚫 سيتم تخطي التحديث في هذه الروابط (مثل: الدفع، تسجيل الدخول)"
+    },
+    "lists_whitelistDesc": {
+        "message": "✅ هذه الروابط تتجاوز القائمة السوداء (لها الأولوية)"
+    },
+    "lists_blacklistPlaceholder": {
+        "message": "*checkout*"
+    },
+    "lists_whitelistPlaceholder": {
+        "message": "*deals*"
+    },
+    "telegram_title": {
+        "message": "إشعارات تيليجرام"
+    },
+    "telegram_howtoTitle": {
+        "message": "📖 كيفية إعداد بوت تيليجرام"
+    },
+    "telegram_howtoStep1": {
+        "message": "افتح تيليجرام وابحث عن <strong>@BotFather</strong>"
+    },
+    "telegram_howtoStep2": {
+        "message": "أرسل <code>/newbot</code> واتبع التعليمات"
+    },
+    "telegram_howtoStep3": {
+        "message": "انسخ <strong>الرمز</strong> الذي تتلقاه"
+    },
+    "telegram_howtoStep4": {
+        "message": "ابحث عن <strong>@userinfobot</strong> وأرسل رسالة"
+    },
+    "telegram_howtoStep5": {
+        "message": "انسخ <strong>معرف الدردشة</strong> الرقمي الخاص بك"
+    },
+    "telegram_howtoStep6": {
+        "message": "الصق كليهما أدناه واضغط \"اختبار\""
+    },
+    "telegram_botToken": {
+        "message": "رمز البوت"
+    },
+    "telegram_botTokenPlaceholder": {
+        "message": "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+    },
+    "telegram_chatId": {
+        "message": "معرف الدردشة"
+    },
+    "telegram_chatIdPlaceholder": {
+        "message": "123456789"
+    },
+    "telegram_testButton": {
+        "message": "اختبار الإشعار"
+    },
+    "alert_newContent": {
+        "message": "تم اكتشاف محتوى جديد!"
+    },
+    "alert_stopAlarm": {
+        "message": "إيقاف التنبيه"
+    },
+    "footer_createdBy": {
+        "message": "تم الإنشاء بواسطة Giulio Nicolai"
+    },
+    "footer_donate": {
+        "message": "تبرع"
+    },
+    "footer_donateText": {
+        "message": "هل أعجبك الامتداد؟"
+    },
+    "picker_title": {
+        "message": "اختر عنصراً للمراقبة"
+    },
+    "picker_hint": {
+        "message": "اضغط ESC للإلغاء"
+    },
+    "picker_selected": {
+        "message": "تم اختيار العنصر!"
+    },
+    "picker_initialValue": {
+        "message": "القيمة الأولية:"
+    },
+    "alertSound_title": {
+        "message": "صوت التنبيه"
+    },
+    "alertSound_siren": {
+        "message": "🚨 صفارة إنذار"
+    },
+    "alertSound_beep": {
+        "message": "🔔 صافرة"
+    },
+    "alertSound_chime": {
+        "message": "🎵 رنين"
+    },
+    "alertSound_alarm": {
+        "message": "⏰ منبه"
+    },
+    "alertSound_bell": {
+        "message": "🔔 جرس"
+    },
+    "alertSound_digital": {
+        "message": "💻 رقمي"
+    },
+    "alertSound_volume": {
+        "message": "مستوى الصوت"
+    },
+    "alertSound_preview": {
+        "message": "▶ معاينة"
+    }
 }

@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.0.5-blue.svg" alt="Version">
+  <img src="https://img.shields.io/badge/version-1.0.17-blue.svg" alt="Version">
   <img src="https://img.shields.io/badge/manifest-v3-green.svg" alt="Manifest V3">
   <img src="https://img.shields.io/badge/languages-9-orange.svg" alt="Languages">
   <img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License">
@@ -35,7 +35,9 @@
 ### 🔔 Content Change Detection
 - **Visual element picker** - just click to select what to monitor
 - **Multiple alert modes** - increase, decrease, any change, above/below threshold
-- **Audio alerts** when monitored content changes
+- **6 alert sounds** - Siren, Beep, Chime, Alarm, Bell, Digital (per-tab)
+- **Adjustable volume** - set a different volume for each tab
+- **Sound preview** - listen before you assign
 - Perfect for stock tracking, availability checks, auction bidding
 
 ### 📱 Telegram Notifications
@@ -137,7 +139,9 @@ MIT License - feel free to use, modify, and distribute.
 #### 🔔 Rilevamento Cambiamenti
 - **Selettore visuale** - clicca per scegliere cosa monitorare
 - **Modalità multiple** - aumento, diminuzione, qualsiasi cambio, sopra/sotto soglia
-- **Avvisi audio** quando il contenuto cambia
+- **6 suoni di allarme** - Sirena, Beep, Chime, Sveglia, Campana, Digitale (per scheda)
+- **Volume regolabile** - imposta un volume diverso per ogni scheda
+- **Anteprima suono** - ascolta prima di assegnare
 - Perfetto per Amazon Vine, tracking disponibilità, aste
 
 #### 📱 Notifiche Telegram

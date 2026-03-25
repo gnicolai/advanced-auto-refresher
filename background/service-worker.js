@@ -74,6 +74,10 @@ async function handleMessage(message, sender) {
             stopAlertSound();
             return { success: true };
 
+        case 'PREVIEW_SOUND':
+            playAlertSound(message.soundType || 'siren', message.volume ?? 0.8);
+            return { success: true };
+
         case 'AUDIO_ENDED':
             isAlertPlaying = false;
             return { success: true };
@@ -365,7 +369,9 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 
         // Play alert if content changed
         if (shouldAlert) {
-            playAlertSound();
+            const soundType = settings.contentWatch?.alertSound || 'siren';
+            const volume = (settings.contentWatch?.alertVolume ?? 80) / 100;
+            playAlertSound(soundType, volume);
             // Send Telegram notification (using outer-scoped values)
             await sendTelegramNotification(currentUrl, contentOldValue, contentNewValue);
             // Notify popup if open
@@ -516,7 +522,7 @@ function startCountdown(tabId, totalSeconds) {
 }
 
 // Play alert sound
-function playAlertSound() {
+function playAlertSound(soundType = 'siren', volume = 0.8) {
     if (isAlertPlaying) return;
 
     isAlertPlaying = true;
@@ -524,15 +530,12 @@ function playAlertSound() {
     // Auto-reset after 30s as safety net
     setTimeout(() => { isAlertPlaying = false; }, 30000);
 
-    // Create audio context and play siren sound
-    const audioUrl = chrome.runtime.getURL('assets/alert.mp3');
-
     // Use offscreen document for audio in MV3
-    createOffscreenDocument(audioUrl);
+    createOffscreenDocument(soundType, volume);
 }
 
 // Create offscreen document for audio playback
-async function createOffscreenDocument(audioUrl) {
+async function createOffscreenDocument(soundType = 'siren', volume = 0.8) {
     try {
         // Check if already exists
         const existingContexts = await chrome.runtime.getContexts({
@@ -544,7 +547,8 @@ async function createOffscreenDocument(audioUrl) {
             chrome.runtime.sendMessage({
                 type: 'PLAY_AUDIO',
                 target: 'offscreen',
-                audioUrl
+                soundType,
+                volume
             });
             return;
         }
@@ -561,7 +565,8 @@ async function createOffscreenDocument(audioUrl) {
             chrome.runtime.sendMessage({
                 type: 'PLAY_AUDIO',
                 target: 'offscreen',
-                audioUrl
+                soundType,
+                volume
             });
         }, 100);
 

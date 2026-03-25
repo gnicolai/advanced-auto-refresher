@@ -154,6 +154,34 @@
           <label for="thresholdValue" data-i18n="contentWatch.thresholdValue">Valore soglia</label>
           <input type="number" id="thresholdValue" class="input-field" placeholder="0" value="0">
         </div>
+
+        <!-- Alert Sound Selection -->
+        <div class="control-group">
+          <label for="alertSound" data-i18n="alertSound.title">Suono allarme</label>
+          <div class="sound-row">
+            <select id="alertSound" class="select-field">
+              <option value="siren" data-i18n="alertSound.siren">🚨 Sirena</option>
+              <option value="beep" data-i18n="alertSound.beep">🔔 Beep</option>
+              <option value="chime" data-i18n="alertSound.chime">🎵 Chime</option>
+              <option value="alarm" data-i18n="alertSound.alarm">⏰ Sveglia</option>
+              <option value="bell" data-i18n="alertSound.bell">🔔 Campana</option>
+              <option value="digital" data-i18n="alertSound.digital">💻 Digitale</option>
+            </select>
+            <button id="previewSound" class="btn btn-secondary btn-small btn-preview" title="Preview">
+              ▶
+            </button>
+          </div>
+        </div>
+
+        <!-- Alert Volume -->
+        <div class="control-group">
+          <label data-i18n="alertSound.volume">Volume</label>
+          <div class="volume-row">
+            <span class="volume-icon">🔈</span>
+            <input type="range" id="alertVolume" min="0" max="100" value="80" class="volume-slider" aria-label="Volume">
+            <span class="volume-value" id="alertVolumeValue">80%</span>
+          </div>
+        </div>
       </div>
     </section>
 

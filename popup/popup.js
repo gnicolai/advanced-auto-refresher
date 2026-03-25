@@ -59,7 +59,13 @@ const elements = {
 
   // Alert
   alertOverlay: document.getElementById('alertOverlay'),
-  stopAlert: document.getElementById('stopAlert')
+  stopAlert: document.getElementById('stopAlert'),
+
+  // Alert sound/volume
+  alertSound: document.getElementById('alertSound'),
+  alertVolume: document.getElementById('alertVolume'),
+  alertVolumeValue: document.getElementById('alertVolumeValue'),
+  previewSound: document.getElementById('previewSound')
 };
 
 // State
@@ -191,6 +197,14 @@ function updateUI() {
 
   // Threshold value
   elements.thresholdValue.value = tabSettings.contentWatch?.threshold || 0;
+
+  // Alert sound
+  elements.alertSound.value = tabSettings.contentWatch?.alertSound || 'siren';
+
+  // Alert volume
+  const volume = tabSettings.contentWatch?.alertVolume ?? 80;
+  elements.alertVolume.value = volume;
+  elements.alertVolumeValue.textContent = volume + '%';
 }
 
 // Setup event listeners
@@ -266,6 +280,18 @@ function setupEventListeners() {
 
   // Threshold value change
   elements.thresholdValue.addEventListener('change', saveSettings);
+
+  // Alert sound change
+  elements.alertSound.addEventListener('change', saveSettings);
+
+  // Alert volume change
+  elements.alertVolume.addEventListener('input', () => {
+    elements.alertVolumeValue.textContent = elements.alertVolume.value + '%';
+  });
+  elements.alertVolume.addEventListener('change', saveSettings);
+
+  // Preview sound
+  elements.previewSound.addEventListener('click', previewAlertSound);
 
   // Blacklist toggle
   elements.blacklistToggle.addEventListener('click', () => {
@@ -355,7 +381,9 @@ function getSettingsFromUI() {
       selector: elements.cssSelector.value,
       lastValue: tabSettings.contentWatch?.lastValue || null,
       alertMode: elements.alertMode.value || 'increase',
-      threshold: parseInt(elements.thresholdValue.value) || 0
+      threshold: parseInt(elements.thresholdValue.value) || 0,
+      alertSound: elements.alertSound.value || 'siren',
+      alertVolume: parseInt(elements.alertVolume.value) ?? 80
     }
   };
 }
@@ -468,6 +496,17 @@ function showAlertOverlay() {
 async function stopAlert() {
   elements.alertOverlay.classList.add('hidden');
   await chrome.runtime.sendMessage({ type: 'STOP_ALERT' });
+}
+
+// Preview alert sound
+async function previewAlertSound() {
+  const soundType = elements.alertSound.value || 'siren';
+  const volume = parseInt(elements.alertVolume.value) / 100 || 0.8;
+  await chrome.runtime.sendMessage({
+    type: 'PREVIEW_SOUND',
+    soundType,
+    volume
+  });
 }
 
 // Load Telegram settings

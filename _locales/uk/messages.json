@@ -1,194 +1,221 @@
 {
-    "appDesc":  {
-                    "message":  "Automatychne onovlennia z stokhastychnym chasom ta vyiavlenniam zmin"
-                },
-    "appName":  {
-                    "message":  "Advanced Auto Refresher"
-                },
-    "status_active":  {
-                          "message":  "Активний"
-                      },
-    "status_inactive":  {
-                            "message":  "Неактивний"
-                        },
-    "timer_title":  {
-                        "message":  "Таймер Авто-Оновлення"
-                    },
-    "timer_interval":  {
-                           "message":  "Інтервал (секунди)"
-                       },
-    "timer_start":  {
-                        "message":  "Запустити"
-                    },
-    "timer_stop":  {
-                       "message":  "Зупинити"
-                   },
-    "stochastic_mode":  {
-                            "message":  "Стохастичний режим"
-                        },
-    "stochastic_tooltip":  {
-                               "message":  "Випадково змінює час оновлення, щоб уникнути виявлюваних шаблонів"
-                           },
-    "stochastic_minLimit":  {
-                                "message":  "Мінімальний ліміт (секунди)"
-                            },
-    "stochastic_distribution":  {
-                                    "message":  "Розподіл"
-                                },
-    "stochastic_uniform":  {
-                               "message":  "Рівномірний"
-                           },
-    "stochastic_uniformTooltip":  {
-                                      "message":  "Випадковий час між мін та (2×ціль−мін)"
-                                  },
-    "stochastic_gaussian":  {
-                                "message":  "Гаусівський"
-                            },
-    "stochastic_gaussianTooltip":  {
-                                       "message":  "Час, центрований на цілі з природною варіацією"
-                                   },
-    "contentWatch_title":  {
-                               "message":  "Виявлення Змін"
-                           },
-    "contentWatch_enable":  {
-                                "message":  "Моніторити вміст"
-                            },
-    "contentWatch_method":  {
-                                "message":  "Метод вибору"
-                            },
-    "contentWatch_select":  {
-                                "message":  "Вибрати"
-                            },
-    "contentWatch_advanced":  {
-                                  "message":  "Розширений"
-                              },
-    "contentWatch_pickElement":  {
-                                     "message":  "Натисніть, щоб вибрати елемент"
-                                 },
-    "contentWatch_cssSelector":  {
-                                     "message":  "CSS Селектор"
-                                 },
-    "contentWatch_testSelector":  {
-                                      "message":  "Тестувати Селектор"
-                                  },
-    "contentWatch_selectedElement":  {
-                                         "message":  "Вибраний елемент:"
-                                     },
-    "contentWatch_none":  {
-                              "message":  "Немає"
-                          },
-    "contentWatch_currentValue":  {
-                                      "message":  "Поточне значення:"
-                                  },
-    "contentWatch_error":  {
-                               "message":  "Помилка"
-                           },
-    "contentWatch_alertMode":  {
-                                   "message":  "Режим сповіщення"
-                               },
-    "contentWatch_alertModeIncrease":  {
-                                           "message":  "📈 Збільшення"
-                                       },
-    "contentWatch_alertModeDecrease":  {
-                                           "message":  "📉 Зменшення"
-                                       },
-    "contentWatch_alertModeAny":  {
-                                      "message":  "🔄 Будь-яка зміна"
-                                  },
-    "contentWatch_alertModeAbove":  {
-                                        "message":  "⬆️ Вище порогу"
-                                    },
-    "contentWatch_alertModeBelow":  {
-                                        "message":  "⬇️ Нижче порогу"
-                                    },
-    "contentWatch_thresholdValue":  {
-                                        "message":  "Порогове значення"
-                                    },
-    "lists_title":  {
-                        "message":  "Чорний Список / Білий Список"
-                    },
-    "lists_blacklist":  {
-                            "message":  "Чорний Список"
-                        },
-    "lists_whitelist":  {
-                            "message":  "Білий Список"
-                        },
-    "lists_blacklistDesc":  {
-                                "message":  "🚫 Оновлення буде пропущено для цих URL (напр. оплата, вхід)"
-                            },
-    "lists_whitelistDesc":  {
-                                "message":  "✅ Ці URL ігнорують чорний список (має пріоритет)"
-                            },
-    "lists_blacklistPlaceholder":  {
-                                       "message":  "*checkout*"
-                                   },
-    "lists_whitelistPlaceholder":  {
-                                       "message":  "*deals*"
-                                   },
-    "telegram_title":  {
-                           "message":  "Сповіщення Telegram"
-                       },
-    "telegram_howtoTitle":  {
-                                "message":  "📖 Як налаштувати Telegram бота"
-                            },
-    "telegram_howtoStep1":  {
-                                "message":  "Відкрийте Telegram і знайдіть \u003cstrong\u003e@BotFather\u003c/strong\u003e"
-                            },
-    "telegram_howtoStep2":  {
-                                "message":  "Надішліть \u003ccode\u003e/newbot\u003c/code\u003e і слідуйте інструкціям"
-                            },
-    "telegram_howtoStep3":  {
-                                "message":  "Скопіюйте \u003cstrong\u003eToken\u003c/strong\u003e який ви отримаєте"
-                            },
-    "telegram_howtoStep4":  {
-                                "message":  "Знайдіть \u003cstrong\u003e@userinfobot\u003c/strong\u003e і надішліть повідомлення"
-                            },
-    "telegram_howtoStep5":  {
-                                "message":  "Скопіюйте ваш числовий \u003cstrong\u003eChat ID\u003c/strong\u003e"
-                            },
-    "telegram_howtoStep6":  {
-                                "message":  "Вставте обидва нижче і натисніть \"Test\""
-                            },
-    "telegram_botToken":  {
-                              "message":  "Токен Бота"
-                          },
-    "telegram_botTokenPlaceholder":  {
-                                         "message":  "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
-                                     },
-    "telegram_chatId":  {
-                            "message":  "Chat ID"
-                        },
-    "telegram_chatIdPlaceholder":  {
-                                       "message":  "123456789"
-                                   },
-    "telegram_testButton":  {
-                                "message":  "Тест Сповіщення"
-                            },
-    "alert_newContent":  {
-                             "message":  "Виявлено новий вміст!"
-                         },
-    "alert_stopAlarm":  {
-                            "message":  "Зупинити Сигнал"
-                        },
-    "footer_createdBy":  {
-                             "message":  "Створено Giulio Nicolai"
-                         },
-    "footer_donate":  {
-                          "message":  "Підтримати"
-                      },
-    "footer_donateText":  {
-                              "message":  "Подобається розширення?"
-                          },
-    "picker_title":  {
-                         "message":  "Виберіть елемент для моніторингу"
-                     },
-    "picker_hint":  {
-                        "message":  "Натисніть ESC для скасування"
-                    },
-    "picker_selected":  {
-                            "message":  "Елемент вибрано!"
-                        },
-    "picker_initialValue":  {
-                                "message":  "Початкове значення:"
-                            }
+    "appDesc": {
+        "message": "Automatychne onovlennia z stokhastychnym chasom ta vyiavlenniam zmin"
+    },
+    "appName": {
+        "message": "Advanced Auto Refresher"
+    },
+    "status_active": {
+        "message": "Активний"
+    },
+    "status_inactive": {
+        "message": "Неактивний"
+    },
+    "timer_title": {
+        "message": "Таймер Авто-Оновлення"
+    },
+    "timer_interval": {
+        "message": "Інтервал (секунди)"
+    },
+    "timer_start": {
+        "message": "Запустити"
+    },
+    "timer_stop": {
+        "message": "Зупинити"
+    },
+    "stochastic_mode": {
+        "message": "Стохастичний режим"
+    },
+    "stochastic_tooltip": {
+        "message": "Випадково змінює час оновлення, щоб уникнути виявлюваних шаблонів"
+    },
+    "stochastic_minLimit": {
+        "message": "Мінімальний ліміт (секунди)"
+    },
+    "stochastic_distribution": {
+        "message": "Розподіл"
+    },
+    "stochastic_uniform": {
+        "message": "Рівномірний"
+    },
+    "stochastic_uniformTooltip": {
+        "message": "Випадковий час між мін та (2×ціль−мін)"
+    },
+    "stochastic_gaussian": {
+        "message": "Гаусівський"
+    },
+    "stochastic_gaussianTooltip": {
+        "message": "Час, центрований на цілі з природною варіацією"
+    },
+    "contentWatch_title": {
+        "message": "Виявлення Змін"
+    },
+    "contentWatch_enable": {
+        "message": "Моніторити вміст"
+    },
+    "contentWatch_method": {
+        "message": "Метод вибору"
+    },
+    "contentWatch_select": {
+        "message": "Вибрати"
+    },
+    "contentWatch_advanced": {
+        "message": "Розширений"
+    },
+    "contentWatch_pickElement": {
+        "message": "Натисніть, щоб вибрати елемент"
+    },
+    "contentWatch_cssSelector": {
+        "message": "CSS Селектор"
+    },
+    "contentWatch_testSelector": {
+        "message": "Тестувати Селектор"
+    },
+    "contentWatch_selectedElement": {
+        "message": "Вибраний елемент:"
+    },
+    "contentWatch_none": {
+        "message": "Немає"
+    },
+    "contentWatch_currentValue": {
+        "message": "Поточне значення:"
+    },
+    "contentWatch_error": {
+        "message": "Помилка"
+    },
+    "contentWatch_alertMode": {
+        "message": "Режим сповіщення"
+    },
+    "contentWatch_alertModeIncrease": {
+        "message": "📈 Збільшення"
+    },
+    "contentWatch_alertModeDecrease": {
+        "message": "📉 Зменшення"
+    },
+    "contentWatch_alertModeAny": {
+        "message": "🔄 Будь-яка зміна"
+    },
+    "contentWatch_alertModeAbove": {
+        "message": "⬆️ Вище порогу"
+    },
+    "contentWatch_alertModeBelow": {
+        "message": "⬇️ Нижче порогу"
+    },
+    "contentWatch_thresholdValue": {
+        "message": "Порогове значення"
+    },
+    "lists_title": {
+        "message": "Чорний Список / Білий Список"
+    },
+    "lists_blacklist": {
+        "message": "Чорний Список"
+    },
+    "lists_whitelist": {
+        "message": "Білий Список"
+    },
+    "lists_blacklistDesc": {
+        "message": "🚫 Оновлення буде пропущено для цих URL (напр. оплата, вхід)"
+    },
+    "lists_whitelistDesc": {
+        "message": "✅ Ці URL ігнорують чорний список (має пріоритет)"
+    },
+    "lists_blacklistPlaceholder": {
+        "message": "*checkout*"
+    },
+    "lists_whitelistPlaceholder": {
+        "message": "*deals*"
+    },
+    "telegram_title": {
+        "message": "Сповіщення Telegram"
+    },
+    "telegram_howtoTitle": {
+        "message": "📖 Як налаштувати Telegram бота"
+    },
+    "telegram_howtoStep1": {
+        "message": "Відкрийте Telegram і знайдіть <strong>@BotFather</strong>"
+    },
+    "telegram_howtoStep2": {
+        "message": "Надішліть <code>/newbot</code> і слідуйте інструкціям"
+    },
+    "telegram_howtoStep3": {
+        "message": "Скопіюйте <strong>Token</strong> який ви отримаєте"
+    },
+    "telegram_howtoStep4": {
+        "message": "Знайдіть <strong>@userinfobot</strong> і надішліть повідомлення"
+    },
+    "telegram_howtoStep5": {
+        "message": "Скопіюйте ваш числовий <strong>Chat ID</strong>"
+    },
+    "telegram_howtoStep6": {
+        "message": "Вставте обидва нижче і натисніть \"Test\""
+    },
+    "telegram_botToken": {
+        "message": "Токен Бота"
+    },
+    "telegram_botTokenPlaceholder": {
+        "message": "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+    },
+    "telegram_chatId": {
+        "message": "Chat ID"
+    },
+    "telegram_chatIdPlaceholder": {
+        "message": "123456789"
+    },
+    "telegram_testButton": {
+        "message": "Тест Сповіщення"
+    },
+    "alert_newContent": {
+        "message": "Виявлено новий вміст!"
+    },
+    "alert_stopAlarm": {
+        "message": "Зупинити Сигнал"
+    },
+    "footer_createdBy": {
+        "message": "Створено Giulio Nicolai"
+    },
+    "footer_donate": {
+        "message": "Підтримати"
+    },
+    "footer_donateText": {
+        "message": "Подобається розширення?"
+    },
+    "picker_title": {
+        "message": "Виберіть елемент для моніторингу"
+    },
+    "picker_hint": {
+        "message": "Натисніть ESC для скасування"
+    },
+    "picker_selected": {
+        "message": "Елемент вибрано!"
+    },
+    "picker_initialValue": {
+        "message": "Початкове значення:"
+    },
+    "alertSound_title": {
+        "message": "Звук сповіщення"
+    },
+    "alertSound_siren": {
+        "message": "🚨 Сирена"
+    },
+    "alertSound_beep": {
+        "message": "🔔 Сигнал"
+    },
+    "alertSound_chime": {
+        "message": "🎵 Дзвіночок"
+    },
+    "alertSound_alarm": {
+        "message": "⏰ Будильник"
+    },
+    "alertSound_bell": {
+        "message": "🔔 Дзвін"
+    },
+    "alertSound_digital": {
+        "message": "💻 Цифровий"
+    },
+    "alertSound_volume": {
+        "message": "Гучність"
+    },
+    "alertSound_preview": {
+        "message": "▶ Попередній перегляд"
+    }
 }
