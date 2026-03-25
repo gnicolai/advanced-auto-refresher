@@ -62,7 +62,7 @@
 ## 📥 Installation
 
 ### From Chrome Web Store
-*Coming soon...*
+👉 [**Install from Chrome Web Store**](https://chromewebstore.google.com/detail/advanced-auto-refresher/nlbbaebjkapiehbblacfeedacioioaoc)
 
 ### Manual Installation (Developer Mode)
 1. Download or clone this repository
