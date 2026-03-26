@@ -1,5 +1,5 @@
 /**
- * Advanced Auto Refresher - Offscreen Document Script
+ * Auto Refresh & Page Monitor with Telegram Alerts - Offscreen Document Script
  * Handles audio playback for Manifest V3 compliance
  * Supports multiple sound types and volume control
  */

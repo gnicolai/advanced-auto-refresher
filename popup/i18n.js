@@ -1,4 +1,4 @@
-// Advanced Auto Refresher - Internationalization Module
+// Auto Refresh & Page Monitor with Telegram Alerts - Internationalization Module
 // Hybrid approach: uses Chrome _locales messages.json format
 // but supports runtime language switching via fetch
 

@@ -1,5 +1,5 @@
 /**
- * Advanced Auto Refresher - Content Script
+ * Auto Refresh & Page Monitor with Telegram Alerts - Content Script
  * Handles element picking and content change detection
  */
 
@@ -379,4 +379,4 @@ function getInitialValue(selector) {
 }
 
 // Log for debugging
-console.log('Advanced Auto Refresher content script loaded');
+console.log('Auto Refresh & Page Monitor content script loaded');

@@ -3,7 +3,7 @@
         "message": "Automatychne onovlennia z stokhastychnym chasom ta vyiavlenniam zmin"
     },
     "appName": {
-        "message": "Advanced Auto Refresher"
+        "message": "Auto Refresh & Page Monitor with Telegram Alerts"
     },
     "status_active": {
         "message": "Активний"

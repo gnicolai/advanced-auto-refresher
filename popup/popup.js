@@ -1,5 +1,5 @@
 /**
- * Advanced Auto Refresher - Popup Script
+ * Auto Refresh & Page Monitor with Telegram Alerts - Popup Script
  * Handles UI interactions and communication with background service worker
  */
 
@@ -551,7 +551,7 @@ async function testTelegramNotification() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         chat_id: chatId,
-        text: '✅ <b>Advanced Auto Refresher</b>\n\n🧪 Test notifica riuscito!\n\nLe notifiche Telegram sono configurate correttamente.',
+        text: '✅ <b>Auto Refresh & Page Monitor</b>\n\n🧪 Test notifica riuscito!\n\nLe notifiche Telegram sono configurate correttamente.',
         parse_mode: 'HTML'
       })
     });

@@ -3,7 +3,7 @@
         "message": "Rafraichissement automatique avec timing stochastique et detection de changements"
     },
     "appName": {
-        "message": "Advanced Auto Refresher"
+        "message": "Auto Refresh & Page Monitor with Telegram Alerts"
     },
     "status_active": {
         "message": "Actif"

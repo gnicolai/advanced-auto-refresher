@@ -1,10 +1,10 @@
-# Privacy Policy for Advanced Auto Refresher
+# Privacy Policy for Auto Refresh & Page Monitor with Telegram Alerts
 
 **Last Updated: February 4, 2026**
 
 ## Overview
 
-Advanced Auto Refresher ("the Extension") is a browser extension that provides automatic page refresh functionality with content change detection. This privacy policy explains how we handle your data.
+Auto Refresh & Page Monitor with Telegram Alerts ("the Extension") is a browser extension that provides automatic page refresh functionality with content change detection. This privacy policy explains how we handle your data.
 
 ## Data Collection
 

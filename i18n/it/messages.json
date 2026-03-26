@@ -3,7 +3,7 @@
         "message": "Auto-refresh delle schede con timing stocastico e rilevamento cambiamenti"
     },
     "appName": {
-        "message": "Advanced Auto Refresher"
+        "message": "Auto Refresh & Page Monitor with Telegram Alerts"
     },
     "status_active": {
         "message": "Attivo"

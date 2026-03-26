@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="assets/icon128.png" alt="Advanced Auto Refresher Logo" width="128" height="128">
+  <img src="assets/icon128.png" alt="Auto Refresh & Page Monitor Logo" width="128" height="128">
 </p>
 
-<h1 align="center">🔄 Advanced Auto Refresher</h1>
+<h1 align="center">🔄 Auto Refresh & Page Monitor with Telegram Alerts</h1>
 
 <p align="center">
   <strong>The ultimate Chrome extension for intelligent auto-refresh with content change detection</strong>
@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.0.17-blue.svg" alt="Version">
+  <img src="https://img.shields.io/badge/version-1.0.18-blue.svg" alt="Version">
   <img src="https://img.shields.io/badge/manifest-v3-green.svg" alt="Manifest V3">
   <img src="https://img.shields.io/badge/languages-9-orange.svg" alt="Languages">
   <img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License">

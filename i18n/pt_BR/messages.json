@@ -3,7 +3,7 @@
         "message": "Atualizacao automatica com temporizacao estocastica e deteccao de alteracoes"
     },
     "appName": {
-        "message": "Advanced Auto Refresher"
+        "message": "Auto Refresh & Page Monitor with Telegram Alerts"
     },
     "status_active": {
         "message": "Ativo"

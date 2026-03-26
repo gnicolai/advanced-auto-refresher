@@ -1,5 +1,5 @@
 /**
- * Advanced Auto Refresher - Background Service Worker
+ * Auto Refresh & Page Monitor with Telegram Alerts - Background Service Worker
  * Manages timers, alarms, and tab lifecycle
  */
 
@@ -11,7 +11,7 @@ let isAlertPlaying = false;
 
 // Initialize
 chrome.runtime.onInstalled.addListener(async () => {
-    console.log('Advanced Auto Refresher installed');
+    console.log('Auto Refresh & Page Monitor installed');
 
     // Initialize default settings
     const result = await chrome.storage.sync.get(['globalSettings']);
@@ -622,7 +622,7 @@ async function sendTelegramNotification(url, oldValue, newValue) {
 🔗 <b>URL:</b> ${safeUrl || 'Unknown'}
 ⏰ <b>Time:</b> ${new Date().toLocaleString()}
 
-<i>Advanced Auto Refresher</i>`;
+<i>Auto Refresh & Page Monitor</i>`;
 
         // Send to Telegram
         const response = await fetch(`https://api.telegram.org/bot${settings.botToken}/sendMessage`, {
@@ -786,4 +786,4 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     }
 });
 
-console.log('Advanced Auto Refresher service worker started');
+console.log('Auto Refresh & Page Monitor service worker started');
