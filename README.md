@@ -5,7 +5,7 @@
 <h1 align="center">Auto Refresh &amp; Page Monitor with Telegram Alerts</h1>
 
 <p align="center">
-  Smart auto-refresh for Chrome with numeric monitoring, text monitoring, visual highlighting, Telegram alerts, and multilingual UI.
+  A geeky Chrome sidekick for relentless refresh loops, smart change detection, visual highlights, and instant Telegram pings.
 </p>
 
 <p align="center">
@@ -15,15 +15,23 @@
   <img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License">
 </p>
 
+<p align="center">
+  <code>refresh -> inspect -> highlight -> alert -> jump</code>
+</p>
+
+<p align="center">
+  Built for people who watch pages like logs, hunt drops like loot, and want signals instead of noise.
+</p>
+
 ---
 
 ## English
 
-### Overview
+### Why it exists
 
-Auto Refresh & Page Monitor with Telegram Alerts is a Manifest V3 Chrome extension for users who need reliable page refreshing and fast change detection.
+Auto Refresh & Page Monitor with Telegram Alerts is a Manifest V3 Chrome extension for users who do not just want "auto refresh", but a proper monitoring tool.
 
-It is designed for scenarios such as:
+Think of it as a lightweight page watcher for humans who need fast feedback:
 
 - Amazon Vine and limited-availability product pages
 - Stock or availability checks
@@ -31,9 +39,15 @@ It is designed for scenarios such as:
 - Numeric counters that increase or decrease
 - Text, keywords, phrases, or DOM/HTML changes after refresh
 
-### Main Features
+### Core loop
 
-#### Auto-refresh engine
+```text
+Pick a target -> refresh on schedule -> detect a change -> highlight it -> alert you -> jump to it
+```
+
+### Feature set
+
+#### Refresh engine
 
 - Custom refresh interval per tab
 - Manifest V3-safe scheduling based on alarms
@@ -41,7 +55,7 @@ It is designed for scenarios such as:
 - Optional stochastic mode to randomize refresh timing
 - Uniform or Gaussian distribution for stochastic timing
 
-#### Numeric monitoring
+#### Numeric watcher
 
 - Monitor a selected element as a numeric value
 - Visual picker or advanced CSS selector mode
@@ -53,7 +67,7 @@ It is designed for scenarios such as:
   - below threshold
 - Separate sound and volume for numeric alerts when using split alert mode
 
-#### Text monitoring
+#### Text watcher
 
 - Works in parallel with numeric monitoring, not as a replacement
 - Monitor:
@@ -68,13 +82,13 @@ It is designed for scenarios such as:
 - Keywords and phrases are entered one per line
 - Separate sound and volume for text alerts when using split alert mode
 
-#### Combined alert routing
+#### Alert routing
 
 - Shared alert mode: one common sound for all triggers
 - Separate alert mode: numeric and text alerts use different sounds
 - When numeric and text triggers happen together, sounds are sequenced quickly instead of overlapping badly
 
-#### Visual change feedback
+#### Visual feedback
 
 - Highlight the changed monitored element after refresh
 - In-page toast with clickable actions
@@ -84,7 +98,7 @@ It is designed for scenarios such as:
   - the first keyword match when page-wide text/HTML monitoring is used
 - Debug panel for text monitoring to inspect captured content
 
-#### Telegram notifications
+#### Telegram alerts
 
 - Automatic Telegram alerts for numeric changes
 - Automatic Telegram alerts for text changes and keyword hits
@@ -92,18 +106,18 @@ It is designed for scenarios such as:
 - Telegram messages follow the language selected inside the extension
 - No backend required: use your own bot token and chat ID
 
-#### Click protection
+#### Safety / control
 
 - Optional "Stop refresh when user clicks on the page"
 - Useful for time-sensitive interactions where refresh should pause immediately
 
-#### URL control
+#### Scope control
 
 - Blacklist specific URLs from refresh
 - Whitelist URLs that should bypass blacklist rules
 - Wildcard support for flexible matching
 
-#### Localization
+#### Polyglot mode
 
 Built-in UI language switching:
 
@@ -116,6 +130,14 @@ Built-in UI language switching:
 - Polish
 - Ukrainian
 - Arabic
+
+### Quick vibe check
+
+- Want only a refresh timer: works
+- Want numeric delta alerts: works
+- Want keyword detection on full-page HTML: works
+- Want in-page highlight + toast + Telegram + sound: works
+- Want separate numeric and text alerts without audio chaos: works
 
 ### Installation
 
@@ -131,7 +153,7 @@ Built-in UI language switching:
 4. Click `Load unpacked`.
 5. Select the extension folder.
 
-### Quick Usage
+### Quick usage
 
 #### Basic auto-refresh
 
@@ -166,7 +188,7 @@ Built-in UI language switching:
 3. Paste bot token and chat ID into the extension.
 4. Use the Telegram test button.
 
-### Current Telegram Notification Layout
+### Telegram notification layout
 
 Numeric-only example:
 
@@ -234,11 +256,11 @@ Auto Refresh & Page Monitor with Telegram Alerts
 
 ## Italiano
 
-### Panoramica
+### Perche esiste
 
-Auto Refresh & Page Monitor with Telegram Alerts e una estensione Chrome Manifest V3 pensata per chi ha bisogno di refresh affidabile e rilevamento rapido dei cambiamenti.
+Auto Refresh & Page Monitor with Telegram Alerts e una estensione Chrome Manifest V3 pensata per chi non vuole solo un refresh automatico, ma un vero watcher di pagina.
 
-E adatta a casi come:
+Pensala come uno strumento leggero ma cattivo per chi ha bisogno di segnali rapidi:
 
 - Amazon Vine e pagine con disponibilita limitata
 - Controllo stock e disponibilita
@@ -246,9 +268,15 @@ E adatta a casi come:
 - Contatori numerici che aumentano o diminuiscono
 - Testo, parole chiave, frasi o cambiamenti DOM/HTML dopo il refresh
 
-### Funzionalita principali
+### Loop principale
 
-#### Motore di auto-refresh
+```text
+Scegli il target -> fai refresh -> rileva il cambio -> evidenzialo -> avvisa -> portami li
+```
+
+### Set di funzionalita
+
+#### Motore refresh
 
 - Intervallo personalizzato per ogni tab
 - Scheduling compatibile con Manifest V3 basato su `chrome.alarms`
@@ -256,7 +284,7 @@ E adatta a casi come:
 - Modalita stocastica opzionale per variare il refresh
 - Distribuzione uniforme o gaussiana
 
-#### Monitor numerico
+#### Watcher numerico
 
 - Monitoraggio di un elemento come valore numerico
 - Selettore visuale oppure modalita avanzata con CSS selector
@@ -268,7 +296,7 @@ E adatta a casi come:
   - sotto soglia
 - Suono e volume separati per il monitor numerico quando usi gli allarmi separati
 
-#### Monitor testuale
+#### Watcher testuale
 
 - Funziona in parallelo al monitor numerico, non lo sostituisce
 - Puoi monitorare:
@@ -283,7 +311,7 @@ E adatta a casi come:
 - Parole chiave e frasi da inserire una per riga
 - Suono e volume separati per il monitor testuale quando usi gli allarmi separati
 
-#### Gestione allarmi
+#### Routing allarmi
 
 - Modalita condivisa: un solo suono comune
 - Modalita separata: numero e testo usano suoni diversi
@@ -299,7 +327,7 @@ E adatta a casi come:
   - primo match di keyword quando monitori testo/HTML dell'intera pagina
 - Pannello debug per vedere il contenuto realmente catturato dal monitor testo
 
-#### Notifiche Telegram
+#### Telegram
 
 - Notifiche automatiche Telegram per cambiamenti numerici
 - Notifiche automatiche Telegram anche per cambiamenti testuali e parole chiave trovate
@@ -307,18 +335,18 @@ E adatta a casi come:
 - I messaggi Telegram seguono la lingua scelta dentro l'estensione
 - Nessun backend esterno: usi direttamente il tuo bot e il tuo chat ID
 
-#### Protezione al click
+#### Sicurezza / controllo
 
 - Opzione `Ferma il refresh quando l'utente clicca sulla pagina`
 - Utile quando devi interagire velocemente senza rischiare un refresh immediato
 
-#### Controllo URL
+#### Controllo scope
 
 - Blacklist per escludere URL dal refresh
 - Whitelist con priorita sulla blacklist
 - Supporto wildcard
 
-#### Lingue supportate
+#### Modalita multilingua
 
 - English
 - Italiano
@@ -329,6 +357,14 @@ E adatta a casi come:
 - Polski
 - Ukrainska
 - العربية
+
+### Vibe check rapido
+
+- Vuoi solo un timer di refresh: c'e
+- Vuoi allarmi numerici: c'e
+- Vuoi keyword detection su HTML intera pagina: c'e
+- Vuoi highlight + toast + Telegram + audio: c'e
+- Vuoi numero e testo separati senza caos audio: c'e
 
 ### Installazione
 
@@ -379,7 +415,7 @@ E adatta a casi come:
 3. Inserisci bot token e chat ID nell'estensione.
 4. Usa il pulsante di test Telegram.
 
-### Layout attuale delle notifiche Telegram
+### Layout notifiche Telegram
 
 Solo numero:
 
