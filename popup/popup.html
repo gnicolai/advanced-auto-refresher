@@ -10,7 +10,6 @@
 
 <body>
   <div class="container">
-    <!-- Header -->
     <header class="header">
       <div class="logo">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -21,171 +20,333 @@
         <h1>Auto Refresh & Page Monitor</h1>
       </div>
       <div class="header-right">
-        <!-- Language Selector -->
         <div id="languageSelector"></div>
         <div class="status-indicator" id="statusIndicator">
           <span class="status-dot"></span>
-          <span class="status-text" data-i18n="status.inactive">Disattivo</span>
+          <span class="status-text" data-i18n="status.inactive">Inactive</span>
         </div>
       </div>
     </header>
 
-    <!-- Main Controls -->
     <section class="section">
-      <h2 class="section-title" data-i18n="timer.title">Timer Auto-Refresh</h2>
+      <h2 class="section-title" data-i18n="timer.title">Auto-Refresh Timer</h2>
 
       <div class="control-group">
-        <label for="intervalInput" data-i18n="timer.interval">Intervallo (secondi)</label>
+        <label for="intervalInput" data-i18n="timer.interval">Interval (seconds)</label>
         <div class="input-row">
           <input type="number" id="intervalInput" min="1" max="3600" value="30" class="input-field">
           <button id="toggleRefresh" class="btn btn-primary">
-            <span class="btn-icon play-icon">▶</span>
-            <span class="btn-text" data-i18n="timer.start">Avvia</span>
+            <span class="btn-icon play-icon">></span>
+            <span class="btn-text" data-i18n="timer.start">Start</span>
           </button>
         </div>
       </div>
 
-      <!-- Stochastic Mode -->
       <div class="control-group">
         <div class="checkbox-row">
           <input type="checkbox" id="stochasticMode" class="checkbox">
-          <label for="stochasticMode" data-i18n="stochastic.mode">Modalità stocastica</label>
+          <label for="stochasticMode" data-i18n="stochastic.mode">Stochastic mode</label>
           <span class="tooltip" data-i18n-tooltip="stochastic.tooltip"
-            data-tooltip="Varia casualmente il tempo di refresh per evitare pattern rilevabili">?</span>
+            data-tooltip="Randomly varies refresh time to avoid detectable patterns">?</span>
         </div>
       </div>
 
       <div class="stochastic-options" id="stochasticOptions">
         <div class="control-group">
-          <label for="minLimit" data-i18n="stochastic.minLimit">Limite minimo (secondi)</label>
+          <label for="minLimit" data-i18n="stochastic.minLimit">Minimum limit (seconds)</label>
           <input type="number" id="minLimit" min="1" max="3600" value="5" class="input-field input-small">
         </div>
 
         <div class="control-group">
-          <label data-i18n="stochastic.distribution">Distribuzione</label>
+          <label data-i18n="stochastic.distribution">Distribution</label>
           <div class="radio-group">
             <label class="radio-label">
               <input type="radio" name="distribution" value="uniform" checked>
               <span class="radio-custom"></span>
-              <span data-i18n="stochastic.uniform">Uniforme</span>
+              <span data-i18n="stochastic.uniform">Uniform</span>
               <span class="tooltip" data-i18n-tooltip="stochastic.uniformTooltip"
-                data-tooltip="Tempo casuale tra min e (2×target−min)">?</span>
+                data-tooltip="Random time between min and (2x target - min)">?</span>
             </label>
             <label class="radio-label">
               <input type="radio" name="distribution" value="gaussian">
               <span class="radio-custom"></span>
-              <span data-i18n="stochastic.gaussian">Gaussiana</span>
+              <span data-i18n="stochastic.gaussian">Gaussian</span>
               <span class="tooltip" data-i18n-tooltip="stochastic.gaussianTooltip"
-                data-tooltip="Tempo centrato sul target con variazione naturale">?</span>
+                data-tooltip="Time centered on target with natural variation">?</span>
             </label>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Content Watch -->
     <section class="section">
       <h2 class="section-title">
-        <span data-i18n="contentWatch.title">Rilevamento Cambiamenti</span>
+        <span data-i18n="contentWatch.title">Change Detection</span>
         <span class="badge badge-new">Alert</span>
       </h2>
 
       <div class="control-group">
-        <div class="checkbox-row">
-          <input type="checkbox" id="contentWatchEnabled" class="checkbox">
-          <label for="contentWatchEnabled" data-i18n="contentWatch.enable">Monitora contenuto</label>
+        <label for="alertRoutingMode" data-i18n="alertRouting.mode">Alarm setup</label>
+        <select id="alertRoutingMode" class="select-field">
+          <option value="shared" data-i18n="alertRouting.shared">Shared alarm</option>
+          <option value="separate" data-i18n="alertRouting.separate">Separate alarms</option>
+        </select>
+      </div>
+
+      <div class="shared-alert-settings" id="sharedAlertSettings">
+        <div class="control-group">
+          <label for="sharedAlertSound" data-i18n="alertRouting.sharedSound">Shared alert sound</label>
+          <div class="sound-row">
+            <select id="sharedAlertSound" class="select-field">
+              <option value="siren" data-i18n="alertSound.siren">Siren</option>
+              <option value="beep" data-i18n="alertSound.beep">Beep</option>
+              <option value="chime" data-i18n="alertSound.chime">Chime</option>
+              <option value="alarm" data-i18n="alertSound.alarm">Alarm</option>
+              <option value="bell" data-i18n="alertSound.bell">Bell</option>
+              <option value="digital" data-i18n="alertSound.digital">Digital</option>
+            </select>
+            <button id="previewSharedSound" class="btn btn-secondary btn-small btn-preview" title="Preview">
+              >
+            </button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label data-i18n="alertRouting.sharedVolume">Shared volume</label>
+          <div class="volume-row">
+            <span class="volume-icon">Vol</span>
+            <input type="range" id="sharedAlertVolume" min="0" max="100" value="80" class="volume-slider" aria-label="Shared volume">
+            <span class="volume-value" id="sharedAlertVolumeValue">80%</span>
+          </div>
         </div>
       </div>
 
-      <div class="content-watch-options" id="contentWatchOptions">
+      <div class="monitor-card">
+        <div class="monitor-card-header">
+          <h3 class="monitor-card-title" data-i18n="numericWatch.title">Monitor number</h3>
+        </div>
+
         <div class="control-group">
-          <label data-i18n="contentWatch.method">Metodo selezione</label>
-          <div class="btn-group">
-            <button id="pickerModeBtn" class="btn btn-secondary btn-small active">
-              <span>🎯</span> <span data-i18n="contentWatch.select">Seleziona</span>
-            </button>
-            <button id="advancedModeBtn" class="btn btn-secondary btn-small">
-              <span>⚙️</span> <span data-i18n="contentWatch.advanced">Avanzato</span>
-            </button>
+          <div class="checkbox-row">
+            <input type="checkbox" id="contentWatchEnabled" class="checkbox">
+            <label for="contentWatchEnabled" data-i18n="numericWatch.enable">Monitor number</label>
           </div>
         </div>
 
-        <!-- Picker Mode -->
-        <div class="picker-mode" id="pickerMode">
-          <button id="startPicker" class="btn btn-accent btn-full" data-i18n="contentWatch.pickElement">
-            Clicca per selezionare elemento
-          </button>
-          <div class="selected-element" id="selectedElement">
-            <span class="selected-label" data-i18n="contentWatch.selectedElement">Elemento selezionato:</span>
-            <span class="selected-value" id="selectedValue" data-i18n="contentWatch.none">Nessuno</span>
-          </div>
-        </div>
-
-        <!-- Advanced Mode -->
-        <div class="advanced-mode hidden" id="advancedMode">
+        <div class="content-watch-options" id="contentWatchOptions">
           <div class="control-group">
-            <label for="cssSelector" data-i18n="contentWatch.cssSelector">Selettore CSS</label>
-            <input type="text" id="cssSelector" placeholder=".result-count" class="input-field">
+            <label data-i18n="contentWatch.method">Selection method</label>
+            <div class="btn-group">
+              <button id="pickerModeBtn" class="btn btn-secondary btn-small active">
+                <span>*</span>
+                <span data-i18n="contentWatch.select">Select</span>
+              </button>
+              <button id="advancedModeBtn" class="btn btn-secondary btn-small">
+                <span>#</span>
+                <span data-i18n="contentWatch.advanced">Advanced</span>
+              </button>
+            </div>
           </div>
-          <button id="testSelector" class="btn btn-secondary btn-full" data-i18n="contentWatch.testSelector">
-            Testa Selettore
-          </button>
-        </div>
 
-        <div class="current-value-display" id="currentValueDisplay">
-          <span class="value-label" data-i18n="contentWatch.currentValue">Valore attuale:</span>
-          <span class="value-number" id="currentValue">--</span>
-        </div>
+          <div class="picker-mode" id="pickerMode">
+            <button id="startPicker" class="btn btn-accent btn-full" data-i18n="contentWatch.pickElement">
+              Click to select element
+            </button>
+            <div class="selected-element" id="selectedElement">
+              <span class="selected-label" data-i18n="contentWatch.selectedElement">Selected element:</span>
+              <span class="selected-value" id="selectedValue" data-i18n="contentWatch.none">None</span>
+            </div>
+          </div>
 
-        <!-- Alert Mode -->
-        <div class="control-group">
-          <label for="alertMode" data-i18n="contentWatch.alertMode">Modalità allarme</label>
-          <select id="alertMode" class="select-field">
-            <option value="increase" data-i18n="contentWatch.alertModeIncrease">📈 Aumento</option>
-            <option value="decrease" data-i18n="contentWatch.alertModeDecrease">📉 Diminuzione</option>
-            <option value="any" data-i18n="contentWatch.alertModeAny">🔄 Qualsiasi cambio</option>
-            <option value="above" data-i18n="contentWatch.alertModeAbove">⬆️ Sopra soglia</option>
-            <option value="below" data-i18n="contentWatch.alertModeBelow">⬇️ Sotto soglia</option>
-          </select>
-        </div>
-
-        <!-- Threshold Input (visible only for threshold modes) -->
-        <div class="control-group threshold-group hidden" id="thresholdGroup">
-          <label for="thresholdValue" data-i18n="contentWatch.thresholdValue">Valore soglia</label>
-          <input type="number" id="thresholdValue" class="input-field" placeholder="0" value="0">
-        </div>
-
-        <!-- Alert Sound Selection -->
-        <div class="control-group">
-          <label for="alertSound" data-i18n="alertSound.title">Suono allarme</label>
-          <div class="sound-row">
-            <select id="alertSound" class="select-field">
-              <option value="siren" data-i18n="alertSound.siren">🚨 Sirena</option>
-              <option value="beep" data-i18n="alertSound.beep">🔔 Beep</option>
-              <option value="chime" data-i18n="alertSound.chime">🎵 Chime</option>
-              <option value="alarm" data-i18n="alertSound.alarm">⏰ Sveglia</option>
-              <option value="bell" data-i18n="alertSound.bell">🔔 Campana</option>
-              <option value="digital" data-i18n="alertSound.digital">💻 Digitale</option>
-            </select>
-            <button id="previewSound" class="btn btn-secondary btn-small btn-preview" title="Preview">
-              ▶
+          <div class="advanced-mode hidden" id="advancedMode">
+            <div class="control-group">
+              <label for="cssSelector" data-i18n="contentWatch.cssSelector">CSS selector</label>
+              <input type="text" id="cssSelector" placeholder=".result-count" class="input-field">
+            </div>
+            <button id="testSelector" class="btn btn-secondary btn-full" data-i18n="contentWatch.testSelector">
+              Test selector
             </button>
           </div>
+
+          <div class="current-value-display" id="currentValueDisplay">
+            <span class="value-label" data-i18n="contentWatch.currentValue">Current value:</span>
+            <span class="value-number" id="currentValue">--</span>
+          </div>
+
+          <div class="control-group">
+            <label for="alertMode" data-i18n="contentWatch.alertMode">Alert mode</label>
+            <select id="alertMode" class="select-field">
+              <option value="increase" data-i18n="contentWatch.alertModeIncrease">Increase</option>
+              <option value="decrease" data-i18n="contentWatch.alertModeDecrease">Decrease</option>
+              <option value="any" data-i18n="contentWatch.alertModeAny">Any change</option>
+              <option value="above" data-i18n="contentWatch.alertModeAbove">Above threshold</option>
+              <option value="below" data-i18n="contentWatch.alertModeBelow">Below threshold</option>
+            </select>
+          </div>
+
+          <div class="control-group threshold-group hidden" id="thresholdGroup">
+            <label for="thresholdValue" data-i18n="contentWatch.thresholdValue">Threshold value</label>
+            <input type="number" id="thresholdValue" class="input-field" placeholder="0" value="0">
+          </div>
+
+          <div class="monitor-alert-settings" id="numericAlertSettings">
+            <div class="control-group">
+              <label for="numericAlertSound" data-i18n="alertSound.title">Alert sound</label>
+              <div class="sound-row">
+                <select id="numericAlertSound" class="select-field">
+                  <option value="siren" data-i18n="alertSound.siren">Siren</option>
+                  <option value="beep" data-i18n="alertSound.beep">Beep</option>
+                  <option value="chime" data-i18n="alertSound.chime">Chime</option>
+                  <option value="alarm" data-i18n="alertSound.alarm">Alarm</option>
+                  <option value="bell" data-i18n="alertSound.bell">Bell</option>
+                  <option value="digital" data-i18n="alertSound.digital">Digital</option>
+                </select>
+                <button id="previewNumericSound" class="btn btn-secondary btn-small btn-preview" title="Preview">
+                  >
+                </button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label data-i18n="alertSound.volume">Volume</label>
+              <div class="volume-row">
+                <span class="volume-icon">Vol</span>
+                <input type="range" id="numericAlertVolume" min="0" max="100" value="80" class="volume-slider" aria-label="Numeric volume">
+                <span class="volume-value" id="numericAlertVolumeValue">80%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="monitor-card">
+        <div class="monitor-card-header">
+          <h3 class="monitor-card-title" data-i18n="textWatch.title">Monitor text</h3>
         </div>
 
-        <!-- Alert Volume -->
         <div class="control-group">
-          <label data-i18n="alertSound.volume">Volume</label>
-          <div class="volume-row">
-            <span class="volume-icon">🔈</span>
-            <input type="range" id="alertVolume" min="0" max="100" value="80" class="volume-slider" aria-label="Volume">
-            <span class="volume-value" id="alertVolumeValue">80%</span>
+          <div class="checkbox-row">
+            <input type="checkbox" id="textWatchEnabled" class="checkbox">
+            <label for="textWatchEnabled" data-i18n="textWatch.enable">Monitor text or keywords</label>
           </div>
+          <p class="helper-text" data-i18n="textWatch.help">Monitor an element text, the whole page text, or the whole page HTML. Keywords remain optional and additive.</p>
+        </div>
+
+        <div class="content-watch-options" id="textWatchOptions">
+          <div class="control-group">
+            <label for="textSourceMode" data-i18n="textWatch.source">Source to scan</label>
+            <select id="textSourceMode" class="select-field">
+              <option value="selectorText" data-i18n="textWatch.sourceSelector">Selected element text</option>
+              <option value="pageText" data-i18n="textWatch.sourcePageText">Whole page text</option>
+              <option value="pageHtml" data-i18n="textWatch.sourcePageHtml">Whole page HTML</option>
+            </select>
+          </div>
+
+          <div id="textSelectorControls">
+            <div class="control-group">
+              <label data-i18n="textWatch.method">Selection method</label>
+              <div class="btn-group">
+                <button id="textPickerModeBtn" class="btn btn-secondary btn-small active">
+                  <span>*</span>
+                  <span data-i18n="textWatch.select">Select</span>
+                </button>
+                <button id="textAdvancedModeBtn" class="btn btn-secondary btn-small">
+                  <span>#</span>
+                  <span data-i18n="textWatch.advanced">Advanced</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="picker-mode" id="textPickerMode">
+              <button id="textStartPicker" class="btn btn-accent btn-full" data-i18n="textWatch.pickElement">
+                Click to select element
+              </button>
+              <div class="selected-element">
+                <span class="selected-label" data-i18n="textWatch.selectedElement">Selected element:</span>
+                <span class="selected-value" id="textSelectedValue" data-i18n="textWatch.none">None</span>
+              </div>
+            </div>
+
+            <div class="advanced-mode hidden" id="textAdvancedMode">
+              <div class="control-group">
+                <label for="textCssSelector" data-i18n="textWatch.cssSelector">CSS selector</label>
+                <input type="text" id="textCssSelector" placeholder=".product-title" class="input-field">
+              </div>
+              <button id="textTestSelector" class="btn btn-secondary btn-full" data-i18n="textWatch.testSelector">
+                Test selector
+              </button>
+            </div>
+
+            <div class="current-value-display">
+              <span class="value-label" data-i18n="textWatch.currentPreview">Current preview:</span>
+              <span class="value-preview" id="textCurrentPreview">--</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label for="textAlertMode" data-i18n="textWatch.alertMode">Text alert mode</label>
+            <select id="textAlertMode" class="select-field">
+              <option value="change" data-i18n="textWatch.alertModeChange">Any text appearance, disappearance, or change</option>
+              <option value="keywords" data-i18n="textWatch.alertModeKeywords">Only keywords or phrases</option>
+              <option value="keywordState" data-i18n="textWatch.alertModeKeywordState">Keyword appearance or disappearance only</option>
+              <option value="changeOrKeywords" data-i18n="textWatch.alertModeChangeOrKeywords">Text change or keywords</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="textKeywordList" data-i18n="textWatch.keywords">Keywords / phrases</label>
+            <textarea id="textKeywordList" class="input-field textarea-field" rows="3"
+              data-i18n-placeholder="textWatch.placeholder"
+              placeholder="one keyword or phrase per line"></textarea>
+            <p class="helper-text" data-i18n="textWatch.keywordsHelp">Insert one keyword or phrase per line.</p>
+          </div>
+
+          <div class="control-group">
+            <div class="checkbox-row">
+              <input type="checkbox" id="textDebugEnabled" class="checkbox">
+              <label for="textDebugEnabled" data-i18n="textWatch.debug">Debug: show captured content after each refresh</label>
+            </div>
+            <p class="helper-text" data-i18n="textWatch.debugHelp">Shows the captured text or HTML sample on the page so you can verify what is being monitored.</p>
+          </div>
+
+          <div class="monitor-alert-settings" id="textAlertSettings">
+            <div class="control-group">
+              <label for="textAlertSound" data-i18n="alertSound.title">Alert sound</label>
+              <div class="sound-row">
+                <select id="textAlertSound" class="select-field">
+                  <option value="siren" data-i18n="alertSound.siren">Siren</option>
+                  <option value="beep" data-i18n="alertSound.beep">Beep</option>
+                  <option value="chime" data-i18n="alertSound.chime">Chime</option>
+                  <option value="alarm" data-i18n="alertSound.alarm">Alarm</option>
+                  <option value="bell" data-i18n="alertSound.bell">Bell</option>
+                  <option value="digital" data-i18n="alertSound.digital">Digital</option>
+                </select>
+                <button id="previewTextSound" class="btn btn-secondary btn-small btn-preview" title="Preview">
+                  >
+                </button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label data-i18n="alertSound.volume">Volume</label>
+              <div class="volume-row">
+                <span class="volume-icon">Vol</span>
+                <input type="range" id="textAlertVolume" min="0" max="100" value="80" class="volume-slider" aria-label="Text volume">
+                <span class="volume-value" id="textAlertVolumeValue">80%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="checkbox-row">
+          <input type="checkbox" id="stopOnClick" class="checkbox">
+          <label for="stopOnClick" data-i18n="clickStop.enable">Stop refresh when user clicks on the page</label>
         </div>
       </div>
     </section>
 
-    <!-- Telegram Notifications -->
     <section class="card" id="telegramSection">
       <div class="section-header" data-toggle="telegramOptions">
         <div class="section-title">
@@ -193,23 +354,22 @@
             <input type="checkbox" id="telegramEnabled">
             <span class="checkmark"></span>
           </label>
-          <span class="icon">📱</span>
+          <span class="icon">TG</span>
           <span data-i18n="telegram.title">Telegram Notifications</span>
         </div>
       </div>
 
       <div class="telegram-options hidden" id="telegramOptions">
-        <!-- How to setup guide (collapsible) -->
         <details class="telegram-howto">
-          <summary data-i18n="telegram.howtoTitle">📖 Come configurare il bot Telegram</summary>
+          <summary data-i18n="telegram.howtoTitle">How to setup Telegram bot</summary>
           <div class="howto-content">
             <ol>
-              <li data-i18n="telegram.howtoStep1">Apri Telegram e cerca <strong>@BotFather</strong></li>
-              <li data-i18n="telegram.howtoStep2">Invia <code>/newbot</code> e segui le istruzioni</li>
-              <li data-i18n="telegram.howtoStep3">Copia il <strong>Token</strong> che ricevi</li>
-              <li data-i18n="telegram.howtoStep4">Cerca <strong>@userinfobot</strong> e invia un messaggio</li>
-              <li data-i18n="telegram.howtoStep5">Copia il tuo <strong>Chat ID</strong> numerico</li>
-              <li data-i18n="telegram.howtoStep6">Incolla entrambi qui sotto e premi "Test"</li>
+              <li data-i18n="telegram.howtoStep1">Open Telegram and search for <strong>@BotFather</strong></li>
+              <li data-i18n="telegram.howtoStep2">Send <code>/newbot</code> and follow the instructions</li>
+              <li data-i18n="telegram.howtoStep3">Copy the <strong>Token</strong> you receive</li>
+              <li data-i18n="telegram.howtoStep4">Search for <strong>@userinfobot</strong> and send a message</li>
+              <li data-i18n="telegram.howtoStep5">Copy your numeric <strong>Chat ID</strong></li>
+              <li data-i18n="telegram.howtoStep6">Paste both below and press "Test"</li>
             </ol>
           </div>
         </details>
@@ -227,8 +387,8 @@
         </div>
 
         <button id="testTelegram" class="btn btn-secondary btn-full">
-          <span>🧪</span>
-          <span data-i18n="telegram.testButton">Testa Notifica</span>
+          <span>Test</span>
+          <span data-i18n="telegram.testButton">Test notification</span>
         </button>
 
         <div class="telegram-status hidden" id="telegramStatus"></div>
@@ -236,11 +396,10 @@
       </div>
     </section>
 
-    <!-- Blacklist -->
     <section class="section collapsible">
       <h2 class="section-title clickable" id="blacklistToggle">
         <span data-i18n="lists.title">Blacklist / Whitelist</span>
-        <span class="collapse-icon">▼</span>
+        <span class="collapse-icon">v</span>
       </h2>
 
       <div class="collapsible-content" id="blacklistContent">
@@ -250,8 +409,7 @@
         </div>
 
         <div class="tab-content active" id="blacklistTab">
-          <p class="tab-description" data-i18n="lists.blacklistDesc">🚫 Il refresh verrà saltato su questi URL (es:
-            pagine di checkout, login)</p>
+          <p class="tab-description" data-i18n="lists.blacklistDesc">Refresh will be skipped on these URLs</p>
           <div class="url-input-row">
             <input type="text" id="blacklistUrl" placeholder="*checkout*" class="input-field"
               data-i18n-placeholder="lists.blacklistPlaceholder">
@@ -261,8 +419,7 @@
         </div>
 
         <div class="tab-content" id="whitelistTab">
-          <p class="tab-description" data-i18n="lists.whitelistDesc">✅ Questi URL ignorano la blacklist (ha priorità)
-          </p>
+          <p class="tab-description" data-i18n="lists.whitelistDesc">These URLs override the blacklist</p>
           <div class="url-input-row">
             <input type="text" id="whitelistUrl" placeholder="*deals*" class="input-field"
               data-i18n-placeholder="lists.whitelistPlaceholder">
@@ -273,26 +430,23 @@
       </div>
     </section>
 
-    <!-- Audio Alert Control (visible when alert is playing) -->
     <div class="alert-overlay hidden" id="alertOverlay">
       <div class="alert-content">
-        <div class="alert-icon">🔔</div>
-        <div class="alert-message" data-i18n="alert.newContent">Nuovo contenuto rilevato!</div>
+        <div class="alert-icon">!</div>
+        <div class="alert-message" id="alertMessage" data-i18n="alert.newContent">New content detected!</div>
         <button id="stopAlert" class="btn btn-danger btn-full" data-i18n="alert.stopAlarm">
-          Ferma Allarme
+          Stop alarm
         </button>
       </div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
-      <span class="version" id="versionText">v1.0.14</span>
-      <a href="https://giulionicolai.com" target="_blank" class="creator-link" data-i18n="footer.createdBy">Created by
-        Giulio Nicolai</a>
+      <span class="version" id="versionText">v1.0.19</span>
+      <a href="https://giulionicolai.com" target="_blank" class="creator-link" data-i18n="footer.createdBy">Created by Giulio Nicolai</a>
       <div class="donate-section">
-        <span class="donate-text" data-i18n="footer.donateText">Ti piace l'estensione?</span> ☕
+        <span class="donate-text" data-i18n="footer.donateText">Enjoying the extension?</span>
         <a href="https://www.paypal.com/donate/?hosted_button_id=RZKA34HTGKGJG" target="_blank" class="donate-btn">
-          <span class="donate-icon">❤️</span>
+          <span class="donate-icon">+</span>
           <span data-i18n="footer.donate">Donate</span>
         </a>
       </div>

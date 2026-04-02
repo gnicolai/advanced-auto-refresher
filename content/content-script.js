@@ -1,18 +1,22 @@
 /**
  * Auto Refresh & Page Monitor with Telegram Alerts - Content Script
- * Handles element picking and content change detection
+ * Handles picker UX, snapshots, in-page highlighting, and optional click-stop.
  */
 
-// State
 let isPickerActive = false;
+let pickerWatchType = 'numeric';
 let pickerOverlay = null;
-let highlightedElement = null;
+let highlightedOverlay = null;
+let stopOnClickEnabled = false;
+let clickPauseSent = false;
+let lastTextDebugPayload = null;
 
-// Message handler
+document.addEventListener('click', handleMonitoredPageClick, true);
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.type) {
         case 'START_PICKER':
-            startPicker();
+            startPicker(message.watchType || 'numeric');
             sendResponse({ success: true });
             break;
 
@@ -22,70 +26,91 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             break;
 
         case 'TEST_SELECTOR':
-            const result = testSelector(message.selector);
-            sendResponse(result);
+            sendResponse(testSelector(message.selector));
             break;
 
-        case 'CHECK_CONTENT':
-            const checkResult = checkContent(message.selector, message.lastValue);
-            sendResponse(checkResult);
+        case 'CAPTURE_MONITOR_SNAPSHOT':
+            sendResponse(captureMonitorSnapshot(message));
             break;
 
-        case 'GET_INITIAL_VALUE':
-            const initialResult = getInitialValue(message.selector);
-            sendResponse(initialResult);
+        case 'APPLY_CHANGE_HIGHLIGHT':
+            applyChangeHighlight(message.selector, message.mode, message.message, message.jumpToSelector, message.toastActions || []);
+            sendResponse({ success: true });
+            break;
+
+        case 'SHOW_MONITOR_TOAST':
+            showMonitorToast(message.message, {
+                tone: message.tone || 'info',
+                jumpSelector: message.jumpSelector || ''
+            });
+            sendResponse({ success: true });
+            break;
+
+        case 'SHOW_TEXT_DEBUG':
+            showTextDebugPanel(message);
+            sendResponse({ success: true });
+            break;
+
+        case 'JUMP_TO_SELECTOR':
+            sendResponse({ success: jumpToSelector(message.selector) });
+            break;
+
+        case 'JUMP_TO_KEYWORDS':
+            sendResponse({ success: jumpToKeywords(message.keywords || []) });
+            break;
+
+        case 'SYNC_MONITOR_STATE':
+            stopOnClickEnabled = Boolean(message.stopOnClickEnabled);
+            if (!stopOnClickEnabled) {
+                clickPauseSent = false;
+            }
+            sendResponse({ success: true });
+            break;
+
+        default:
             break;
     }
+
     return true;
 });
 
-// Start element picker mode
-function startPicker() {
-    if (isPickerActive) return;
+function startPicker(watchType) {
+    if (isPickerActive) {
+        return;
+    }
+
+    pickerWatchType = watchType || 'numeric';
     isPickerActive = true;
-
-    // Create overlay
     createPickerOverlay();
-
-    // Add event listeners
     document.addEventListener('mouseover', handleMouseOver, true);
     document.addEventListener('mouseout', handleMouseOut, true);
-    document.addEventListener('click', handleClick, true);
+    document.addEventListener('click', handlePickerClick, true);
     document.addEventListener('keydown', handleKeyDown, true);
 }
 
-// Stop element picker mode
 function stopPicker() {
     isPickerActive = false;
-
-    // Remove overlay
     removePickerOverlay();
-
-    // Remove highlight
     removeHighlight();
-
-    // Remove event listeners
     document.removeEventListener('mouseover', handleMouseOver, true);
     document.removeEventListener('mouseout', handleMouseOut, true);
-    document.removeEventListener('click', handleClick, true);
+    document.removeEventListener('click', handlePickerClick, true);
     document.removeEventListener('keydown', handleKeyDown, true);
 }
 
-// Create picker overlay
 function createPickerOverlay() {
     pickerOverlay = document.createElement('div');
     pickerOverlay.id = 'aar-picker-overlay';
     pickerOverlay.innerHTML = `
-    <div class="aar-picker-header">
-      <span class="aar-picker-icon">🎯</span>
-      <span class="aar-picker-title">Seleziona un elemento da monitorare</span>
-      <span class="aar-picker-hint">Premi ESC per annullare</span>
-    </div>
-  `;
+        <div class="aar-picker-header">
+            <span class="aar-picker-icon">*</span>
+            <span class="aar-picker-title">${chrome.i18n.getMessage('picker_title') || 'Select an element to monitor'}</span>
+            <span class="aar-picker-hint">${chrome.i18n.getMessage('picker_hint') || 'Press ESC to cancel'}</span>
+        </div>
+    `;
     document.body.appendChild(pickerOverlay);
 }
 
-// Remove picker overlay
 function removePickerOverlay() {
     if (pickerOverlay) {
         pickerOverlay.remove();
@@ -93,128 +118,119 @@ function removePickerOverlay() {
     }
 }
 
-// Handle mouse over
-function handleMouseOver(e) {
-    if (!isPickerActive) return;
-
-    // Ignore our own elements
-    if (e.target.closest('#aar-picker-overlay') || e.target.closest('.aar-highlight')) {
+function handleMouseOver(event) {
+    if (!isPickerActive || isExtensionUiElement(event.target)) {
         return;
     }
-
-    highlightElement(e.target);
+    highlightElement(event.target);
 }
 
-// Handle mouse out
-function handleMouseOut(e) {
-    if (!isPickerActive) return;
+function handleMouseOut() {
+    if (!isPickerActive) {
+        return;
+    }
     removeHighlight();
 }
 
-// Highlight element
 function highlightElement(element) {
     removeHighlight();
 
     const rect = element.getBoundingClientRect();
+    highlightedOverlay = document.createElement('div');
+    highlightedOverlay.className = 'aar-highlight';
+    highlightedOverlay.style.cssText = `
+        position: fixed;
+        top: ${rect.top}px;
+        left: ${rect.left}px;
+        width: ${rect.width}px;
+        height: ${rect.height}px;
+        pointer-events: none;
+        z-index: 2147483646;
+    `;
 
-    highlightedElement = document.createElement('div');
-    highlightedElement.className = 'aar-highlight';
-    highlightedElement.style.cssText = `
-    position: fixed;
-    top: ${rect.top}px;
-    left: ${rect.left}px;
-    width: ${rect.width}px;
-    height: ${rect.height}px;
-    pointer-events: none;
-    z-index: 2147483646;
-  `;
-
-    // Add label with element info
     const label = document.createElement('div');
     label.className = 'aar-highlight-label';
-
-    const textContent = element.textContent.trim().substring(0, 50);
+    const textContent = normalizeText(element.innerText || element.textContent);
     const numericValue = extractNumbers(textContent);
+    label.textContent = pickerWatchType === 'numeric' && numericValue !== null
+        ? `Value: ${numericValue}`
+        : `Text: ${truncatePreview(textContent, 60) || 'N/A'}`;
 
-    label.textContent = numericValue !== null
-        ? `Valore: ${numericValue}`
-        : `Testo: ${textContent}...`;
-
-    highlightedElement.appendChild(label);
-    document.body.appendChild(highlightedElement);
-
-    // Store reference to actual element
-    highlightedElement._targetElement = element;
+    highlightedOverlay.appendChild(label);
+    highlightedOverlay._targetElement = element;
+    document.body.appendChild(highlightedOverlay);
 }
 
-// Remove highlight
 function removeHighlight() {
-    if (highlightedElement) {
-        highlightedElement.remove();
-        highlightedElement = null;
+    if (highlightedOverlay) {
+        highlightedOverlay.remove();
+        highlightedOverlay = null;
     }
 }
 
-// Handle click
-function handleClick(e) {
-    if (!isPickerActive) return;
-
-    // Ignore our own elements
-    if (e.target.closest('#aar-picker-overlay') || e.target.closest('.aar-highlight')) {
+function handlePickerClick(event) {
+    if (!isPickerActive || isExtensionUiElement(event.target)) {
         return;
     }
 
-    e.preventDefault();
-    e.stopPropagation();
+    event.preventDefault();
+    event.stopPropagation();
 
-    // Get the target element
-    const targetElement = highlightedElement?._targetElement || e.target;
-
-    // Generate CSS selector
+    const targetElement = highlightedOverlay?._targetElement || event.target;
     const selector = generateSelector(targetElement);
-
-    // Extract numeric value
-    const textContent = targetElement.textContent.trim();
+    const textContent = normalizeText(targetElement.innerText || targetElement.textContent);
     const numericValue = extractNumbers(textContent);
 
-
-    // Send to background
     chrome.runtime.sendMessage({
         type: 'SELECTOR_PICKED',
-        tabId: null, // Will be added by background
-        selector: selector,
-        value: numericValue
+        watchType: pickerWatchType,
+        selector,
+        value: numericValue,
+        previewText: truncatePreview(textContent, 120)
     });
 
-    // Stop picker
     stopPicker();
-
-    // Show confirmation
-    showConfirmation(selector, numericValue);
+    showMonitorToast(chrome.i18n.getMessage('picker_selected') || 'Element selected.', {
+        tone: 'success',
+        jumpSelector: selector
+    });
 }
 
-// Handle key down (ESC to cancel)
-function handleKeyDown(e) {
-    if (!isPickerActive) return;
+function handleKeyDown(event) {
+    if (!isPickerActive) {
+        return;
+    }
 
-    if (e.key === 'Escape') {
-        e.preventDefault();
+    if (event.key === 'Escape') {
+        event.preventDefault();
         stopPicker();
     }
 }
 
-// Generate a unique CSS selector for an element
+function handleMonitoredPageClick(event) {
+    if (!stopOnClickEnabled || clickPauseSent || isPickerActive) {
+        return;
+    }
+
+    if (!event.isTrusted || isExtensionUiElement(event.target)) {
+        return;
+    }
+
+    clickPauseSent = true;
+    chrome.runtime.sendMessage({ type: 'USER_PAGE_CLICK' }).catch(() => {
+        clickPauseSent = false;
+    });
+}
+
 function generateSelector(element) {
-    // Try ID first
     if (element.id) {
         return `#${CSS.escape(element.id)}`;
     }
 
-    // Try unique class combination
     if (element.classList.length > 0) {
         const classes = Array.from(element.classList)
-            .filter(c => !c.startsWith('aar-'))
-            .map(c => `.${CSS.escape(c)}`)
+            .filter((className) => !className.startsWith('aar-'))
+            .map((className) => `.${CSS.escape(className)}`)
             .join('');
 
         if (classes) {
@@ -225,7 +241,6 @@ function generateSelector(element) {
         }
     }
 
-    // Build path from ancestors
     const path = [];
     let current = element;
 
@@ -233,31 +248,26 @@ function generateSelector(element) {
         let selector = current.tagName.toLowerCase();
 
         if (current.id) {
-            selector = `#${CSS.escape(current.id)}`;
-            path.unshift(selector);
+            path.unshift(`#${CSS.escape(current.id)}`);
             break;
         }
 
         if (current.classList.length > 0) {
             const classes = Array.from(current.classList)
-                .filter(c => !c.startsWith('aar-'))
-                .slice(0, 2) // Limit to 2 classes
-                .map(c => `.${CSS.escape(c)}`)
+                .filter((className) => !className.startsWith('aar-'))
+                .slice(0, 2)
+                .map((className) => `.${CSS.escape(className)}`)
                 .join('');
             if (classes) {
                 selector += classes;
             }
         }
 
-        // Add nth-child if needed
         const parent = current.parentElement;
         if (parent) {
-            const siblings = Array.from(parent.children).filter(
-                child => child.tagName === current.tagName
-            );
+            const siblings = Array.from(parent.children).filter((child) => child.tagName === current.tagName);
             if (siblings.length > 1) {
-                const index = siblings.indexOf(current) + 1;
-                selector += `:nth-child(${index})`;
+                selector += `:nth-child(${siblings.indexOf(current) + 1})`;
             }
         }
 
@@ -268,15 +278,387 @@ function generateSelector(element) {
     return path.join(' > ');
 }
 
-// Extract numbers from text
+function testSelector(selector) {
+    try {
+        const element = document.querySelector(selector);
+        if (!element) {
+            return { success: false, error: 'Element not found' };
+        }
+
+        const textContent = normalizeText(element.innerText || element.textContent);
+        return {
+            success: true,
+            value: truncatePreview(textContent, 120),
+            numericValue: extractNumbers(textContent)
+        };
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+}
+
+function captureMonitorSnapshot(message) {
+    const numeric = captureNumericSnapshot(message.numericSelector || '');
+    const text = captureTextSnapshot(
+        message.textSelector || '',
+        message.textSourceMode || 'selectorText',
+        Boolean(message.includePageText),
+        Boolean(message.includePageHtml)
+    );
+
+    return {
+        success: Boolean(numeric.success || text.success),
+        numeric,
+        text
+    };
+}
+
+function captureNumericSnapshot(selector) {
+    if (!selector) {
+        return { success: false, selectorFound: false, numericValue: null, previewText: '' };
+    }
+
+    try {
+        const element = document.querySelector(selector);
+        if (!element) {
+            return { success: false, selectorFound: false, numericValue: null, previewText: '' };
+        }
+
+        const selectorText = normalizeText(element.innerText || element.textContent);
+        return {
+            success: true,
+            selectorFound: true,
+            numericValue: extractNumbers(selectorText),
+            previewText: truncatePreview(selectorText, 120)
+        };
+    } catch (error) {
+        return { success: false, selectorFound: false, numericValue: null, previewText: '', error: error.message };
+    }
+}
+
+function captureTextSnapshot(selector, sourceMode, includePageText, includePageHtml) {
+    try {
+        const element = selector ? document.querySelector(selector) : null;
+        const selectorFound = Boolean(element);
+        const selectorText = selectorFound ? normalizeText(element.innerText || element.textContent) : '';
+        const pageText = includePageText ? getPageText() : '';
+        const pageHtml = includePageHtml ? getPageHtml() : '';
+
+        let monitoredText = '';
+        let previewText = '';
+        let debugText = '';
+
+        if (sourceMode === 'pageHtml') {
+            monitoredText = pageHtml;
+            previewText = truncatePreview(normalizeText(pageHtml), 120);
+            debugText = truncateRaw(pageHtml, 1800);
+        } else if (sourceMode === 'pageText') {
+            monitoredText = pageText;
+            previewText = truncatePreview(pageText, 120);
+            debugText = truncatePreview(pageText, 1800);
+        } else {
+            monitoredText = selectorText;
+            previewText = truncatePreview(selectorText, 120);
+            debugText = truncatePreview(selectorText, 1800);
+        }
+
+        if (!monitoredText) {
+            return {
+                success: false,
+                selectorFound,
+                monitoredText: '',
+                previewText: '',
+                debugText: ''
+            };
+        }
+
+        return {
+            success: true,
+            selectorFound,
+            monitoredText,
+            previewText,
+            debugText
+        };
+    } catch (error) {
+        return {
+            success: false,
+            selectorFound: false,
+            monitoredText: '',
+            previewText: '',
+            debugText: '',
+            error: error.message
+        };
+    }
+}
+
+function applyChangeHighlight(selector, mode, message, jumpToSelector, toastActions = []) {
+    if (mode === 'element' && selector) {
+        const element = document.querySelector(selector);
+        if (element) {
+            element.classList.add('aar-change-highlight');
+            window.setTimeout(() => {
+                element.classList.remove('aar-change-highlight');
+            }, 5000);
+
+            showMonitorToast(message || (chrome.i18n.getMessage('changeHighlight_default') || 'Change detected after refresh.'), {
+                tone: 'info',
+                jumpSelector: jumpToSelector ? selector : '',
+                actions: toastActions
+            });
+            return;
+        }
+    }
+
+    showMonitorToast(message || (chrome.i18n.getMessage('changeHighlight_default') || 'Change detected after refresh.'), {
+        tone: 'info',
+        actions: toastActions
+    });
+}
+
+function showMonitorToast(message, options = {}) {
+    if (!message) {
+        return;
+    }
+
+    const tone = options.tone || 'info';
+    const jumpSelector = options.jumpSelector || '';
+    const actions = Array.isArray(options.actions) ? options.actions : [];
+    const existingToast = document.getElementById('aar-monitor-toast');
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    const toast = document.createElement('div');
+    toast.id = 'aar-monitor-toast';
+    toast.className = `aar-monitor-toast aar-monitor-toast-${tone}${jumpSelector ? ' aar-monitor-toast-clickable' : ''}`;
+    toast.innerHTML = `
+        <div class="aar-monitor-toast-title">${chrome.i18n.getMessage('notification_title') || 'Auto Refresh alert'}</div>
+        <div class="aar-monitor-toast-message">${message}</div>
+        ${actions.length > 0 ? `<div class="aar-monitor-toast-actions"></div>` : ''}
+        ${jumpSelector ? `<div class="aar-monitor-toast-hint">${chrome.i18n.getMessage('textWatch_jumpHint') || 'Click to jump to the element.'}</div>` : ''}
+    `;
+
+    if (actions.length > 0) {
+        const actionsContainer = toast.querySelector('.aar-monitor-toast-actions');
+        actions.forEach((action, index) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'aar-monitor-toast-action';
+            button.textContent = action.label || `Action ${index + 1}`;
+            button.addEventListener('click', (event) => {
+                event.stopPropagation();
+                performToastAction(action);
+            });
+            actionsContainer.appendChild(button);
+        });
+    }
+
+    if (jumpSelector) {
+        toast.addEventListener('click', () => {
+            jumpToSelector(jumpSelector);
+        });
+    }
+
+    document.body.appendChild(toast);
+    window.setTimeout(() => toast.classList.add('visible'), 10);
+    window.setTimeout(() => {
+        toast.classList.remove('visible');
+        window.setTimeout(() => toast.remove(), 300);
+    }, 5000);
+}
+
+function showTextDebugPanel(options = {}) {
+    lastTextDebugPayload = { ...options };
+    const {
+        sourceMode = 'selectorText',
+        selector = '',
+        previewText = '',
+        debugText = '',
+        matchedKeywords = []
+    } = options;
+
+    const existing = document.getElementById('aar-text-debug-panel');
+    if (existing) {
+        existing.remove();
+    }
+
+    if (sourceMode === 'selectorText' && selector) {
+        const element = document.querySelector(selector);
+        if (element) {
+            element.classList.add('aar-change-highlight');
+            window.setTimeout(() => {
+                element.classList.remove('aar-change-highlight');
+            }, 5000);
+        }
+    }
+
+    const panel = document.createElement('div');
+    panel.id = 'aar-text-debug-panel';
+    const keywordsLine = matchedKeywords.length > 0 ? matchedKeywords.join(', ') : '-';
+    panel.innerHTML = `
+        <div class="aar-debug-header">
+            <div class="aar-debug-title">${chrome.i18n.getMessage('textWatch_debugTitle') || 'Text monitor debug'}</div>
+            <button type="button" class="aar-debug-close">${chrome.i18n.getMessage('textWatch_debugClose') || 'Close'}</button>
+        </div>
+        <div class="aar-debug-row"><strong>${chrome.i18n.getMessage('textWatch_debugSource') || 'Source'}:</strong> ${sourceMode}</div>
+        ${selector ? `<div class="aar-debug-row"><strong>${chrome.i18n.getMessage('textWatch_debugSelector') || 'Selector'}:</strong> ${escapeHtml(selector)}</div>` : ''}
+        <div class="aar-debug-row"><strong>${chrome.i18n.getMessage('textWatch_debugMatches') || 'Matched keywords'}:</strong> ${escapeHtml(keywordsLine)}</div>
+        <div class="aar-debug-row"><strong>${chrome.i18n.getMessage('textWatch_debugPreview') || 'Preview'}:</strong> ${escapeHtml(previewText || '-')}</div>
+        <div class="aar-debug-block">${escapeHtml(debugText || previewText || (chrome.i18n.getMessage('textWatch_debugEmpty') || 'No captured content available.'))}</div>
+    `;
+
+    panel.querySelector('.aar-debug-close')?.addEventListener('click', () => {
+        panel.remove();
+    });
+
+    document.body.appendChild(panel);
+    window.setTimeout(() => panel.classList.add('visible'), 10);
+}
+
+function performToastAction(action) {
+    if (!action || typeof action !== 'object') {
+        return;
+    }
+
+    if (action.type === 'selector') {
+        jumpToSelector(action.selector);
+        return;
+    }
+
+    if (action.type === 'keywords') {
+        const jumped = jumpToKeywords(action.keywords || []);
+        if (!jumped && lastTextDebugPayload) {
+            showTextDebugPanel(lastTextDebugPayload);
+        }
+        return;
+    }
+
+    if (action.type === 'debug' && lastTextDebugPayload) {
+        showTextDebugPanel(lastTextDebugPayload);
+    }
+}
+
+function jumpToKeywords(keywords = []) {
+    const lowered = keywords
+        .map((keyword) => String(keyword || '').trim().toLowerCase())
+        .filter(Boolean);
+
+    if (lowered.length === 0) {
+        return false;
+    }
+
+    const selector = 'a, button, h1, h2, h3, h4, h5, h6, p, span, div, li';
+    const candidates = Array.from(document.querySelectorAll(selector))
+        .map((element) => {
+            const text = normalizeText(element.innerText || element.textContent);
+            if (!text || text.length > 280) {
+                return null;
+            }
+
+            const match = lowered.find((keyword) => text.toLowerCase().includes(keyword));
+            if (!match) {
+                return null;
+            }
+
+            const rect = element.getBoundingClientRect();
+            if (rect.width <= 0 || rect.height <= 0) {
+                return null;
+            }
+
+            return {
+                element,
+                match,
+                score: text.length
+            };
+        })
+        .filter(Boolean)
+        .sort((left, right) => left.score - right.score);
+
+    const target = candidates[0]?.element;
+    if (!target) {
+        return false;
+    }
+
+    target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+    target.classList.add('aar-change-highlight');
+    window.setTimeout(() => {
+        target.classList.remove('aar-change-highlight');
+    }, 5000);
+    return true;
+}
+
+function jumpToSelector(selector) {
+    if (!selector) {
+        return false;
+    }
+
+    const element = document.querySelector(selector);
+    if (!element) {
+        return false;
+    }
+
+    element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+    element.classList.add('aar-change-highlight');
+    window.setTimeout(() => {
+        element.classList.remove('aar-change-highlight');
+    }, 5000);
+    return true;
+}
+
+function getPageText() {
+    const source = document.body?.innerText || document.body?.textContent || '';
+    return normalizeText(source).slice(0, 50000);
+}
+
+function getPageHtml() {
+    return String(document.documentElement?.outerHTML || '').slice(0, 500000);
+}
+
+function truncatePreview(text, size) {
+    const normalized = normalizeText(text);
+    if (normalized.length <= size) {
+        return normalized;
+    }
+    return `${normalized.slice(0, size - 1)}...`;
+}
+
+function truncateRaw(text, size) {
+    const value = String(text || '').trim();
+    if (value.length <= size) {
+        return value;
+    }
+    return `${value.slice(0, size - 1)}...`;
+}
+
+function normalizeText(text) {
+    return String(text || '').replace(/\s+/g, ' ').trim();
+}
+
+function escapeHtml(value) {
+    return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
+function isExtensionUiElement(target) {
+    if (!(target instanceof Element)) {
+        return false;
+    }
+
+    return Boolean(
+        target.closest('#aar-picker-overlay') ||
+        target.closest('.aar-highlight') ||
+        target.closest('#aar-monitor-toast')
+    );
+}
+
 function extractNumbers(text) {
-    // Try to find a number pattern like "di X risultati" or just numbers
     const patterns = [
-        /di\s+(\d+)\s+risultat/i,      // Italian: "di 10 risultati"
-        /of\s+(\d+)\s+result/i,         // English: "of 10 results"
-        /(\d+)\s+(?:prodott|item|articol)/i, // "10 prodotti" or "10 items"
-        /totale?:?\s*(\d+)/i,           // "Totale: 10"
-        /(\d+)/                          // Just any number
+        /di\s+(\d+)\s+risultat/i,
+        /of\s+(\d+)\s+result/i,
+        /(\d+)\s+(?:prodott|item|articol)/i,
+        /totale?:?\s*(\d+)/i,
+        /(\d+)/
     ];
 
     for (const pattern of patterns) {
@@ -289,94 +671,4 @@ function extractNumbers(text) {
     return null;
 }
 
-// Show confirmation toast
-function showConfirmation(selector, value) {
-    const toast = document.createElement('div');
-    toast.className = 'aar-toast';
-    toast.innerHTML = `
-    <div class="aar-toast-icon">✓</div>
-    <div class="aar-toast-content">
-      <div class="aar-toast-title">Elemento selezionato!</div>
-      <div class="aar-toast-value">Valore iniziale: ${value !== null ? value : 'N/A'}</div>
-    </div>
-  `;
-
-    document.body.appendChild(toast);
-
-    // Animate in
-    setTimeout(() => toast.classList.add('visible'), 10);
-
-    // Remove after 3 seconds
-    setTimeout(() => {
-        toast.classList.remove('visible');
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
-}
-
-// Test a CSS selector
-function testSelector(selector) {
-    try {
-        const element = document.querySelector(selector);
-        if (!element) {
-            return { success: false, error: 'Element not found' };
-        }
-
-        const textContent = element.textContent.trim();
-        const numericValue = extractNumbers(textContent);
-
-        return {
-            success: true,
-            value: textContent.substring(0, 100),
-            numericValue: numericValue
-        };
-    } catch (error) {
-        return { success: false, error: error.message };
-    }
-}
-
-// Check content for changes
-function checkContent(selector, lastValue) {
-    try {
-        const element = document.querySelector(selector);
-        if (!element) {
-            return { success: false, error: 'Element not found' };
-        }
-
-        const textContent = element.textContent.trim();
-        const currentValue = extractNumbers(textContent);
-
-        const changed = currentValue !== lastValue;
-        const increased = currentValue > lastValue;
-
-        return {
-            success: true,
-            currentValue: currentValue,
-            previousValue: lastValue
-        };
-    } catch (error) {
-        return { success: false, error: error.message };
-    }
-}
-
-// Get initial value for a selector
-function getInitialValue(selector) {
-    try {
-        const element = document.querySelector(selector);
-        if (!element) {
-            return { success: false, error: 'Element not found' };
-        }
-
-        const textContent = element.textContent.trim();
-        const numericValue = extractNumbers(textContent);
-
-        return {
-            success: true,
-            value: numericValue
-        };
-    } catch (error) {
-        return { success: false, error: error.message };
-    }
-}
-
-// Log for debugging
 console.log('Auto Refresh & Page Monitor content script loaded');

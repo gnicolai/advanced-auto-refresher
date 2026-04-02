@@ -217,5 +217,245 @@
     },
     "alertSound_preview": {
         "message": "▶ Anteprima"
+    },
+    "keywordWatch_enable": {
+        "message": "Monitora parole chiave o frasi"
+    },
+    "keywordWatch_help": {
+        "message": "Se hai impostato un selettore, le parole chiave vengono cercate dentro quell'elemento. Altrimenti viene analizzato il testo dell'intera pagina dopo ogni refresh."
+    },
+    "keywordWatch_list": {
+        "message": "Parole chiave / frasi"
+    },
+    "keywordWatch_placeholder": {
+        "message": "una parola chiave o frase per riga"
+    },
+    "keywordWatch_source": {
+        "message": "Sorgente da analizzare"
+    },
+    "keywordWatch_sourceAuto": {
+        "message": "Testo elemento selezionato (fallback testo pagina)"
+    },
+    "keywordWatch_sourcePageText": {
+        "message": "Testo intera pagina"
+    },
+    "keywordWatch_sourcePageHtml": {
+        "message": "HTML intera pagina"
+    },
+    "clickStop_enable": {
+        "message": "Ferma il refresh quando l'utente clicca sulla pagina"
+    },
+    "clickStop_pausedToast": {
+        "message": "Auto-refresh in pausa dopo il click."
+    },
+    "notification_title": {
+        "message": "Avviso Auto Refresh"
+    },
+    "notification_defaultBody": {
+        "message": "Una pagina monitorata e cambiata."
+    },
+    "notification_numericChanged": {
+        "message": "Il valore numerico e cambiato."
+    },
+    "notification_keywordsFound": {
+        "message": "Parole chiave trovate:"
+    },
+    "notification_valueChanged": {
+        "message": "Valore cambiato"
+    },
+    "changeHighlight_default": {
+        "message": "Cambio rilevato dopo il refresh."
+    },
+    "changeHighlight_combined": {
+        "message": "Rilevati cambiamenti numerici e testuali."
+    },
+    "changeHighlight_numeric": {
+        "message": "Il valore monitorato e cambiato dopo il refresh."
+    },
+    "changeHighlight_keywords": {
+        "message": "Trovate parole chiave monitorate dopo il refresh."
+    },
+    "numericWatch_title": {
+        "message": "Monitora numero"
+    },
+    "numericWatch_enable": {
+        "message": "Monitora numero"
+    },
+    "textWatch_title": {
+        "message": "Monitora testo"
+    },
+    "textWatch_enable": {
+        "message": "Monitora testo o parole chiave"
+    },
+    "textWatch_help": {
+        "message": "Monitora il testo di un elemento, il testo dell'intera pagina o l'HTML completo. Le parole chiave restano opzionali e aggiuntive."
+    },
+    "textWatch_method": {
+        "message": "Metodo selezione"
+    },
+    "textWatch_select": {
+        "message": "Seleziona"
+    },
+    "textWatch_advanced": {
+        "message": "Avanzato"
+    },
+    "textWatch_pickElement": {
+        "message": "Clicca per selezionare elemento"
+    },
+    "textWatch_cssSelector": {
+        "message": "Selettore CSS"
+    },
+    "textWatch_testSelector": {
+        "message": "Testa selettore"
+    },
+    "textWatch_selectedElement": {
+        "message": "Elemento selezionato:"
+    },
+    "textWatch_none": {
+        "message": "Nessuno"
+    },
+    "textWatch_currentPreview": {
+        "message": "Anteprima attuale:"
+    },
+    "textWatch_source": {
+        "message": "Sorgente da analizzare"
+    },
+    "textWatch_sourceSelector": {
+        "message": "Testo elemento selezionato"
+    },
+    "textWatch_sourcePageText": {
+        "message": "Testo intera pagina"
+    },
+    "textWatch_sourcePageHtml": {
+        "message": "HTML intera pagina"
+    },
+    "textWatch_alertMode": {
+        "message": "Modalita monitor testo"
+    },
+    "textWatch_alertModeChange": {
+        "message": "Qualsiasi comparsa, scomparsa o cambio testo"
+    },
+    "textWatch_alertModeKeywords": {
+        "message": "Cambio stato parole chiave"
+    },
+    "textWatch_alertModeChangeOrKeywords": {
+        "message": "Cambio testo o parole chiave"
+    },
+    "textWatch_keywords": {
+        "message": "Parole chiave / frasi"
+    },
+    "textWatch_placeholder": {
+        "message": "una parola chiave o frase per riga"
+    },
+    "textWatch_jumpHint": {
+        "message": "Clicca per andare all'elemento."
+    },
+    "alertRouting_mode": {
+        "message": "Configurazione allarmi"
+    },
+    "alertRouting_shared": {
+        "message": "Allarme condiviso"
+    },
+    "alertRouting_separate": {
+        "message": "Allarmi separati"
+    },
+    "alertRouting_sharedSound": {
+        "message": "Suono allarme condiviso"
+    },
+    "alertRouting_sharedVolume": {
+        "message": "Volume condiviso"
+    },
+    "notification_textChanged": {
+        "message": "Il testo e cambiato."
+    },
+    "changeHighlight_text": {
+        "message": "Il testo monitorato e cambiato dopo il refresh."
+    },
+    "textWatch_keywordsHelp": {
+        "message": "Inserisci una parola chiave o frase per riga."
+    },
+    "textWatch_debug": {
+        "message": "Debug: mostra il contenuto catturato dopo ogni refresh"
+    },
+    "textWatch_debugHelp": {
+        "message": "Mostra sulla pagina un estratto del testo o HTML catturato per verificare cosa viene monitorato."
+    },
+    "textWatch_debugTitle": {
+        "message": "Debug monitor testo"
+    },
+    "textWatch_debugSource": {
+        "message": "Sorgente"
+    },
+    "textWatch_debugSelector": {
+        "message": "Selettore"
+    },
+    "textWatch_debugMatches": {
+        "message": "Parole chiave trovate"
+    },
+    "textWatch_debugPreview": {
+        "message": "Anteprima"
+    },
+    "toast_actionNumber": {
+        "message": "Vai al numero"
+    },
+    "toast_actionText": {
+        "message": "Vai al testo"
+    },
+    "toast_actionDebug": {
+        "message": "Apri debug"
+    },
+    "textWatch_debugClose": {
+        "message": "Chiudi"
+    },
+    "textWatch_debugEmpty": {
+        "message": "Nessun contenuto catturato disponibile."
+    },
+    "textWatch_alertModeKeywordState": {
+        "message": "Solo comparsa o scomparsa parole chiave"
+    },
+    "notification_keywordsGone": {
+        "message": "Parole chiave scomparse:"
+    },
+    "telegram_testMissingCredentials": {
+        "message": "Inserisci Bot Token e Chat ID"
+    },
+    "telegram_testSending": {
+        "message": "Invio in corso..."
+    },
+    "telegram_testMessage": {
+        "message": "Auto Refresh & Page Monitor\\n\\nTest Telegram completato con successo."
+    },
+    "telegram_testSuccess": {
+        "message": "Notifica inviata con successo"
+    },
+    "telegram_statusAutomaticLast": {
+        "message": "Ultimo evento Telegram automatico"
+    },
+    "telegram_statusSentSuccessfully": {
+        "message": "Inviata con successo"
+    },
+    "telegram_statusFailed": {
+        "message": "Fallita"
+    },
+    "telegram_statusUnknownError": {
+        "message": "Errore sconosciuto"
+    },
+    "telegram_statusNetworkError": {
+        "message": "Errore di rete"
+    },
+    "telegram_messageTitle": {
+        "message": "Avviso: valore monitorato cambiato!"
+    },
+    "telegram_messageValue": {
+        "message": "Valore"
+    },
+    "telegram_messageUrl": {
+        "message": "URL"
+    },
+    "telegram_messageTime": {
+        "message": "Ora"
+    },
+    "telegram_messageUnknownUrl": {
+        "message": "Sconosciuto"
     }
 }

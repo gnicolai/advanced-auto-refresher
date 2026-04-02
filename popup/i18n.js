@@ -23,6 +23,7 @@ async function initI18n() {
     currentLang = result.selectedLanguage || detectBrowserLanguage();
     await loadTranslations(currentLang);
     applyTranslations();
+    document.documentElement.lang = currentLang;
     document.documentElement.dir = LANGUAGES[currentLang]?.dir || 'ltr';
     return currentLang;
 }
@@ -85,6 +86,7 @@ async function changeLanguage(lang) {
     await loadTranslations(lang);
     await chrome.storage.sync.set({ selectedLanguage: lang });
     applyTranslations();
+    document.documentElement.lang = lang;
     document.documentElement.dir = LANGUAGES[lang].dir;
     updateLanguageSelector();
     return lang;

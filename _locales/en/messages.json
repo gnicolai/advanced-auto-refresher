@@ -217,5 +217,245 @@
     },
     "alertSound_preview": {
         "message": "▶ Preview"
+    },
+    "keywordWatch_enable": {
+        "message": "Monitor keywords or phrases"
+    },
+    "keywordWatch_help": {
+        "message": "If a selector is configured, keywords are checked inside that element. Otherwise the whole page text is scanned after each refresh."
+    },
+    "keywordWatch_list": {
+        "message": "Keywords / phrases"
+    },
+    "keywordWatch_placeholder": {
+        "message": "one keyword or phrase per line"
+    },
+    "clickStop_enable": {
+        "message": "Stop refresh when user clicks on the page"
+    },
+    "clickStop_pausedToast": {
+        "message": "Auto-refresh paused after click."
+    },
+    "notification_title": {
+        "message": "Auto Refresh alert"
+    },
+    "notification_defaultBody": {
+        "message": "A monitored page changed."
+    },
+    "notification_numericChanged": {
+        "message": "Numeric value changed."
+    },
+    "notification_keywordsFound": {
+        "message": "Keywords found:"
+    },
+    "notification_valueChanged": {
+        "message": "Value changed"
+    },
+    "changeHighlight_default": {
+        "message": "Change detected after refresh."
+    },
+    "changeHighlight_combined": {
+        "message": "Numeric and text changes detected."
+    },
+    "changeHighlight_numeric": {
+        "message": "Monitored value changed after refresh."
+    },
+    "changeHighlight_keywords": {
+        "message": "Monitored keywords found after refresh."
+    },
+    "keywordWatch_source": {
+        "message": "Source to scan"
+    },
+    "keywordWatch_sourceAuto": {
+        "message": "Selected element text (fallback page text)"
+    },
+    "keywordWatch_sourcePageText": {
+        "message": "Whole page text"
+    },
+    "keywordWatch_sourcePageHtml": {
+        "message": "Whole page HTML"
+    },
+    "numericWatch_title": {
+        "message": "Monitor number"
+    },
+    "numericWatch_enable": {
+        "message": "Monitor number"
+    },
+    "textWatch_title": {
+        "message": "Monitor text"
+    },
+    "textWatch_enable": {
+        "message": "Monitor text or keywords"
+    },
+    "textWatch_help": {
+        "message": "Monitor an element text, the whole page text, or the whole page HTML. Keywords remain optional and additive."
+    },
+    "textWatch_method": {
+        "message": "Selection method"
+    },
+    "textWatch_select": {
+        "message": "Select"
+    },
+    "textWatch_advanced": {
+        "message": "Advanced"
+    },
+    "textWatch_pickElement": {
+        "message": "Click to select element"
+    },
+    "textWatch_cssSelector": {
+        "message": "CSS selector"
+    },
+    "textWatch_testSelector": {
+        "message": "Test selector"
+    },
+    "textWatch_selectedElement": {
+        "message": "Selected element:"
+    },
+    "textWatch_none": {
+        "message": "None"
+    },
+    "textWatch_currentPreview": {
+        "message": "Current preview:"
+    },
+    "textWatch_source": {
+        "message": "Source to scan"
+    },
+    "textWatch_sourceSelector": {
+        "message": "Selected element text"
+    },
+    "textWatch_sourcePageText": {
+        "message": "Whole page text"
+    },
+    "textWatch_sourcePageHtml": {
+        "message": "Whole page HTML"
+    },
+    "textWatch_alertMode": {
+        "message": "Text alert mode"
+    },
+    "textWatch_alertModeChange": {
+        "message": "Any text appearance, disappearance, or change"
+    },
+    "textWatch_alertModeKeywords": {
+        "message": "Keyword state changes"
+    },
+    "textWatch_alertModeChangeOrKeywords": {
+        "message": "Text change or keywords"
+    },
+    "textWatch_keywords": {
+        "message": "Keywords / phrases"
+    },
+    "textWatch_placeholder": {
+        "message": "one keyword or phrase per line"
+    },
+    "textWatch_jumpHint": {
+        "message": "Click to jump to the element."
+    },
+    "alertRouting_mode": {
+        "message": "Alarm setup"
+    },
+    "alertRouting_shared": {
+        "message": "Shared alarm"
+    },
+    "alertRouting_separate": {
+        "message": "Separate alarms"
+    },
+    "alertRouting_sharedSound": {
+        "message": "Shared alert sound"
+    },
+    "alertRouting_sharedVolume": {
+        "message": "Shared volume"
+    },
+    "notification_textChanged": {
+        "message": "Text changed."
+    },
+    "changeHighlight_text": {
+        "message": "Monitored text changed after refresh."
+    },
+    "textWatch_keywordsHelp": {
+        "message": "Insert one keyword or phrase per line."
+    },
+    "textWatch_debug": {
+        "message": "Debug: show captured content after each refresh"
+    },
+    "textWatch_debugHelp": {
+        "message": "Shows the captured text or HTML sample on the page so you can verify what is being monitored."
+    },
+    "textWatch_debugTitle": {
+        "message": "Text monitor debug"
+    },
+    "textWatch_debugSource": {
+        "message": "Source"
+    },
+    "textWatch_debugSelector": {
+        "message": "Selector"
+    },
+    "textWatch_debugMatches": {
+        "message": "Matched keywords"
+    },
+    "textWatch_debugPreview": {
+        "message": "Preview"
+    },
+    "toast_actionNumber": {
+        "message": "Go to number"
+    },
+    "toast_actionText": {
+        "message": "Go to text"
+    },
+    "toast_actionDebug": {
+        "message": "Open debug"
+    },
+    "textWatch_debugClose": {
+        "message": "Close"
+    },
+    "textWatch_debugEmpty": {
+        "message": "No captured content available."
+    },
+    "textWatch_alertModeKeywordState": {
+        "message": "Keyword appearance or disappearance only"
+    },
+    "notification_keywordsGone": {
+        "message": "Keywords disappeared:"
+    },
+    "telegram_testMissingCredentials": {
+        "message": "Insert Bot Token and Chat ID"
+    },
+    "telegram_testSending": {
+        "message": "Sending..."
+    },
+    "telegram_testMessage": {
+        "message": "Auto Refresh & Page Monitor\\n\\nTelegram test completed successfully."
+    },
+    "telegram_testSuccess": {
+        "message": "Notification sent successfully"
+    },
+    "telegram_statusAutomaticLast": {
+        "message": "Last automatic Telegram event"
+    },
+    "telegram_statusSentSuccessfully": {
+        "message": "Sent successfully"
+    },
+    "telegram_statusFailed": {
+        "message": "Failed"
+    },
+    "telegram_statusUnknownError": {
+        "message": "Unknown error"
+    },
+    "telegram_statusNetworkError": {
+        "message": "Network error"
+    },
+    "telegram_messageTitle": {
+        "message": "Alert: monitored value changed!"
+    },
+    "telegram_messageValue": {
+        "message": "Value"
+    },
+    "telegram_messageUrl": {
+        "message": "URL"
+    },
+    "telegram_messageTime": {
+        "message": "Time"
+    },
+    "telegram_messageUnknownUrl": {
+        "message": "Unknown"
     }
 }

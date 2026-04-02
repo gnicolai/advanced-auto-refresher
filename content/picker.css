@@ -150,3 +150,187 @@
     font-size: 12px;
     opacity: 0.9;
 }
+
+/* Runtime change highlight */
+.aar-change-highlight {
+    position: relative;
+    animation: aarPulseOutline 1.4s ease-in-out 3;
+    outline: 3px solid rgba(16, 185, 129, 0.95) !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.16) !important;
+    transition: box-shadow 0.2s ease, outline-color 0.2s ease;
+}
+
+@keyframes aarPulseOutline {
+    0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+/* General monitor toast */
+#aar-monitor-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    max-width: 360px;
+    background: rgba(15, 23, 42, 0.94);
+    color: white;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(99, 102, 241, 0.35);
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.35);
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    z-index: 2147483647;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+#aar-monitor-toast.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.aar-monitor-toast-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #c7d2fe;
+    margin-bottom: 6px;
+}
+
+.aar-monitor-toast-message {
+    font-size: 13px;
+    line-height: 1.45;
+    color: #f8fafc;
+}
+
+.aar-monitor-toast-hint {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #c7d2fe;
+    opacity: 0.95;
+}
+
+.aar-monitor-toast-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.aar-monitor-toast-action {
+    border: 1px solid rgba(99, 102, 241, 0.35);
+    background: rgba(99, 102, 241, 0.14);
+    color: #eef2ff;
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.aar-monitor-toast-action:hover {
+    background: rgba(16, 185, 129, 0.16);
+    border-color: rgba(16, 185, 129, 0.45);
+    transform: translateY(-1px);
+}
+
+.aar-monitor-toast-clickable {
+    cursor: pointer;
+}
+
+.aar-monitor-toast-clickable:hover {
+    border-color: rgba(16, 185, 129, 0.45);
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.42);
+}
+
+.aar-monitor-toast-success {
+    border-color: rgba(16, 185, 129, 0.35);
+}
+
+.aar-monitor-toast-info {
+    border-color: rgba(99, 102, 241, 0.35);
+}
+
+#aar-text-debug-panel {
+    position: fixed;
+    left: 20px;
+    top: 20px;
+    width: min(520px, calc(100vw - 40px));
+    max-height: 56vh;
+    overflow: auto;
+    padding: 14px 16px;
+    background: rgba(15, 23, 42, 0.96);
+    color: #f8fafc;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    border-radius: 14px;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.4);
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    z-index: 2147483647;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+#aar-text-debug-panel.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.aar-debug-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.aar-debug-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #86efac;
+}
+
+.aar-debug-close {
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    background: rgba(30, 41, 59, 0.8);
+    color: #e2e8f0;
+    border-radius: 999px;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.aar-debug-row {
+    font-size: 12px;
+    line-height: 1.45;
+    margin-bottom: 6px;
+    color: #e2e8f0;
+    word-break: break-word;
+}
+
+.aar-debug-block {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(2, 6, 23, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    font-size: 12px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: Consolas, 'Courier New', monospace;
+}

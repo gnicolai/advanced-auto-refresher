@@ -217,5 +217,245 @@
     },
     "alertSound_preview": {
         "message": "▶ Vorschau"
+    },
+    "keywordWatch_enable": {
+        "message": "Schluesselwoerter oder Phrasen ueberwachen"
+    },
+    "keywordWatch_help": {
+        "message": "Wenn ein Selektor gesetzt ist, werden Schluesselwoerter in diesem Element geprueft. Andernfalls wird nach jedem Refresh der gesamte Seitentext durchsucht."
+    },
+    "keywordWatch_list": {
+        "message": "Schluesselwoerter / Phrasen"
+    },
+    "keywordWatch_placeholder": {
+        "message": "ein Schluesselwort oder eine Phrase pro Zeile"
+    },
+    "clickStop_enable": {
+        "message": "Refresh stoppen, wenn der Benutzer auf die Seite klickt"
+    },
+    "clickStop_pausedToast": {
+        "message": "Auto-Refresh nach dem Klick pausiert."
+    },
+    "notification_title": {
+        "message": "Auto Refresh Hinweis"
+    },
+    "notification_defaultBody": {
+        "message": "Eine ueberwachte Seite hat sich geaendert."
+    },
+    "notification_numericChanged": {
+        "message": "Der numerische Wert hat sich geaendert."
+    },
+    "notification_keywordsFound": {
+        "message": "Gefundene Schluesselwoerter:"
+    },
+    "notification_valueChanged": {
+        "message": "Wert geaendert"
+    },
+    "changeHighlight_default": {
+        "message": "Aenderung nach dem Refresh erkannt."
+    },
+    "changeHighlight_combined": {
+        "message": "Numerische und textuelle Aenderungen erkannt."
+    },
+    "changeHighlight_numeric": {
+        "message": "Der ueberwachte Wert hat sich nach dem Refresh geaendert."
+    },
+    "changeHighlight_keywords": {
+        "message": "Ueberwachte Schluesselwoerter wurden nach dem Refresh gefunden."
+    },
+    "keywordWatch_source": {
+        "message": "Zu pruefende Quelle"
+    },
+    "keywordWatch_sourceAuto": {
+        "message": "Text des ausgewaehlten Elements (Fallback Seitentext)"
+    },
+    "keywordWatch_sourcePageText": {
+        "message": "Gesamter Seitentext"
+    },
+    "keywordWatch_sourcePageHtml": {
+        "message": "Gesamtes Seiten-HTML"
+    },
+    "numericWatch_title": {
+        "message": "Zahl ueberwachen"
+    },
+    "numericWatch_enable": {
+        "message": "Zahl ueberwachen"
+    },
+    "textWatch_title": {
+        "message": "Text ueberwachen"
+    },
+    "textWatch_enable": {
+        "message": "Text oder Schluesselwoerter ueberwachen"
+    },
+    "textWatch_help": {
+        "message": "Ueberwache den Text eines Elements, den gesamten Seitentext oder das komplette Seiten-HTML. Schluesselwoerter bleiben optional und zusaetzlich."
+    },
+    "textWatch_method": {
+        "message": "Auswahlmethode"
+    },
+    "textWatch_select": {
+        "message": "Auswaehlen"
+    },
+    "textWatch_advanced": {
+        "message": "Erweitert"
+    },
+    "textWatch_pickElement": {
+        "message": "Klicken, um ein Element auszuwaehlen"
+    },
+    "textWatch_cssSelector": {
+        "message": "CSS-Selektor"
+    },
+    "textWatch_testSelector": {
+        "message": "Selektor testen"
+    },
+    "textWatch_selectedElement": {
+        "message": "Ausgewaehltes Element:"
+    },
+    "textWatch_none": {
+        "message": "Keines"
+    },
+    "textWatch_currentPreview": {
+        "message": "Aktuelle Vorschau:"
+    },
+    "textWatch_source": {
+        "message": "Zu pruefende Quelle"
+    },
+    "textWatch_sourceSelector": {
+        "message": "Text des ausgewaehlten Elements"
+    },
+    "textWatch_sourcePageText": {
+        "message": "Gesamter Seitentext"
+    },
+    "textWatch_sourcePageHtml": {
+        "message": "Gesamtes Seiten-HTML"
+    },
+    "textWatch_alertMode": {
+        "message": "Text-Alarmmodus"
+    },
+    "textWatch_alertModeChange": {
+        "message": "Jedes Erscheinen, Verschwinden oder jede Aenderung von Text"
+    },
+    "textWatch_alertModeKeywords": {
+        "message": "Keyword state changes"
+    },
+    "textWatch_alertModeChangeOrKeywords": {
+        "message": "Textaenderung oder Schluesselwoerter"
+    },
+    "textWatch_keywords": {
+        "message": "Schluesselwoerter / Phrasen"
+    },
+    "textWatch_placeholder": {
+        "message": "ein Schluesselwort oder eine Phrase pro Zeile"
+    },
+    "textWatch_jumpHint": {
+        "message": "Klicken, um zum Element zu springen."
+    },
+    "alertRouting_mode": {
+        "message": "Alarmkonfiguration"
+    },
+    "alertRouting_shared": {
+        "message": "Gemeinsamer Alarm"
+    },
+    "alertRouting_separate": {
+        "message": "Getrennte Alarme"
+    },
+    "alertRouting_sharedSound": {
+        "message": "Gemeinsamer Alarmton"
+    },
+    "alertRouting_sharedVolume": {
+        "message": "Gemeinsame Lautstaerke"
+    },
+    "notification_textChanged": {
+        "message": "Text wurde geaendert."
+    },
+    "changeHighlight_text": {
+        "message": "Der ueberwachte Text hat sich nach dem Refresh geaendert."
+    },
+    "textWatch_keywordsHelp": {
+        "message": "Insert one keyword or phrase per line."
+    },
+    "textWatch_debug": {
+        "message": "Debug: show captured content after each refresh"
+    },
+    "textWatch_debugHelp": {
+        "message": "Shows the captured text or HTML sample on the page so you can verify what is being monitored."
+    },
+    "textWatch_debugTitle": {
+        "message": "Text monitor debug"
+    },
+    "textWatch_debugSource": {
+        "message": "Source"
+    },
+    "textWatch_debugSelector": {
+        "message": "Selector"
+    },
+    "textWatch_debugMatches": {
+        "message": "Matched keywords"
+    },
+    "textWatch_debugPreview": {
+        "message": "Preview"
+    },
+    "toast_actionNumber": {
+        "message": "Go to number"
+    },
+    "toast_actionText": {
+        "message": "Go to text"
+    },
+    "toast_actionDebug": {
+        "message": "Open debug"
+    },
+    "textWatch_debugClose": {
+        "message": "Close"
+    },
+    "textWatch_debugEmpty": {
+        "message": "No captured content available."
+    },
+    "textWatch_alertModeKeywordState": {
+        "message": "Keyword appearance or disappearance only"
+    },
+    "notification_keywordsGone": {
+        "message": "Keywords disappeared:"
+    },
+    "telegram_testMissingCredentials": {
+        "message": "Bot-Token und Chat-ID eingeben"
+    },
+    "telegram_testSending": {
+        "message": "Wird gesendet..."
+    },
+    "telegram_testMessage": {
+        "message": "Auto Refresh & Page Monitor\\n\\nTelegram-Test erfolgreich abgeschlossen."
+    },
+    "telegram_testSuccess": {
+        "message": "Benachrichtigung erfolgreich gesendet"
+    },
+    "telegram_statusAutomaticLast": {
+        "message": "Letztes automatisches Telegram-Ereignis"
+    },
+    "telegram_statusSentSuccessfully": {
+        "message": "Erfolgreich gesendet"
+    },
+    "telegram_statusFailed": {
+        "message": "Fehlgeschlagen"
+    },
+    "telegram_statusUnknownError": {
+        "message": "Unbekannter Fehler"
+    },
+    "telegram_statusNetworkError": {
+        "message": "Netzwerkfehler"
+    },
+    "telegram_messageTitle": {
+        "message": "Alarm: Uberwachter Wert wurde geandert!"
+    },
+    "telegram_messageValue": {
+        "message": "Wert"
+    },
+    "telegram_messageUrl": {
+        "message": "URL"
+    },
+    "telegram_messageTime": {
+        "message": "Zeit"
+    },
+    "telegram_messageUnknownUrl": {
+        "message": "Unbekannt"
     }
 }

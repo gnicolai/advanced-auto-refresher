@@ -7,14 +7,20 @@
 let isPlaying = false;
 let audioContext = null;
 let activeNodes = [];
+let playbackQueue = [];
+let playNextTimer = null;
 
 // Listen for messages from service worker
 chrome.runtime.onMessage.addListener((message) => {
     if (message.target !== 'offscreen') return;
 
-    switch (message.type) {
+        switch (message.type) {
         case 'PLAY_AUDIO':
-            playSound(message.soundType || 'siren', message.volume ?? 0.8);
+            enqueuePlayback([{ soundType: message.soundType || 'siren', volume: message.volume ?? 0.8 }], Boolean(message.interrupt));
+            break;
+
+        case 'PLAY_AUDIO_SEQUENCE':
+            enqueuePlayback(message.sequence || [], Boolean(message.interrupt));
             break;
 
         case 'STOP_AUDIO':
@@ -24,8 +30,15 @@ chrome.runtime.onMessage.addListener((message) => {
 });
 
 // Stop all audio
-function stopAudio() {
+function stopAudio({ clearQueue = true } = {}) {
     isPlaying = false;
+    if (playNextTimer) {
+        clearTimeout(playNextTimer);
+        playNextTimer = null;
+    }
+    if (clearQueue) {
+        playbackQueue = [];
+    }
     activeNodes.forEach(node => {
         try { node.stop(); } catch { }
     });
@@ -36,9 +49,43 @@ function stopAudio() {
     }
 }
 
+function enqueuePlayback(sequence = [], interrupt = false) {
+    const normalized = Array.isArray(sequence)
+        ? sequence
+            .filter(item => item && item.soundType)
+            .map(item => ({
+                soundType: item.soundType,
+                volume: Math.max(0, Math.min(1, item.volume ?? 0.8))
+            }))
+        : [];
+
+    if (!normalized.length) {
+        return;
+    }
+
+    if (interrupt) {
+        stopAudio({ clearQueue: true });
+    }
+
+    playbackQueue.push(...normalized);
+    if (!isPlaying) {
+        playNextQueuedSound();
+    }
+}
+
+function playNextQueuedSound() {
+    if (!playbackQueue.length) {
+        chrome.runtime.sendMessage({ type: 'AUDIO_ENDED' }).catch(() => { });
+        return;
+    }
+
+    const nextSound = playbackQueue.shift();
+    playSound(nextSound.soundType, nextSound.volume);
+}
+
 // Play a specific sound type at a given volume
 function playSound(soundType, volume) {
-    stopAudio();
+    stopAudio({ clearQueue: false });
     isPlaying = true;
 
     try {
@@ -72,7 +119,19 @@ function createOsc(type, gainNode) {
         activeNodes = activeNodes.filter(n => n !== osc);
         if (activeNodes.length === 0) {
             isPlaying = false;
-            chrome.runtime.sendMessage({ type: 'AUDIO_ENDED' }).catch(() => { });
+            const contextToClose = audioContext;
+            audioContext = null;
+            if (contextToClose) {
+                contextToClose.close().catch(() => { });
+            }
+            if (playbackQueue.length > 0) {
+                playNextTimer = setTimeout(() => {
+                    playNextTimer = null;
+                    playNextQueuedSound();
+                }, 140);
+            } else {
+                chrome.runtime.sendMessage({ type: 'AUDIO_ENDED' }).catch(() => { });
+            }
         }
     };
     return osc;
