@@ -1,461 +1,500 @@
 {
-    "appDesc": {
-        "message": "Automatic refresh with stochastic timing and content change detection"
-    },
-    "appName": {
-        "message": "Auto Refresh & Page Monitor with Telegram Alerts"
-    },
-    "status_active": {
-        "message": "نشط"
-    },
-    "status_inactive": {
-        "message": "غير نشط"
-    },
-    "timer_title": {
-        "message": "مؤقت التحديث التلقائي"
-    },
-    "timer_interval": {
-        "message": "الفاصل الزمني (ثواني)"
-    },
-    "timer_start": {
-        "message": "ابدأ"
-    },
-    "timer_stop": {
-        "message": "توقف"
-    },
-    "stochastic_mode": {
-        "message": "الوضع العشوائي"
-    },
-    "stochastic_tooltip": {
-        "message": "يغير وقت التحديث عشوائياً لتجنب الأنماط القابلة للكشف"
-    },
-    "stochastic_minLimit": {
-        "message": "الحد الأدنى (ثواني)"
-    },
-    "stochastic_distribution": {
-        "message": "التوزيع"
-    },
-    "stochastic_uniform": {
-        "message": "منتظم"
-    },
-    "stochastic_uniformTooltip": {
-        "message": "وقت عشوائي بين الحد الأدنى و (2×الهدف−الحد الأدنى)"
-    },
-    "stochastic_gaussian": {
-        "message": "غاوسي"
-    },
-    "stochastic_gaussianTooltip": {
-        "message": "وقت متمركز على الهدف مع تباين طبيعي"
-    },
-    "contentWatch_title": {
-        "message": "كشف التغييرات"
-    },
-    "contentWatch_enable": {
-        "message": "مراقبة المحتوى"
-    },
-    "contentWatch_method": {
-        "message": "طريقة الاختيار"
-    },
-    "contentWatch_select": {
-        "message": "اختر"
-    },
-    "contentWatch_advanced": {
-        "message": "متقدم"
-    },
-    "contentWatch_pickElement": {
-        "message": "انقر لاختيار عنصر"
-    },
-    "contentWatch_cssSelector": {
-        "message": "محدد CSS"
-    },
-    "contentWatch_testSelector": {
-        "message": "اختبار المحدد"
-    },
-    "contentWatch_selectedElement": {
-        "message": "العنصر المحدد:"
-    },
-    "contentWatch_none": {
-        "message": "لا شيء"
-    },
-    "contentWatch_currentValue": {
-        "message": "القيمة الحالية:"
-    },
-    "contentWatch_error": {
-        "message": "خطأ"
-    },
-    "contentWatch_alertMode": {
-        "message": "وضع التنبيه"
-    },
-    "contentWatch_alertModeIncrease": {
-        "message": "📈 زيادة"
-    },
-    "contentWatch_alertModeDecrease": {
-        "message": "📉 نقصان"
-    },
-    "contentWatch_alertModeAny": {
-        "message": "🔄 أي تغيير"
-    },
-    "contentWatch_alertModeAbove": {
-        "message": "⬆️ فوق الحد"
-    },
-    "contentWatch_alertModeBelow": {
-        "message": "⬇️ تحت الحد"
-    },
-    "contentWatch_thresholdValue": {
-        "message": "قيمة الحد"
-    },
-    "lists_title": {
-        "message": "القائمة السوداء / القائمة البيضاء"
-    },
-    "lists_blacklist": {
-        "message": "القائمة السوداء"
-    },
-    "lists_whitelist": {
-        "message": "القائمة البيضاء"
-    },
-    "lists_blacklistDesc": {
-        "message": "🚫 سيتم تخطي التحديث في هذه الروابط (مثل: الدفع، تسجيل الدخول)"
-    },
-    "lists_whitelistDesc": {
-        "message": "✅ هذه الروابط تتجاوز القائمة السوداء (لها الأولوية)"
-    },
-    "lists_blacklistPlaceholder": {
-        "message": "*checkout*"
-    },
-    "lists_whitelistPlaceholder": {
-        "message": "*deals*"
-    },
-    "telegram_title": {
-        "message": "إشعارات تيليجرام"
-    },
-    "telegram_howtoTitle": {
-        "message": "📖 كيفية إعداد بوت تيليجرام"
-    },
-    "telegram_howtoStep1": {
-        "message": "افتح تيليجرام وابحث عن <strong>@BotFather</strong>"
-    },
-    "telegram_howtoStep2": {
-        "message": "أرسل <code>/newbot</code> واتبع التعليمات"
-    },
-    "telegram_howtoStep3": {
-        "message": "انسخ <strong>الرمز</strong> الذي تتلقاه"
-    },
-    "telegram_howtoStep4": {
-        "message": "ابحث عن <strong>@userinfobot</strong> وأرسل رسالة"
-    },
-    "telegram_howtoStep5": {
-        "message": "انسخ <strong>معرف الدردشة</strong> الرقمي الخاص بك"
-    },
-    "telegram_howtoStep6": {
-        "message": "الصق كليهما أدناه واضغط \"اختبار\""
-    },
-    "telegram_botToken": {
-        "message": "رمز البوت"
-    },
-    "telegram_botTokenPlaceholder": {
-        "message": "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
-    },
-    "telegram_chatId": {
-        "message": "معرف الدردشة"
-    },
-    "telegram_chatIdPlaceholder": {
-        "message": "123456789"
-    },
-    "telegram_testButton": {
-        "message": "اختبار الإشعار"
-    },
-    "alert_newContent": {
-        "message": "تم اكتشاف محتوى جديد!"
-    },
-    "alert_stopAlarm": {
-        "message": "إيقاف التنبيه"
-    },
-    "footer_createdBy": {
-        "message": "تم الإنشاء بواسطة Giulio Nicolai"
-    },
-    "footer_donate": {
-        "message": "تبرع"
-    },
-    "footer_donateText": {
-        "message": "هل أعجبك الامتداد؟"
-    },
-    "picker_title": {
-        "message": "اختر عنصراً للمراقبة"
-    },
-    "picker_hint": {
-        "message": "اضغط ESC للإلغاء"
-    },
-    "picker_selected": {
-        "message": "تم اختيار العنصر!"
-    },
-    "picker_initialValue": {
-        "message": "القيمة الأولية:"
-    },
-    "alertSound_title": {
-        "message": "صوت التنبيه"
-    },
-    "alertSound_siren": {
-        "message": "🚨 صفارة إنذار"
-    },
-    "alertSound_beep": {
-        "message": "🔔 صافرة"
-    },
-    "alertSound_chime": {
-        "message": "🎵 رنين"
-    },
-    "alertSound_alarm": {
-        "message": "⏰ منبه"
-    },
-    "alertSound_bell": {
-        "message": "🔔 جرس"
-    },
-    "alertSound_digital": {
-        "message": "💻 رقمي"
-    },
-    "alertSound_volume": {
-        "message": "مستوى الصوت"
-    },
-    "alertSound_preview": {
-        "message": "▶ معاينة"
-    },
-    "keywordWatch_enable": {
-        "message": "?????? ??????? ????????? ?? ????????"
-    },
-    "keywordWatch_help": {
-        "message": "??? ?? ????? ????? ????? ??? ??????? ????????? ???? ??? ??????. ???? ????? ????? ?? ?????? ??????? ??? ?? ?????."
-    },
-    "keywordWatch_list": {
-        "message": "??????? ????????? / ????????"
-    },
-    "keywordWatch_placeholder": {
-        "message": "???? ??????? ?? ????? ????? ?? ?? ???"
-    },
-    "clickStop_enable": {
-        "message": "???? ??????? ????? ???? ???????? ??? ??????"
-    },
-    "clickStop_pausedToast": {
-        "message": "?? ????? ??????? ???????? ????? ??? ?????."
-    },
-    "notification_title": {
-        "message": "????? Auto Refresh"
-    },
-    "notification_defaultBody": {
-        "message": "?? ????? ???? ??? ????????."
-    },
-    "notification_numericChanged": {
-        "message": "????? ?????? ???????."
-    },
-    "notification_keywordsFound": {
-        "message": "?? ?????? ??? ????? ???????:"
-    },
-    "notification_valueChanged": {
-        "message": "????? ??????"
-    },
-    "changeHighlight_default": {
-        "message": "?? ?????? ????? ??? ???????."
-    },
-    "changeHighlight_combined": {
-        "message": "?? ?????? ??????? ????? ?????."
-    },
-    "changeHighlight_numeric": {
-        "message": "????? ?????? ???????? ??? ???????."
-    },
-    "changeHighlight_keywords": {
-        "message": "?? ?????? ??? ??????? ????????? ???????? ??? ???????."
-    },
-    "keywordWatch_source": {
-        "message": "?????? ?????? ??????"
-    },
-    "keywordWatch_sourceAuto": {
-        "message": "?? ?????? ?????? (???? ??? ??????)"
-    },
-    "keywordWatch_sourcePageText": {
-        "message": "?? ?????? ???????"
-    },
-    "keywordWatch_sourcePageHtml": {
-        "message": "HTML ?????? ???????"
-    },
-    "numericWatch_title": {
-        "message": "?????? ?????"
-    },
-    "numericWatch_enable": {
-        "message": "?????? ?????"
-    },
-    "textWatch_title": {
-        "message": "?????? ????"
-    },
-    "textWatch_enable": {
-        "message": "?????? ???? ?? ??????? ?????????"
-    },
-    "textWatch_help": {
-        "message": "???? ?? ???? ???? ?? ?? ?????? ??????? ?? HTML ?????? ??????. ???? ??????? ????????? ???????? ????? ???? ?????."
-    },
-    "textWatch_method": {
-        "message": "????? ???????"
-    },
-    "textWatch_select": {
-        "message": "?????"
-    },
-    "textWatch_advanced": {
-        "message": "?????"
-    },
-    "textWatch_pickElement": {
-        "message": "???? ?????? ????"
-    },
-    "textWatch_cssSelector": {
-        "message": "???? CSS"
-    },
-    "textWatch_testSelector": {
-        "message": "????? ??????"
-    },
-    "textWatch_selectedElement": {
-        "message": "?????? ??????:"
-    },
-    "textWatch_none": {
-        "message": "?? ????"
-    },
-    "textWatch_currentPreview": {
-        "message": "???????? ???????:"
-    },
-    "textWatch_source": {
-        "message": "?????? ?????? ??????"
-    },
-    "textWatch_sourceSelector": {
-        "message": "?? ?????? ??????"
-    },
-    "textWatch_sourcePageText": {
-        "message": "?? ?????? ???????"
-    },
-    "textWatch_sourcePageHtml": {
-        "message": "HTML ?????? ???????"
-    },
-    "textWatch_alertMode": {
-        "message": "??? ????? ????"
-    },
-    "textWatch_alertModeChange": {
-        "message": "?? ???? ?? ?????? ?? ????? ?? ????"
-    },
-    "textWatch_alertModeKeywords": {
-        "message": "Keyword state changes"
-    },
-    "textWatch_alertModeChangeOrKeywords": {
-        "message": "???? ???? ?? ??????? ?????????"
-    },
-    "textWatch_keywords": {
-        "message": "??????? ????????? / ????????"
-    },
-    "textWatch_placeholder": {
-        "message": "???? ??????? ?? ????? ????? ?? ?? ???"
-    },
-    "textWatch_jumpHint": {
-        "message": "???? ???????? ??? ??????."
-    },
-    "alertRouting_mode": {
-        "message": "????? ?????????"
-    },
-    "alertRouting_shared": {
-        "message": "????? ?????"
-    },
-    "alertRouting_separate": {
-        "message": "??????? ??????"
-    },
-    "alertRouting_sharedSound": {
-        "message": "??? ??????? ???????"
-    },
-    "alertRouting_sharedVolume": {
-        "message": "????? ????? ???????"
-    },
-    "notification_textChanged": {
-        "message": "???? ????."
-    },
-    "changeHighlight_text": {
-        "message": "???? ???? ??????? ??? ???????."
-    },
-    "textWatch_keywordsHelp": {
-        "message": "Insert one keyword or phrase per line."
-    },
-    "textWatch_debug": {
-        "message": "Debug: show captured content after each refresh"
-    },
-    "textWatch_debugHelp": {
-        "message": "Shows the captured text or HTML sample on the page so you can verify what is being monitored."
-    },
-    "textWatch_debugTitle": {
-        "message": "Text monitor debug"
-    },
-    "textWatch_debugSource": {
-        "message": "Source"
-    },
-    "textWatch_debugSelector": {
-        "message": "Selector"
-    },
-    "textWatch_debugMatches": {
-        "message": "Matched keywords"
-    },
-    "textWatch_debugPreview": {
-        "message": "Preview"
-    },
-    "toast_actionNumber": {
-        "message": "Go to number"
-    },
-    "toast_actionText": {
-        "message": "Go to text"
-    },
-    "toast_actionDebug": {
-        "message": "Open debug"
-    },
-    "textWatch_debugClose": {
-        "message": "Close"
-    },
-    "textWatch_debugEmpty": {
-        "message": "No captured content available."
-    },
-    "textWatch_alertModeKeywordState": {
-        "message": "Keyword appearance or disappearance only"
-    },
-    "notification_keywordsGone": {
-        "message": "Keywords disappeared:"
-    },
-    "telegram_testMissingCredentials": {
-        "message": "أدخل Bot Token وChat ID"
-    },
-    "telegram_testSending": {
-        "message": "جارٍ الإرسال..."
-    },
-    "telegram_testMessage": {
-        "message": "Auto Refresh & Page Monitor\\n\\nتم اختبار Telegram بنجاح."
-    },
-    "telegram_testSuccess": {
-        "message": "تم إرسال الإشعار بنجاح"
-    },
-    "telegram_statusAutomaticLast": {
-        "message": "آخر حدث Telegram تلقائي"
-    },
-    "telegram_statusSentSuccessfully": {
-        "message": "تم الإرسال بنجاح"
-    },
-    "telegram_statusFailed": {
-        "message": "فشل"
-    },
-    "telegram_statusUnknownError": {
-        "message": "خطأ غير معروف"
-    },
-    "telegram_statusNetworkError": {
-        "message": "خطأ في الشبكة"
-    },
-    "telegram_messageTitle": {
-        "message": "تنبيه: تغيرت القيمة المراقبة!"
-    },
-    "telegram_messageValue": {
-        "message": "القيمة"
-    },
-    "telegram_messageUrl": {
-        "message": "الرابط"
-    },
-    "telegram_messageTime": {
-        "message": "الوقت"
-    },
-    "telegram_messageUnknownUrl": {
-        "message": "غير معروف"
-    }
+  "appDesc": {
+    "message": "Automatic refresh with stochastic timing and content change detection"
+  },
+  "appName": {
+    "message": "Auto Refresh & Page Monitor with Telegram Alerts"
+  },
+  "status_active": {
+    "message": "نشط"
+  },
+  "status_inactive": {
+    "message": "غير نشط"
+  },
+  "timer_title": {
+    "message": "مؤقت التحديث التلقائي"
+  },
+  "timer_interval": {
+    "message": "الفاصل الزمني (ثواني)"
+  },
+  "timer_start": {
+    "message": "ابدأ"
+  },
+  "timer_stop": {
+    "message": "توقف"
+  },
+  "stochastic_mode": {
+    "message": "الوضع العشوائي"
+  },
+  "stochastic_tooltip": {
+    "message": "يغير وقت التحديث عشوائياً لتجنب الأنماط القابلة للكشف"
+  },
+  "stochastic_minLimit": {
+    "message": "الحد الأدنى (ثواني)"
+  },
+  "stochastic_distribution": {
+    "message": "التوزيع"
+  },
+  "stochastic_uniform": {
+    "message": "منتظم"
+  },
+  "stochastic_uniformTooltip": {
+    "message": "وقت عشوائي بين الحد الأدنى و (2×الهدف−الحد الأدنى)"
+  },
+  "stochastic_gaussian": {
+    "message": "غاوسي"
+  },
+  "stochastic_gaussianTooltip": {
+    "message": "وقت متمركز على الهدف مع تباين طبيعي"
+  },
+  "contentWatch_title": {
+    "message": "كشف التغييرات"
+  },
+  "contentWatch_enable": {
+    "message": "مراقبة المحتوى"
+  },
+  "contentWatch_method": {
+    "message": "طريقة الاختيار"
+  },
+  "contentWatch_select": {
+    "message": "اختر"
+  },
+  "contentWatch_advanced": {
+    "message": "متقدم"
+  },
+  "contentWatch_pickElement": {
+    "message": "انقر لاختيار عنصر"
+  },
+  "contentWatch_cssSelector": {
+    "message": "محدد CSS"
+  },
+  "contentWatch_testSelector": {
+    "message": "اختبار المحدد"
+  },
+  "contentWatch_selectedElement": {
+    "message": "العنصر المحدد:"
+  },
+  "contentWatch_none": {
+    "message": "لا شيء"
+  },
+  "contentWatch_currentValue": {
+    "message": "القيمة الحالية:"
+  },
+  "contentWatch_error": {
+    "message": "خطأ"
+  },
+  "contentWatch_alertMode": {
+    "message": "وضع التنبيه"
+  },
+  "contentWatch_alertModeIncrease": {
+    "message": "📈 زيادة"
+  },
+  "contentWatch_alertModeDecrease": {
+    "message": "📉 نقصان"
+  },
+  "contentWatch_alertModeAny": {
+    "message": "🔄 أي تغيير"
+  },
+  "contentWatch_alertModeAbove": {
+    "message": "⬆️ فوق الحد"
+  },
+  "contentWatch_alertModeBelow": {
+    "message": "⬇️ تحت الحد"
+  },
+  "contentWatch_thresholdValue": {
+    "message": "قيمة الحد"
+  },
+  "lists_title": {
+    "message": "القائمة السوداء / القائمة البيضاء"
+  },
+  "lists_blacklist": {
+    "message": "القائمة السوداء"
+  },
+  "lists_whitelist": {
+    "message": "القائمة البيضاء"
+  },
+  "lists_blacklistDesc": {
+    "message": "🚫 سيتم تخطي التحديث في هذه الروابط (مثل: الدفع، تسجيل الدخول)"
+  },
+  "lists_whitelistDesc": {
+    "message": "✅ هذه الروابط تتجاوز القائمة السوداء (لها الأولوية)"
+  },
+  "lists_blacklistPlaceholder": {
+    "message": "*checkout*"
+  },
+  "lists_whitelistPlaceholder": {
+    "message": "*deals*"
+  },
+  "telegram_title": {
+    "message": "إشعارات تيليجرام"
+  },
+  "telegram_howtoTitle": {
+    "message": "📖 كيفية إعداد بوت تيليجرام"
+  },
+  "telegram_howtoStep1": {
+    "message": "افتح تيليجرام وابحث عن <strong>@BotFather</strong>"
+  },
+  "telegram_howtoStep2": {
+    "message": "أرسل <code>/newbot</code> واتبع التعليمات"
+  },
+  "telegram_howtoStep3": {
+    "message": "انسخ <strong>الرمز</strong> الذي تتلقاه"
+  },
+  "telegram_howtoStep4": {
+    "message": "ابحث عن <strong>@userinfobot</strong> وأرسل رسالة"
+  },
+  "telegram_howtoStep5": {
+    "message": "انسخ <strong>معرف الدردشة</strong> الرقمي الخاص بك"
+  },
+  "telegram_howtoStep6": {
+    "message": "الصق كليهما أدناه واضغط \"اختبار\""
+  },
+  "telegram_botToken": {
+    "message": "رمز البوت"
+  },
+  "telegram_botTokenPlaceholder": {
+    "message": "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+  },
+  "telegram_chatId": {
+    "message": "معرف الدردشة"
+  },
+  "telegram_chatIdPlaceholder": {
+    "message": "123456789"
+  },
+  "telegram_testButton": {
+    "message": "اختبار الإشعار"
+  },
+  "alert_newContent": {
+    "message": "تم اكتشاف محتوى جديد!"
+  },
+  "alert_stopAlarm": {
+    "message": "إيقاف التنبيه"
+  },
+  "footer_createdBy": {
+    "message": "تم الإنشاء بواسطة Giulio Nicolai"
+  },
+  "footer_donate": {
+    "message": "تبرع"
+  },
+  "footer_donateText": {
+    "message": "هل أعجبك الامتداد؟"
+  },
+  "picker_title": {
+    "message": "اختر عنصراً للمراقبة"
+  },
+  "picker_hint": {
+    "message": "اضغط ESC للإلغاء"
+  },
+  "picker_selected": {
+    "message": "تم اختيار العنصر!"
+  },
+  "picker_initialValue": {
+    "message": "القيمة الأولية:"
+  },
+  "alertSound_title": {
+    "message": "صوت التنبيه"
+  },
+  "alertSound_siren": {
+    "message": "🚨 صفارة إنذار"
+  },
+  "alertSound_beep": {
+    "message": "🔔 صافرة"
+  },
+  "alertSound_chime": {
+    "message": "🎵 رنين"
+  },
+  "alertSound_alarm": {
+    "message": "⏰ منبه"
+  },
+  "alertSound_bell": {
+    "message": "🔔 جرس"
+  },
+  "alertSound_digital": {
+    "message": "💻 رقمي"
+  },
+  "alertSound_volume": {
+    "message": "مستوى الصوت"
+  },
+  "alertSound_preview": {
+    "message": "▶ معاينة"
+  },
+  "keywordWatch_enable": {
+    "message": "?????? ??????? ????????? ?? ????????"
+  },
+  "keywordWatch_help": {
+    "message": "??? ?? ????? ????? ????? ??? ??????? ????????? ???? ??? ??????. ???? ????? ????? ?? ?????? ??????? ??? ?? ?????."
+  },
+  "keywordWatch_list": {
+    "message": "??????? ????????? / ????????"
+  },
+  "keywordWatch_placeholder": {
+    "message": "???? ??????? ?? ????? ????? ?? ?? ???"
+  },
+  "clickStop_enable": {
+    "message": "???? ??????? ????? ???? ???????? ??? ??????"
+  },
+  "clickStop_pausedToast": {
+    "message": "?? ????? ??????? ???????? ????? ??? ?????."
+  },
+  "notification_title": {
+    "message": "????? Auto Refresh"
+  },
+  "notification_defaultBody": {
+    "message": "?? ????? ???? ??? ????????."
+  },
+  "notification_numericChanged": {
+    "message": "????? ?????? ???????."
+  },
+  "notification_keywordsFound": {
+    "message": "?? ?????? ??? ????? ???????:"
+  },
+  "notification_valueChanged": {
+    "message": "????? ??????"
+  },
+  "changeHighlight_default": {
+    "message": "?? ?????? ????? ??? ???????."
+  },
+  "changeHighlight_combined": {
+    "message": "?? ?????? ??????? ????? ?????."
+  },
+  "changeHighlight_numeric": {
+    "message": "????? ?????? ???????? ??? ???????."
+  },
+  "changeHighlight_keywords": {
+    "message": "?? ?????? ??? ??????? ????????? ???????? ??? ???????."
+  },
+  "keywordWatch_source": {
+    "message": "?????? ?????? ??????"
+  },
+  "keywordWatch_sourceAuto": {
+    "message": "?? ?????? ?????? (???? ??? ??????)"
+  },
+  "keywordWatch_sourcePageText": {
+    "message": "?? ?????? ???????"
+  },
+  "keywordWatch_sourcePageHtml": {
+    "message": "HTML ?????? ???????"
+  },
+  "numericWatch_title": {
+    "message": "?????? ?????"
+  },
+  "numericWatch_enable": {
+    "message": "?????? ?????"
+  },
+  "textWatch_title": {
+    "message": "?????? ????"
+  },
+  "textWatch_enable": {
+    "message": "?????? ???? ?? ??????? ?????????"
+  },
+  "textWatch_help": {
+    "message": "???? ?? ???? ???? ?? ?? ?????? ??????? ?? HTML ?????? ??????. ???? ??????? ????????? ???????? ????? ???? ?????."
+  },
+  "textWatch_method": {
+    "message": "????? ???????"
+  },
+  "textWatch_select": {
+    "message": "?????"
+  },
+  "textWatch_advanced": {
+    "message": "?????"
+  },
+  "textWatch_pickElement": {
+    "message": "???? ?????? ????"
+  },
+  "textWatch_cssSelector": {
+    "message": "???? CSS"
+  },
+  "textWatch_testSelector": {
+    "message": "????? ??????"
+  },
+  "textWatch_selectedElement": {
+    "message": "?????? ??????:"
+  },
+  "textWatch_none": {
+    "message": "?? ????"
+  },
+  "textWatch_currentPreview": {
+    "message": "???????? ???????:"
+  },
+  "textWatch_source": {
+    "message": "?????? ?????? ??????"
+  },
+  "textWatch_sourceSelector": {
+    "message": "?? ?????? ??????"
+  },
+  "textWatch_sourcePageText": {
+    "message": "?? ?????? ???????"
+  },
+  "textWatch_sourcePageHtml": {
+    "message": "HTML ?????? ???????"
+  },
+  "textWatch_alertMode": {
+    "message": "??? ????? ????"
+  },
+  "textWatch_alertModeChange": {
+    "message": "?? ???? ?? ?????? ?? ????? ?? ????"
+  },
+  "textWatch_alertModeKeywords": {
+    "message": "Keyword state changes"
+  },
+  "textWatch_alertModeChangeOrKeywords": {
+    "message": "???? ???? ?? ??????? ?????????"
+  },
+  "textWatch_keywords": {
+    "message": "??????? ????????? / ????????"
+  },
+  "textWatch_placeholder": {
+    "message": "???? ??????? ?? ????? ????? ?? ?? ???"
+  },
+  "textWatch_jumpHint": {
+    "message": "???? ???????? ??? ??????."
+  },
+  "alertRouting_mode": {
+    "message": "????? ?????????"
+  },
+  "alertRouting_shared": {
+    "message": "????? ?????"
+  },
+  "alertRouting_separate": {
+    "message": "??????? ??????"
+  },
+  "alertRouting_sharedSound": {
+    "message": "??? ??????? ???????"
+  },
+  "alertRouting_sharedVolume": {
+    "message": "????? ????? ???????"
+  },
+  "notification_textChanged": {
+    "message": "???? ????."
+  },
+  "changeHighlight_text": {
+    "message": "???? ???? ??????? ??? ???????."
+  },
+  "textWatch_keywordsHelp": {
+    "message": "Insert one keyword or phrase per line."
+  },
+  "textWatch_debug": {
+    "message": "Debug: show captured content after each refresh"
+  },
+  "textWatch_debugHelp": {
+    "message": "Shows the captured text or HTML sample on the page so you can verify what is being monitored."
+  },
+  "textWatch_debugTitle": {
+    "message": "Text monitor debug"
+  },
+  "textWatch_debugSource": {
+    "message": "Source"
+  },
+  "textWatch_debugSelector": {
+    "message": "Selector"
+  },
+  "textWatch_debugMatches": {
+    "message": "Matched keywords"
+  },
+  "textWatch_debugPreview": {
+    "message": "Preview"
+  },
+  "toast_actionNumber": {
+    "message": "Go to number"
+  },
+  "toast_actionText": {
+    "message": "Go to text"
+  },
+  "toast_actionDebug": {
+    "message": "Open debug"
+  },
+  "textWatch_debugClose": {
+    "message": "Close"
+  },
+  "textWatch_debugEmpty": {
+    "message": "No captured content available."
+  },
+  "textWatch_alertModeKeywordState": {
+    "message": "???? ?? ?????? ??????? ?????????"
+  },
+  "notification_keywordsGone": {
+    "message": "Keywords disappeared:"
+  },
+  "telegram_testMissingCredentials": {
+    "message": "أدخل Bot Token وChat ID"
+  },
+  "telegram_testSending": {
+    "message": "جارٍ الإرسال..."
+  },
+  "telegram_testMessage": {
+    "message": "Auto Refresh & Page Monitor\\n\\nتم اختبار Telegram بنجاح."
+  },
+  "telegram_testSuccess": {
+    "message": "تم إرسال الإشعار بنجاح"
+  },
+  "telegram_statusAutomaticLast": {
+    "message": "آخر حدث Telegram تلقائي"
+  },
+  "telegram_statusSentSuccessfully": {
+    "message": "تم الإرسال بنجاح"
+  },
+  "telegram_statusFailed": {
+    "message": "فشل"
+  },
+  "telegram_statusUnknownError": {
+    "message": "خطأ غير معروف"
+  },
+  "telegram_statusNetworkError": {
+    "message": "خطأ في الشبكة"
+  },
+  "telegram_messageTitle": {
+    "message": "تنبيه: تغيرت القيمة المراقبة!"
+  },
+  "telegram_messageValue": {
+    "message": "القيمة"
+  },
+  "telegram_messageUrl": {
+    "message": "الرابط"
+  },
+  "telegram_messageTime": {
+    "message": "الوقت"
+  },
+  "telegram_messageUnknownUrl": {
+    "message": "غير معروف"
+  },
+  "textWatch_alertModeKeywordAppeared": {
+    "message": "???? ??????? ????????? ???"
+  },
+  "textWatch_alertModeKeywordDisappeared": {
+    "message": "?????? ??????? ????????? ???"
+  },
+  "urlLock_pausedToast": {
+    "message": "?? ????? ??????? ???????? ????? ??? ??????? ????? ??? ???? ????."
+  },
+  "contentWatch_numberTarget": {
+    "message": "????? ??????? ???????"
+  },
+  "contentWatch_numberCandidatesEmpty": {
+    "message": "???? ?????? ?? ????? ?????? ????? ?? ??????? ????????."
+  },
+  "contentWatch_numberCandidatesFound": {
+    "message": "??????? ????????"
+  },
+  "contentWatch_numberCandidatesSingle": {
+    "message": "????? ???????"
+  },
+  "urlLock_enable": {
+    "message": "??? ???????? ????? ????? URL ??????"
+  },
+  "urlLock_help": {
+    "message": "???? ??? ??????? ???? ??? ?? ???? ??? ??????? ???????? ??????? ??????? ???? ??? ????."
+  },
+  "urlLock_mode": {
+    "message": "??? ??? ????? URL"
+  },
+  "urlLock_modeExact": {
+    "message": "????? URL ?????"
+  },
+  "urlLock_modePath": {
+    "message": "??? ??????"
+  },
+  "urlLock_modeOrigin": {
+    "message": "??? ??????"
+  }
 }

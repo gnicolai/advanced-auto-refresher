@@ -1,461 +1,500 @@
 {
-    "appDesc": {
-        "message": "Automatische Aktualisierung mit stochastischem Timing und Inhaltsaenderungserkennung"
-    },
-    "appName": {
-        "message": "Auto Refresh & Page Monitor with Telegram Alerts"
-    },
-    "status_active": {
-        "message": "Aktiv"
-    },
-    "status_inactive": {
-        "message": "Inaktiv"
-    },
-    "timer_title": {
-        "message": "Auto-Refresh Timer"
-    },
-    "timer_interval": {
-        "message": "Intervall (Sekunden)"
-    },
-    "timer_start": {
-        "message": "Starten"
-    },
-    "timer_stop": {
-        "message": "Stoppen"
-    },
-    "stochastic_mode": {
-        "message": "Stochastischer Modus"
-    },
-    "stochastic_tooltip": {
-        "message": "Variiert zufällig die Aktualisierungszeit, um erkennbare Muster zu vermeiden"
-    },
-    "stochastic_minLimit": {
-        "message": "Mindestgrenze (Sekunden)"
-    },
-    "stochastic_distribution": {
-        "message": "Verteilung"
-    },
-    "stochastic_uniform": {
-        "message": "Gleichmäßig"
-    },
-    "stochastic_uniformTooltip": {
-        "message": "Zufällige Zeit zwischen min und (2×Ziel−min)"
-    },
-    "stochastic_gaussian": {
-        "message": "Gaußsch"
-    },
-    "stochastic_gaussianTooltip": {
-        "message": "Zeit zentriert auf Ziel mit natürlicher Variation"
-    },
-    "contentWatch_title": {
-        "message": "Änderungserkennung"
-    },
-    "contentWatch_enable": {
-        "message": "Inhalt überwachen"
-    },
-    "contentWatch_method": {
-        "message": "Auswahlmethode"
-    },
-    "contentWatch_select": {
-        "message": "Auswählen"
-    },
-    "contentWatch_advanced": {
-        "message": "Erweitert"
-    },
-    "contentWatch_pickElement": {
-        "message": "Klicken Sie, um ein Element auszuwählen"
-    },
-    "contentWatch_cssSelector": {
-        "message": "CSS-Selektor"
-    },
-    "contentWatch_testSelector": {
-        "message": "Selektor testen"
-    },
-    "contentWatch_selectedElement": {
-        "message": "Ausgewähltes Element:"
-    },
-    "contentWatch_none": {
-        "message": "Keines"
-    },
-    "contentWatch_currentValue": {
-        "message": "Aktueller Wert:"
-    },
-    "contentWatch_error": {
-        "message": "Fehler"
-    },
-    "contentWatch_alertMode": {
-        "message": "Alarmmodus"
-    },
-    "contentWatch_alertModeIncrease": {
-        "message": "📈 Erhöhung"
-    },
-    "contentWatch_alertModeDecrease": {
-        "message": "📉 Verringerung"
-    },
-    "contentWatch_alertModeAny": {
-        "message": "🔄 Jede Änderung"
-    },
-    "contentWatch_alertModeAbove": {
-        "message": "⬆️ Über Schwellenwert"
-    },
-    "contentWatch_alertModeBelow": {
-        "message": "⬇️ Unter Schwellenwert"
-    },
-    "contentWatch_thresholdValue": {
-        "message": "Schwellenwert"
-    },
-    "lists_title": {
-        "message": "Schwarze Liste / Weiße Liste"
-    },
-    "lists_blacklist": {
-        "message": "Schwarze Liste"
-    },
-    "lists_whitelist": {
-        "message": "Weiße Liste"
-    },
-    "lists_blacklistDesc": {
-        "message": "🚫 Aktualisierung wird bei diesen URLs übersprungen (z.B. Kasse, Login)"
-    },
-    "lists_whitelistDesc": {
-        "message": "✅ Diese URLs überschreiben die schwarze Liste (Priorität)"
-    },
-    "lists_blacklistPlaceholder": {
-        "message": "*checkout*"
-    },
-    "lists_whitelistPlaceholder": {
-        "message": "*deals*"
-    },
-    "telegram_title": {
-        "message": "Telegram Benachrichtigungen"
-    },
-    "telegram_howtoTitle": {
-        "message": "📖 Wie man den Telegram Bot einrichtet"
-    },
-    "telegram_howtoStep1": {
-        "message": "Öffne Telegram und suche nach <strong>@BotFather</strong>"
-    },
-    "telegram_howtoStep2": {
-        "message": "Sende <code>/newbot</code> und folge den Anweisungen"
-    },
-    "telegram_howtoStep3": {
-        "message": "Kopiere den <strong>Token</strong> den du erhältst"
-    },
-    "telegram_howtoStep4": {
-        "message": "Suche nach <strong>@userinfobot</strong> und sende eine Nachricht"
-    },
-    "telegram_howtoStep5": {
-        "message": "Kopiere deine numerische <strong>Chat ID</strong>"
-    },
-    "telegram_howtoStep6": {
-        "message": "Füge beide unten ein und drücke \"Test\""
-    },
-    "telegram_botToken": {
-        "message": "Bot Token"
-    },
-    "telegram_botTokenPlaceholder": {
-        "message": "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
-    },
-    "telegram_chatId": {
-        "message": "Chat ID"
-    },
-    "telegram_chatIdPlaceholder": {
-        "message": "123456789"
-    },
-    "telegram_testButton": {
-        "message": "Benachrichtigung testen"
-    },
-    "alert_newContent": {
-        "message": "Neuer Inhalt erkannt!"
-    },
-    "alert_stopAlarm": {
-        "message": "Alarm stoppen"
-    },
-    "footer_createdBy": {
-        "message": "Erstellt von Giulio Nicolai"
-    },
-    "footer_donate": {
-        "message": "Spenden"
-    },
-    "footer_donateText": {
-        "message": "Gefällt Ihnen die Erweiterung?"
-    },
-    "picker_title": {
-        "message": "Wählen Sie ein zu überwachendes Element"
-    },
-    "picker_hint": {
-        "message": "Drücken Sie ESC zum Abbrechen"
-    },
-    "picker_selected": {
-        "message": "Element ausgewählt!"
-    },
-    "picker_initialValue": {
-        "message": "Anfangswert:"
-    },
-    "alertSound_title": {
-        "message": "Alarmton"
-    },
-    "alertSound_siren": {
-        "message": "🚨 Sirene"
-    },
-    "alertSound_beep": {
-        "message": "🔔 Piep"
-    },
-    "alertSound_chime": {
-        "message": "🎵 Glockenspiel"
-    },
-    "alertSound_alarm": {
-        "message": "⏰ Alarm"
-    },
-    "alertSound_bell": {
-        "message": "🔔 Glocke"
-    },
-    "alertSound_digital": {
-        "message": "💻 Digital"
-    },
-    "alertSound_volume": {
-        "message": "Lautstärke"
-    },
-    "alertSound_preview": {
-        "message": "▶ Vorschau"
-    },
-    "keywordWatch_enable": {
-        "message": "Schluesselwoerter oder Phrasen ueberwachen"
-    },
-    "keywordWatch_help": {
-        "message": "Wenn ein Selektor gesetzt ist, werden Schluesselwoerter in diesem Element geprueft. Andernfalls wird nach jedem Refresh der gesamte Seitentext durchsucht."
-    },
-    "keywordWatch_list": {
-        "message": "Schluesselwoerter / Phrasen"
-    },
-    "keywordWatch_placeholder": {
-        "message": "ein Schluesselwort oder eine Phrase pro Zeile"
-    },
-    "clickStop_enable": {
-        "message": "Refresh stoppen, wenn der Benutzer auf die Seite klickt"
-    },
-    "clickStop_pausedToast": {
-        "message": "Auto-Refresh nach dem Klick pausiert."
-    },
-    "notification_title": {
-        "message": "Auto Refresh Hinweis"
-    },
-    "notification_defaultBody": {
-        "message": "Eine ueberwachte Seite hat sich geaendert."
-    },
-    "notification_numericChanged": {
-        "message": "Der numerische Wert hat sich geaendert."
-    },
-    "notification_keywordsFound": {
-        "message": "Gefundene Schluesselwoerter:"
-    },
-    "notification_valueChanged": {
-        "message": "Wert geaendert"
-    },
-    "changeHighlight_default": {
-        "message": "Aenderung nach dem Refresh erkannt."
-    },
-    "changeHighlight_combined": {
-        "message": "Numerische und textuelle Aenderungen erkannt."
-    },
-    "changeHighlight_numeric": {
-        "message": "Der ueberwachte Wert hat sich nach dem Refresh geaendert."
-    },
-    "changeHighlight_keywords": {
-        "message": "Ueberwachte Schluesselwoerter wurden nach dem Refresh gefunden."
-    },
-    "keywordWatch_source": {
-        "message": "Zu pruefende Quelle"
-    },
-    "keywordWatch_sourceAuto": {
-        "message": "Text des ausgewaehlten Elements (Fallback Seitentext)"
-    },
-    "keywordWatch_sourcePageText": {
-        "message": "Gesamter Seitentext"
-    },
-    "keywordWatch_sourcePageHtml": {
-        "message": "Gesamtes Seiten-HTML"
-    },
-    "numericWatch_title": {
-        "message": "Zahl ueberwachen"
-    },
-    "numericWatch_enable": {
-        "message": "Zahl ueberwachen"
-    },
-    "textWatch_title": {
-        "message": "Text ueberwachen"
-    },
-    "textWatch_enable": {
-        "message": "Text oder Schluesselwoerter ueberwachen"
-    },
-    "textWatch_help": {
-        "message": "Ueberwache den Text eines Elements, den gesamten Seitentext oder das komplette Seiten-HTML. Schluesselwoerter bleiben optional und zusaetzlich."
-    },
-    "textWatch_method": {
-        "message": "Auswahlmethode"
-    },
-    "textWatch_select": {
-        "message": "Auswaehlen"
-    },
-    "textWatch_advanced": {
-        "message": "Erweitert"
-    },
-    "textWatch_pickElement": {
-        "message": "Klicken, um ein Element auszuwaehlen"
-    },
-    "textWatch_cssSelector": {
-        "message": "CSS-Selektor"
-    },
-    "textWatch_testSelector": {
-        "message": "Selektor testen"
-    },
-    "textWatch_selectedElement": {
-        "message": "Ausgewaehltes Element:"
-    },
-    "textWatch_none": {
-        "message": "Keines"
-    },
-    "textWatch_currentPreview": {
-        "message": "Aktuelle Vorschau:"
-    },
-    "textWatch_source": {
-        "message": "Zu pruefende Quelle"
-    },
-    "textWatch_sourceSelector": {
-        "message": "Text des ausgewaehlten Elements"
-    },
-    "textWatch_sourcePageText": {
-        "message": "Gesamter Seitentext"
-    },
-    "textWatch_sourcePageHtml": {
-        "message": "Gesamtes Seiten-HTML"
-    },
-    "textWatch_alertMode": {
-        "message": "Text-Alarmmodus"
-    },
-    "textWatch_alertModeChange": {
-        "message": "Jedes Erscheinen, Verschwinden oder jede Aenderung von Text"
-    },
-    "textWatch_alertModeKeywords": {
-        "message": "Keyword state changes"
-    },
-    "textWatch_alertModeChangeOrKeywords": {
-        "message": "Textaenderung oder Schluesselwoerter"
-    },
-    "textWatch_keywords": {
-        "message": "Schluesselwoerter / Phrasen"
-    },
-    "textWatch_placeholder": {
-        "message": "ein Schluesselwort oder eine Phrase pro Zeile"
-    },
-    "textWatch_jumpHint": {
-        "message": "Klicken, um zum Element zu springen."
-    },
-    "alertRouting_mode": {
-        "message": "Alarmkonfiguration"
-    },
-    "alertRouting_shared": {
-        "message": "Gemeinsamer Alarm"
-    },
-    "alertRouting_separate": {
-        "message": "Getrennte Alarme"
-    },
-    "alertRouting_sharedSound": {
-        "message": "Gemeinsamer Alarmton"
-    },
-    "alertRouting_sharedVolume": {
-        "message": "Gemeinsame Lautstaerke"
-    },
-    "notification_textChanged": {
-        "message": "Text wurde geaendert."
-    },
-    "changeHighlight_text": {
-        "message": "Der ueberwachte Text hat sich nach dem Refresh geaendert."
-    },
-    "textWatch_keywordsHelp": {
-        "message": "Insert one keyword or phrase per line."
-    },
-    "textWatch_debug": {
-        "message": "Debug: show captured content after each refresh"
-    },
-    "textWatch_debugHelp": {
-        "message": "Shows the captured text or HTML sample on the page so you can verify what is being monitored."
-    },
-    "textWatch_debugTitle": {
-        "message": "Text monitor debug"
-    },
-    "textWatch_debugSource": {
-        "message": "Source"
-    },
-    "textWatch_debugSelector": {
-        "message": "Selector"
-    },
-    "textWatch_debugMatches": {
-        "message": "Matched keywords"
-    },
-    "textWatch_debugPreview": {
-        "message": "Preview"
-    },
-    "toast_actionNumber": {
-        "message": "Go to number"
-    },
-    "toast_actionText": {
-        "message": "Go to text"
-    },
-    "toast_actionDebug": {
-        "message": "Open debug"
-    },
-    "textWatch_debugClose": {
-        "message": "Close"
-    },
-    "textWatch_debugEmpty": {
-        "message": "No captured content available."
-    },
-    "textWatch_alertModeKeywordState": {
-        "message": "Keyword appearance or disappearance only"
-    },
-    "notification_keywordsGone": {
-        "message": "Keywords disappeared:"
-    },
-    "telegram_testMissingCredentials": {
-        "message": "Bot-Token und Chat-ID eingeben"
-    },
-    "telegram_testSending": {
-        "message": "Wird gesendet..."
-    },
-    "telegram_testMessage": {
-        "message": "Auto Refresh & Page Monitor\\n\\nTelegram-Test erfolgreich abgeschlossen."
-    },
-    "telegram_testSuccess": {
-        "message": "Benachrichtigung erfolgreich gesendet"
-    },
-    "telegram_statusAutomaticLast": {
-        "message": "Letztes automatisches Telegram-Ereignis"
-    },
-    "telegram_statusSentSuccessfully": {
-        "message": "Erfolgreich gesendet"
-    },
-    "telegram_statusFailed": {
-        "message": "Fehlgeschlagen"
-    },
-    "telegram_statusUnknownError": {
-        "message": "Unbekannter Fehler"
-    },
-    "telegram_statusNetworkError": {
-        "message": "Netzwerkfehler"
-    },
-    "telegram_messageTitle": {
-        "message": "Alarm: Uberwachter Wert wurde geandert!"
-    },
-    "telegram_messageValue": {
-        "message": "Wert"
-    },
-    "telegram_messageUrl": {
-        "message": "URL"
-    },
-    "telegram_messageTime": {
-        "message": "Zeit"
-    },
-    "telegram_messageUnknownUrl": {
-        "message": "Unbekannt"
-    }
+  "appDesc": {
+    "message": "Automatische Aktualisierung mit stochastischem Timing und Inhaltsaenderungserkennung"
+  },
+  "appName": {
+    "message": "Auto Refresh & Page Monitor with Telegram Alerts"
+  },
+  "status_active": {
+    "message": "Aktiv"
+  },
+  "status_inactive": {
+    "message": "Inaktiv"
+  },
+  "timer_title": {
+    "message": "Auto-Refresh Timer"
+  },
+  "timer_interval": {
+    "message": "Intervall (Sekunden)"
+  },
+  "timer_start": {
+    "message": "Starten"
+  },
+  "timer_stop": {
+    "message": "Stoppen"
+  },
+  "stochastic_mode": {
+    "message": "Stochastischer Modus"
+  },
+  "stochastic_tooltip": {
+    "message": "Variiert zufällig die Aktualisierungszeit, um erkennbare Muster zu vermeiden"
+  },
+  "stochastic_minLimit": {
+    "message": "Mindestgrenze (Sekunden)"
+  },
+  "stochastic_distribution": {
+    "message": "Verteilung"
+  },
+  "stochastic_uniform": {
+    "message": "Gleichmäßig"
+  },
+  "stochastic_uniformTooltip": {
+    "message": "Zufällige Zeit zwischen min und (2×Ziel−min)"
+  },
+  "stochastic_gaussian": {
+    "message": "Gaußsch"
+  },
+  "stochastic_gaussianTooltip": {
+    "message": "Zeit zentriert auf Ziel mit natürlicher Variation"
+  },
+  "contentWatch_title": {
+    "message": "Änderungserkennung"
+  },
+  "contentWatch_enable": {
+    "message": "Inhalt überwachen"
+  },
+  "contentWatch_method": {
+    "message": "Auswahlmethode"
+  },
+  "contentWatch_select": {
+    "message": "Auswählen"
+  },
+  "contentWatch_advanced": {
+    "message": "Erweitert"
+  },
+  "contentWatch_pickElement": {
+    "message": "Klicken Sie, um ein Element auszuwählen"
+  },
+  "contentWatch_cssSelector": {
+    "message": "CSS-Selektor"
+  },
+  "contentWatch_testSelector": {
+    "message": "Selektor testen"
+  },
+  "contentWatch_selectedElement": {
+    "message": "Ausgewähltes Element:"
+  },
+  "contentWatch_none": {
+    "message": "Keines"
+  },
+  "contentWatch_currentValue": {
+    "message": "Aktueller Wert:"
+  },
+  "contentWatch_error": {
+    "message": "Fehler"
+  },
+  "contentWatch_alertMode": {
+    "message": "Alarmmodus"
+  },
+  "contentWatch_alertModeIncrease": {
+    "message": "📈 Erhöhung"
+  },
+  "contentWatch_alertModeDecrease": {
+    "message": "📉 Verringerung"
+  },
+  "contentWatch_alertModeAny": {
+    "message": "🔄 Jede Änderung"
+  },
+  "contentWatch_alertModeAbove": {
+    "message": "⬆️ Über Schwellenwert"
+  },
+  "contentWatch_alertModeBelow": {
+    "message": "⬇️ Unter Schwellenwert"
+  },
+  "contentWatch_thresholdValue": {
+    "message": "Schwellenwert"
+  },
+  "lists_title": {
+    "message": "Schwarze Liste / Weiße Liste"
+  },
+  "lists_blacklist": {
+    "message": "Schwarze Liste"
+  },
+  "lists_whitelist": {
+    "message": "Weiße Liste"
+  },
+  "lists_blacklistDesc": {
+    "message": "🚫 Aktualisierung wird bei diesen URLs übersprungen (z.B. Kasse, Login)"
+  },
+  "lists_whitelistDesc": {
+    "message": "✅ Diese URLs überschreiben die schwarze Liste (Priorität)"
+  },
+  "lists_blacklistPlaceholder": {
+    "message": "*checkout*"
+  },
+  "lists_whitelistPlaceholder": {
+    "message": "*deals*"
+  },
+  "telegram_title": {
+    "message": "Telegram Benachrichtigungen"
+  },
+  "telegram_howtoTitle": {
+    "message": "📖 Wie man den Telegram Bot einrichtet"
+  },
+  "telegram_howtoStep1": {
+    "message": "Öffne Telegram und suche nach <strong>@BotFather</strong>"
+  },
+  "telegram_howtoStep2": {
+    "message": "Sende <code>/newbot</code> und folge den Anweisungen"
+  },
+  "telegram_howtoStep3": {
+    "message": "Kopiere den <strong>Token</strong> den du erhältst"
+  },
+  "telegram_howtoStep4": {
+    "message": "Suche nach <strong>@userinfobot</strong> und sende eine Nachricht"
+  },
+  "telegram_howtoStep5": {
+    "message": "Kopiere deine numerische <strong>Chat ID</strong>"
+  },
+  "telegram_howtoStep6": {
+    "message": "Füge beide unten ein und drücke \"Test\""
+  },
+  "telegram_botToken": {
+    "message": "Bot Token"
+  },
+  "telegram_botTokenPlaceholder": {
+    "message": "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+  },
+  "telegram_chatId": {
+    "message": "Chat ID"
+  },
+  "telegram_chatIdPlaceholder": {
+    "message": "123456789"
+  },
+  "telegram_testButton": {
+    "message": "Benachrichtigung testen"
+  },
+  "alert_newContent": {
+    "message": "Neuer Inhalt erkannt!"
+  },
+  "alert_stopAlarm": {
+    "message": "Alarm stoppen"
+  },
+  "footer_createdBy": {
+    "message": "Erstellt von Giulio Nicolai"
+  },
+  "footer_donate": {
+    "message": "Spenden"
+  },
+  "footer_donateText": {
+    "message": "Gefällt Ihnen die Erweiterung?"
+  },
+  "picker_title": {
+    "message": "Wählen Sie ein zu überwachendes Element"
+  },
+  "picker_hint": {
+    "message": "Drücken Sie ESC zum Abbrechen"
+  },
+  "picker_selected": {
+    "message": "Element ausgewählt!"
+  },
+  "picker_initialValue": {
+    "message": "Anfangswert:"
+  },
+  "alertSound_title": {
+    "message": "Alarmton"
+  },
+  "alertSound_siren": {
+    "message": "🚨 Sirene"
+  },
+  "alertSound_beep": {
+    "message": "🔔 Piep"
+  },
+  "alertSound_chime": {
+    "message": "🎵 Glockenspiel"
+  },
+  "alertSound_alarm": {
+    "message": "⏰ Alarm"
+  },
+  "alertSound_bell": {
+    "message": "🔔 Glocke"
+  },
+  "alertSound_digital": {
+    "message": "💻 Digital"
+  },
+  "alertSound_volume": {
+    "message": "Lautstärke"
+  },
+  "alertSound_preview": {
+    "message": "▶ Vorschau"
+  },
+  "keywordWatch_enable": {
+    "message": "Schluesselwoerter oder Phrasen ueberwachen"
+  },
+  "keywordWatch_help": {
+    "message": "Wenn ein Selektor gesetzt ist, werden Schluesselwoerter in diesem Element geprueft. Andernfalls wird nach jedem Refresh der gesamte Seitentext durchsucht."
+  },
+  "keywordWatch_list": {
+    "message": "Schluesselwoerter / Phrasen"
+  },
+  "keywordWatch_placeholder": {
+    "message": "ein Schluesselwort oder eine Phrase pro Zeile"
+  },
+  "clickStop_enable": {
+    "message": "Refresh stoppen, wenn der Benutzer auf die Seite klickt"
+  },
+  "clickStop_pausedToast": {
+    "message": "Auto-Refresh nach dem Klick pausiert."
+  },
+  "notification_title": {
+    "message": "Auto Refresh Hinweis"
+  },
+  "notification_defaultBody": {
+    "message": "Eine ueberwachte Seite hat sich geaendert."
+  },
+  "notification_numericChanged": {
+    "message": "Der numerische Wert hat sich geaendert."
+  },
+  "notification_keywordsFound": {
+    "message": "Gefundene Schluesselwoerter:"
+  },
+  "notification_valueChanged": {
+    "message": "Wert geaendert"
+  },
+  "changeHighlight_default": {
+    "message": "Aenderung nach dem Refresh erkannt."
+  },
+  "changeHighlight_combined": {
+    "message": "Numerische und textuelle Aenderungen erkannt."
+  },
+  "changeHighlight_numeric": {
+    "message": "Der ueberwachte Wert hat sich nach dem Refresh geaendert."
+  },
+  "changeHighlight_keywords": {
+    "message": "Ueberwachte Schluesselwoerter wurden nach dem Refresh gefunden."
+  },
+  "keywordWatch_source": {
+    "message": "Zu pruefende Quelle"
+  },
+  "keywordWatch_sourceAuto": {
+    "message": "Text des ausgewaehlten Elements (Fallback Seitentext)"
+  },
+  "keywordWatch_sourcePageText": {
+    "message": "Gesamter Seitentext"
+  },
+  "keywordWatch_sourcePageHtml": {
+    "message": "Gesamtes Seiten-HTML"
+  },
+  "numericWatch_title": {
+    "message": "Zahl ueberwachen"
+  },
+  "numericWatch_enable": {
+    "message": "Zahl ueberwachen"
+  },
+  "textWatch_title": {
+    "message": "Text ueberwachen"
+  },
+  "textWatch_enable": {
+    "message": "Text oder Schluesselwoerter ueberwachen"
+  },
+  "textWatch_help": {
+    "message": "Ueberwache den Text eines Elements, den gesamten Seitentext oder das komplette Seiten-HTML. Schluesselwoerter bleiben optional und zusaetzlich."
+  },
+  "textWatch_method": {
+    "message": "Auswahlmethode"
+  },
+  "textWatch_select": {
+    "message": "Auswaehlen"
+  },
+  "textWatch_advanced": {
+    "message": "Erweitert"
+  },
+  "textWatch_pickElement": {
+    "message": "Klicken, um ein Element auszuwaehlen"
+  },
+  "textWatch_cssSelector": {
+    "message": "CSS-Selektor"
+  },
+  "textWatch_testSelector": {
+    "message": "Selektor testen"
+  },
+  "textWatch_selectedElement": {
+    "message": "Ausgewaehltes Element:"
+  },
+  "textWatch_none": {
+    "message": "Keines"
+  },
+  "textWatch_currentPreview": {
+    "message": "Aktuelle Vorschau:"
+  },
+  "textWatch_source": {
+    "message": "Zu pruefende Quelle"
+  },
+  "textWatch_sourceSelector": {
+    "message": "Text des ausgewaehlten Elements"
+  },
+  "textWatch_sourcePageText": {
+    "message": "Gesamter Seitentext"
+  },
+  "textWatch_sourcePageHtml": {
+    "message": "Gesamtes Seiten-HTML"
+  },
+  "textWatch_alertMode": {
+    "message": "Text-Alarmmodus"
+  },
+  "textWatch_alertModeChange": {
+    "message": "Jedes Erscheinen, Verschwinden oder jede Aenderung von Text"
+  },
+  "textWatch_alertModeKeywords": {
+    "message": "Keyword state changes"
+  },
+  "textWatch_alertModeChangeOrKeywords": {
+    "message": "Textaenderung oder Schluesselwoerter"
+  },
+  "textWatch_keywords": {
+    "message": "Schluesselwoerter / Phrasen"
+  },
+  "textWatch_placeholder": {
+    "message": "ein Schluesselwort oder eine Phrase pro Zeile"
+  },
+  "textWatch_jumpHint": {
+    "message": "Klicken, um zum Element zu springen."
+  },
+  "alertRouting_mode": {
+    "message": "Alarmkonfiguration"
+  },
+  "alertRouting_shared": {
+    "message": "Gemeinsamer Alarm"
+  },
+  "alertRouting_separate": {
+    "message": "Getrennte Alarme"
+  },
+  "alertRouting_sharedSound": {
+    "message": "Gemeinsamer Alarmton"
+  },
+  "alertRouting_sharedVolume": {
+    "message": "Gemeinsame Lautstaerke"
+  },
+  "notification_textChanged": {
+    "message": "Text wurde geaendert."
+  },
+  "changeHighlight_text": {
+    "message": "Der ueberwachte Text hat sich nach dem Refresh geaendert."
+  },
+  "textWatch_keywordsHelp": {
+    "message": "Insert one keyword or phrase per line."
+  },
+  "textWatch_debug": {
+    "message": "Debug: show captured content after each refresh"
+  },
+  "textWatch_debugHelp": {
+    "message": "Shows the captured text or HTML sample on the page so you can verify what is being monitored."
+  },
+  "textWatch_debugTitle": {
+    "message": "Text monitor debug"
+  },
+  "textWatch_debugSource": {
+    "message": "Source"
+  },
+  "textWatch_debugSelector": {
+    "message": "Selector"
+  },
+  "textWatch_debugMatches": {
+    "message": "Matched keywords"
+  },
+  "textWatch_debugPreview": {
+    "message": "Preview"
+  },
+  "toast_actionNumber": {
+    "message": "Go to number"
+  },
+  "toast_actionText": {
+    "message": "Go to text"
+  },
+  "toast_actionDebug": {
+    "message": "Open debug"
+  },
+  "textWatch_debugClose": {
+    "message": "Close"
+  },
+  "textWatch_debugEmpty": {
+    "message": "No captured content available."
+  },
+  "textWatch_alertModeKeywordState": {
+    "message": "Auftauchen oder Verschwinden von Schlusselwortern"
+  },
+  "notification_keywordsGone": {
+    "message": "Keywords disappeared:"
+  },
+  "telegram_testMissingCredentials": {
+    "message": "Bot-Token und Chat-ID eingeben"
+  },
+  "telegram_testSending": {
+    "message": "Wird gesendet..."
+  },
+  "telegram_testMessage": {
+    "message": "Auto Refresh & Page Monitor\\n\\nTelegram-Test erfolgreich abgeschlossen."
+  },
+  "telegram_testSuccess": {
+    "message": "Benachrichtigung erfolgreich gesendet"
+  },
+  "telegram_statusAutomaticLast": {
+    "message": "Letztes automatisches Telegram-Ereignis"
+  },
+  "telegram_statusSentSuccessfully": {
+    "message": "Erfolgreich gesendet"
+  },
+  "telegram_statusFailed": {
+    "message": "Fehlgeschlagen"
+  },
+  "telegram_statusUnknownError": {
+    "message": "Unbekannter Fehler"
+  },
+  "telegram_statusNetworkError": {
+    "message": "Netzwerkfehler"
+  },
+  "telegram_messageTitle": {
+    "message": "Alarm: Uberwachter Wert wurde geandert!"
+  },
+  "telegram_messageValue": {
+    "message": "Wert"
+  },
+  "telegram_messageUrl": {
+    "message": "URL"
+  },
+  "telegram_messageTime": {
+    "message": "Zeit"
+  },
+  "telegram_messageUnknownUrl": {
+    "message": "Unbekannt"
+  },
+  "textWatch_alertModeKeywordAppeared": {
+    "message": "Nur Auftauchen von Schlusselwortern"
+  },
+  "textWatch_alertModeKeywordDisappeared": {
+    "message": "Nur Verschwinden von Schlusselwortern"
+  },
+  "urlLock_pausedToast": {
+    "message": "Auto-Refresh pausiert, weil der Tab zu einer anderen Seite gewechselt hat."
+  },
+  "contentWatch_numberTarget": {
+    "message": "Zu ?berwachende Zahl"
+  },
+  "contentWatch_numberCandidatesEmpty": {
+    "message": "W?hle oder teste ein Element, um alle erkannten Zahlen zu sehen."
+  },
+  "contentWatch_numberCandidatesFound": {
+    "message": "Erkannte Zahlen"
+  },
+  "contentWatch_numberCandidatesSingle": {
+    "message": "Erkannte Zahl"
+  },
+  "urlLock_enable": {
+    "message": "?berwachung an den aktuellen URL-Bereich binden"
+  },
+  "urlLock_help": {
+    "message": "Lege fest, wie strikt der Auto-Refresh an die Seite gebunden bleiben soll, auf der die ?berwachung gestartet wurde."
+  },
+  "urlLock_mode": {
+    "message": "URL-Sperrmodus"
+  },
+  "urlLock_modeExact": {
+    "message": "Exakte URL"
+  },
+  "urlLock_modePath": {
+    "message": "Gleicher Pfad"
+  },
+  "urlLock_modeOrigin": {
+    "message": "Gleiche Domain"
+  }
 }

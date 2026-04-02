@@ -151,7 +151,8 @@ function highlightElement(element) {
     const label = document.createElement('div');
     label.className = 'aar-highlight-label';
     const textContent = normalizeText(element.innerText || element.textContent);
-    const numericValue = extractNumbers(textContent);
+    const numericCandidates = extractNumberCandidates(textContent);
+    const numericValue = getSelectedNumericValue(numericCandidates);
     label.textContent = pickerWatchType === 'numeric' && numericValue !== null
         ? `Value: ${numericValue}`
         : `Text: ${truncatePreview(textContent, 60) || 'N/A'}`;
@@ -179,13 +180,17 @@ function handlePickerClick(event) {
     const targetElement = highlightedOverlay?._targetElement || event.target;
     const selector = generateSelector(targetElement);
     const textContent = normalizeText(targetElement.innerText || targetElement.textContent);
-    const numericValue = extractNumbers(textContent);
+    const numericCandidates = extractNumberCandidates(textContent);
+    const selectedCandidateIndex = getDefaultCandidateIndex(numericCandidates);
+    const numericValue = getSelectedNumericValue(numericCandidates, selectedCandidateIndex);
 
     chrome.runtime.sendMessage({
         type: 'SELECTOR_PICKED',
         watchType: pickerWatchType,
         selector,
         value: numericValue,
+        candidateIndex: selectedCandidateIndex,
+        candidates: numericCandidates,
         previewText: truncatePreview(textContent, 120)
     });
 
@@ -286,10 +291,14 @@ function testSelector(selector) {
         }
 
         const textContent = normalizeText(element.innerText || element.textContent);
+        const numericCandidates = extractNumberCandidates(textContent);
+        const selectedCandidateIndex = getDefaultCandidateIndex(numericCandidates);
         return {
             success: true,
             value: truncatePreview(textContent, 120),
-            numericValue: extractNumbers(textContent)
+            numericValue: getSelectedNumericValue(numericCandidates, selectedCandidateIndex),
+            numericCandidates,
+            selectedCandidateIndex
         };
     } catch (error) {
         return { success: false, error: error.message };
@@ -297,7 +306,7 @@ function testSelector(selector) {
 }
 
 function captureMonitorSnapshot(message) {
-    const numeric = captureNumericSnapshot(message.numericSelector || '');
+    const numeric = captureNumericSnapshot(message.numericSelector || '', message.numericCandidateIndex);
     const text = captureTextSnapshot(
         message.textSelector || '',
         message.textSourceMode || 'selectorText',
@@ -312,26 +321,30 @@ function captureMonitorSnapshot(message) {
     };
 }
 
-function captureNumericSnapshot(selector) {
+function captureNumericSnapshot(selector, preferredIndex) {
     if (!selector) {
-        return { success: false, selectorFound: false, numericValue: null, previewText: '' };
+        return { success: false, selectorFound: false, numericValue: null, previewText: '', numericCandidates: [], selectedCandidateIndex: 0 };
     }
 
     try {
         const element = document.querySelector(selector);
         if (!element) {
-            return { success: false, selectorFound: false, numericValue: null, previewText: '' };
+            return { success: false, selectorFound: false, numericValue: null, previewText: '', numericCandidates: [], selectedCandidateIndex: 0 };
         }
 
         const selectorText = normalizeText(element.innerText || element.textContent);
+        const numericCandidates = extractNumberCandidates(selectorText);
+        const selectedCandidateIndex = sanitizeCandidateIndex(preferredIndex, numericCandidates.length);
         return {
             success: true,
             selectorFound: true,
-            numericValue: extractNumbers(selectorText),
+            numericValue: getSelectedNumericValue(numericCandidates, selectedCandidateIndex),
+            numericCandidates,
+            selectedCandidateIndex,
             previewText: truncatePreview(selectorText, 120)
         };
     } catch (error) {
-        return { success: false, selectorFound: false, numericValue: null, previewText: '', error: error.message };
+        return { success: false, selectorFound: false, numericValue: null, previewText: '', numericCandidates: [], selectedCandidateIndex: 0, error: error.message };
     }
 }
 
@@ -652,23 +665,90 @@ function isExtensionUiElement(target) {
     );
 }
 
-function extractNumbers(text) {
-    const patterns = [
-        /di\s+(\d+)\s+risultat/i,
-        /of\s+(\d+)\s+result/i,
-        /(\d+)\s+(?:prodott|item|articol)/i,
-        /totale?:?\s*(\d+)/i,
-        /(\d+)/
-    ];
-
-    for (const pattern of patterns) {
-        const match = text.match(pattern);
-        if (match) {
-            return parseInt(match[1], 10);
-        }
+function extractNumberCandidates(text) {
+    const source = String(text || '');
+    if (!source) {
+        return [];
     }
 
-    return null;
+    const matches = source.match(/\d[\d\s.,]*\s*[kKmMbBtT]?/g) || [];
+    const values = matches
+        .map((match) => parseNumericCandidate(match))
+        .filter((value) => Number.isFinite(value));
+
+    return values;
+}
+
+function parseNumericCandidate(token) {
+    const rawToken = String(token || '').trim();
+    if (!rawToken) {
+        return null;
+    }
+
+    const suffixMatch = rawToken.match(/([kKmMbBtT])$/);
+    const suffix = suffixMatch ? suffixMatch[1].toLowerCase() : '';
+    const multiplier = {
+        k: 1_000,
+        m: 1_000_000,
+        b: 1_000_000_000,
+        t: 1_000_000_000_000
+    }[suffix] || 1;
+
+    let normalized = suffix ? rawToken.slice(0, -1) : rawToken;
+    normalized = normalized.replace(/\s+/g, '');
+
+    if (suffix) {
+        const lastComma = normalized.lastIndexOf(',');
+        const lastDot = normalized.lastIndexOf('.');
+        const decimalIndex = Math.max(lastComma, lastDot);
+        if (decimalIndex >= 0) {
+            const integerPart = normalized.slice(0, decimalIndex).replace(/[^\d]/g, '');
+            const decimalPart = normalized.slice(decimalIndex + 1).replace(/[^\d]/g, '');
+            normalized = decimalPart ? `${integerPart}.${decimalPart}` : integerPart;
+        } else {
+            normalized = normalized.replace(/[^\d]/g, '');
+        }
+    } else {
+        normalized = normalized.replace(/[^\d]/g, '');
+    }
+
+    if (!normalized) {
+        return null;
+    }
+
+    const parsed = Number(normalized);
+    if (!Number.isFinite(parsed)) {
+        return null;
+    }
+
+    return multiplier === 1 ? parsed : parsed * multiplier;
+}
+
+function getDefaultCandidateIndex(candidates = []) {
+    return sanitizeCandidateIndex(null, candidates.length);
+}
+
+function sanitizeCandidateIndex(candidateIndex, candidateCount) {
+    if (!candidateCount) {
+        return 0;
+    }
+
+    const parsed = parseInt(candidateIndex, 10);
+    if (!Number.isFinite(parsed) || parsed < 0) {
+        return candidateCount - 1;
+    }
+
+    return Math.min(parsed, candidateCount - 1);
+}
+
+function getSelectedNumericValue(candidates = [], candidateIndex = null) {
+    if (!Array.isArray(candidates) || candidates.length === 0) {
+        return null;
+    }
+
+    const safeIndex = sanitizeCandidateIndex(candidateIndex, candidates.length);
+    const value = Number(candidates[safeIndex]);
+    return Number.isFinite(value) ? value : null;
 }
 
 console.log('Auto Refresh & Page Monitor content script loaded');

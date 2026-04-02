@@ -93,7 +93,9 @@ async function handleMessage(message, sender) {
                 message.watchType || 'numeric',
                 message.selector,
                 message.value,
-                message.previewText
+                message.previewText,
+                message.candidateIndex,
+                message.candidates
             );
 
         case 'USER_PAGE_CLICK':
@@ -116,6 +118,8 @@ function getDefaultTabSettings(tabUrl = '') {
             enabled: false,
             selector: '',
             lastValue: null,
+            candidateIndex: 0,
+            lastCandidates: [],
             alertMode: 'increase',
             threshold: 0,
             alertSound: 'siren',
@@ -127,7 +131,7 @@ function getDefaultTabSettings(tabUrl = '') {
             keywords: [],
             lastMatchedKeywords: [],
             sourceMode: 'selectorText',
-            detectMode: 'keywords',
+            detectMode: 'keywordAppeared',
             debugEnabled: false,
             previewText: '',
             alertSound: 'chime',
@@ -137,6 +141,11 @@ function getDefaultTabSettings(tabUrl = '') {
             mode: 'shared',
             sharedSound: 'siren',
             sharedVolume: 80
+        },
+        urlLock: {
+            enabled: true,
+            mode: 'exact',
+            lockedUrl: tabUrl
         },
         stopOnClick: false,
         schedule: {
@@ -156,6 +165,16 @@ function normalizeKeywords(keywords) {
     return keywords
         .map((keyword) => String(keyword || '').trim())
         .filter(Boolean);
+}
+
+function normalizeNumericCandidates(candidates) {
+    if (!Array.isArray(candidates)) {
+        return [];
+    }
+
+    return candidates
+        .map((value) => Number(value))
+        .filter((value) => Number.isFinite(value));
 }
 
 function normalizeTextWatch(settings = {}, defaults, legacyContentWatch = {}, legacyKeywordWatch = {}) {
@@ -185,7 +204,7 @@ function normalizeTextWatch(settings = {}, defaults, legacyContentWatch = {}, le
         keywords: normalizeKeywords(legacyKeywordWatch.keywords),
         lastMatchedKeywords: [],
         sourceMode,
-        detectMode: 'keywords',
+        detectMode: 'keywordAppeared',
         alertSound: legacyContentWatch.alertSound || defaults.textWatch.alertSound,
         alertVolume: legacyContentWatch.alertVolume ?? defaults.textWatch.alertVolume
     };
@@ -221,6 +240,10 @@ function normalizeSettings(settings = {}, tabUrl = settings.tabUrl || '') {
         },
         textWatch: normalizeTextWatch(settings, defaults, legacyContentWatch, legacyKeywordWatch),
         alertRouting: normalizeAlertRouting(settings, defaults, legacyContentWatch),
+        urlLock: {
+            ...defaults.urlLock,
+            ...(settings.urlLock || {})
+        },
         schedule: {
             ...defaults.schedule,
             ...(settings.schedule || {})
@@ -231,6 +254,8 @@ function normalizeSettings(settings = {}, tabUrl = settings.tabUrl || '') {
     normalized.interval = Math.max(1, parseInt(normalized.interval, 10) || defaults.interval);
     normalized.minLimit = Math.max(1, parseInt(normalized.minLimit, 10) || defaults.minLimit);
     normalized.contentWatch.threshold = parseInt(normalized.contentWatch.threshold, 10) || 0;
+    normalized.contentWatch.candidateIndex = Math.max(0, parseInt(normalized.contentWatch.candidateIndex, 10) || 0);
+    normalized.contentWatch.lastCandidates = normalizeNumericCandidates(normalized.contentWatch.lastCandidates);
     normalized.contentWatch.alertVolume = Math.max(0, Math.min(100, parseInt(normalized.contentWatch.alertVolume, 10) || defaults.contentWatch.alertVolume));
     normalized.contentWatch.lastValue = normalized.contentWatch.lastValue === null || normalized.contentWatch.lastValue === undefined
         ? null
@@ -242,15 +267,21 @@ function normalizeSettings(settings = {}, tabUrl = settings.tabUrl || '') {
     normalized.textWatch.sourceMode = ['selectorText', 'pageText', 'pageHtml'].includes(normalized.textWatch.sourceMode)
         ? normalized.textWatch.sourceMode
         : 'selectorText';
-    normalized.textWatch.detectMode = ['change', 'keywords', 'keywordState', 'changeOrKeywords'].includes(normalized.textWatch.detectMode)
+    normalized.textWatch.detectMode = ['change', 'keywords', 'keywordAppeared', 'keywordDisappeared', 'keywordState', 'changeOrKeywords'].includes(normalized.textWatch.detectMode)
         ? normalized.textWatch.detectMode
-        : 'keywords';
+        : 'keywordAppeared';
+    if (normalized.textWatch.detectMode === 'keywords') {
+        normalized.textWatch.detectMode = 'keywordAppeared';
+    }
     normalized.textWatch.debugEnabled = Boolean(normalized.textWatch.debugEnabled);
     normalized.textWatch.alertVolume = Math.max(0, Math.min(100, parseInt(normalized.textWatch.alertVolume, 10) || defaults.textWatch.alertVolume));
     normalized.alertRouting.mode = ['shared', 'separate'].includes(normalized.alertRouting.mode)
         ? normalized.alertRouting.mode
         : 'shared';
     normalized.alertRouting.sharedVolume = Math.max(0, Math.min(100, parseInt(normalized.alertRouting.sharedVolume, 10) || defaults.alertRouting.sharedVolume));
+    normalized.urlLock.enabled = normalized.urlLock.enabled !== false;
+    normalized.urlLock.mode = ['exact', 'path', 'origin'].includes(normalized.urlLock.mode) ? normalized.urlLock.mode : 'exact';
+    normalized.urlLock.lockedUrl = normalized.urlLock.lockedUrl || normalized.tabUrl || '';
     normalized.stopOnClick = Boolean(normalized.stopOnClick);
     normalized.isActive = Boolean(normalized.isActive);
 
@@ -289,6 +320,12 @@ async function toggleRefresh(tabId, tabUrl, settings) {
     const nextState = normalizeSettings({ ...existing, ...settings, isActive: Boolean(settings.isActive) }, tabUrl);
 
     if (nextState.isActive) {
+        nextState.urlLock = {
+            ...nextState.urlLock,
+            enabled: nextState.urlLock?.enabled !== false,
+            mode: ['exact', 'path', 'origin'].includes(nextState.urlLock?.mode) ? nextState.urlLock.mode : 'exact',
+            lockedUrl: tabUrl || nextState.tabUrl || existing.urlLock?.lockedUrl || ''
+        };
         await primeMonitoringState(tabId, nextState);
         await startTimer(tabId, nextState);
     } else {
@@ -314,6 +351,13 @@ async function toggleRefresh(tabId, tabUrl, settings) {
 async function updateSettings(tabId, tabUrl, settings) {
     const existing = await getTabSettings(tabId);
     const nextState = normalizeSettings({ ...existing, ...settings }, tabUrl);
+
+    if (tabUrl) {
+        nextState.urlLock = {
+            ...nextState.urlLock,
+            lockedUrl: tabUrl
+        };
+    }
 
     tabStates.set(tabId, nextState);
 
@@ -374,6 +418,18 @@ async function restoreTimers() {
             continue;
         }
 
+        if (restored.isActive && shouldPauseForUrlChange(restored, tab.url || restored.tabUrl)) {
+            restored = normalizeSettings({
+                ...restored,
+                isActive: false,
+                pendingRefresh: null,
+                schedule: {
+                    ...restored.schedule,
+                    nextRefreshAt: null
+                }
+            }, tab.url || restored.tabUrl);
+        }
+
         tabStates.set(tab.id, restored);
 
         if (restored.isActive) {
@@ -396,6 +452,8 @@ async function primeMonitoringState(tabId, state) {
     }
 
     state.contentWatch.lastValue = snapshot.numeric.numericValue;
+    state.contentWatch.candidateIndex = snapshot.numeric.selectedCandidateIndex ?? state.contentWatch.candidateIndex ?? 0;
+    state.contentWatch.lastCandidates = normalizeNumericCandidates(snapshot.numeric.numericCandidates);
 
     tabStates.set(tabId, state);
     await saveTabStates();
@@ -638,8 +696,24 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
         return;
     }
 
-    if (tab?.url) {
-        state.tabUrl = tab.url;
+    const currentUrl = tab?.url || changeInfo.url || state.tabUrl;
+
+    if (state.isActive && currentUrl && shouldPauseForUrlChange(state, currentUrl)) {
+        const pausedState = await pauseTimer(tabId, { keepState: true, reason: 'url-changed' });
+        const nextState = normalizeSettings({
+            ...pausedState,
+            tabUrl: currentUrl
+        }, currentUrl);
+        tabStates.set(tabId, nextState);
+        await saveTabStates();
+        await syncContentScriptState(tabId, nextState);
+        const i18n = await getRuntimeI18nContext();
+        await showPageSummary(tabId, i18n.t('urlLock_pausedToast', 'Auto-refresh paused because the tab navigated to another page.'));
+        return;
+    }
+
+    if (currentUrl) {
+        state.tabUrl = currentUrl;
         tabStates.set(tabId, state);
     }
 
@@ -682,7 +756,13 @@ async function finalizeRefreshCycle(tabId, state) {
             ...state.contentWatch,
             lastValue: postSnapshot.numeric?.success && state.contentWatch.enabled && state.contentWatch.selector
                 ? postSnapshot.numeric.numericValue
-                : state.contentWatch.lastValue
+                : state.contentWatch.lastValue,
+            candidateIndex: postSnapshot.numeric?.success
+                ? postSnapshot.numeric.selectedCandidateIndex ?? state.contentWatch.candidateIndex ?? 0
+                : state.contentWatch.candidateIndex ?? 0,
+            lastCandidates: postSnapshot.numeric?.success
+                ? normalizeNumericCandidates(postSnapshot.numeric.numericCandidates)
+                : normalizeNumericCandidates(state.contentWatch.lastCandidates)
         },
         textWatch: {
             ...state.textWatch,
@@ -895,7 +975,10 @@ function evaluateTextAlert(textWatch, textChanged, matchedKeywords, keywordState
         case 'change':
             return textChanged;
         case 'keywords':
-            return keywordState.changed;
+        case 'keywordAppeared':
+            return keywordState.appeared.length > 0;
+        case 'keywordDisappeared':
+            return keywordState.disappeared.length > 0;
         case 'keywordState':
             return keywordState.changed;
         case 'changeOrKeywords':
@@ -916,6 +999,53 @@ function getKeywordState(previousMatchedKeywords = [], matchedKeywords = []) {
         disappeared,
         changed: appeared.length > 0 || disappeared.length > 0
     };
+}
+
+function shouldPauseForUrlChange(state, nextUrl) {
+    if (!state?.isActive || !state?.urlLock?.enabled) {
+        return false;
+    }
+
+    const lockedUrl = normalizeComparableUrl(state.urlLock.lockedUrl || state.tabUrl || '');
+    const currentUrl = normalizeComparableUrl(nextUrl);
+    if (!lockedUrl || !currentUrl) {
+        return false;
+    }
+
+    switch (state.urlLock.mode) {
+        case 'origin':
+            return lockedUrl.origin !== currentUrl.origin;
+        case 'path':
+            return lockedUrl.origin !== currentUrl.origin || lockedUrl.pathname !== currentUrl.pathname;
+        case 'exact':
+        default:
+            return lockedUrl.href !== currentUrl.href;
+    }
+}
+
+function normalizeComparableUrl(rawUrl) {
+    if (!rawUrl) {
+        return null;
+    }
+
+    try {
+        const parsed = new URL(rawUrl);
+        parsed.hash = '';
+        return {
+            href: parsed.toString(),
+            origin: parsed.origin,
+            pathname: parsed.pathname
+        };
+    } catch {
+        const value = String(rawUrl || '').trim();
+        return value
+            ? {
+                href: value,
+                origin: value,
+                pathname: value
+            }
+            : null;
+    }
 }
 
 function evaluateNumericAlert(contentWatch, previousValue, currentValue) {
@@ -965,7 +1095,7 @@ async function captureMonitoringSnapshot(tabId, state) {
     if (!numericEnabled && !textEnabled) {
         return {
             success: false,
-            numeric: { success: false, selectorFound: false, numericValue: null, previewText: '' },
+            numeric: { success: false, selectorFound: false, numericValue: null, numericCandidates: [], selectedCandidateIndex: 0, previewText: '' },
             text: { success: false, selectorFound: false, monitoredText: '', previewText: '', debugText: '' }
         };
     }
@@ -974,6 +1104,7 @@ async function captureMonitoringSnapshot(tabId, state) {
         const response = await chrome.tabs.sendMessage(tabId, {
             type: 'CAPTURE_MONITOR_SNAPSHOT',
             numericSelector: state.contentWatch?.selector || '',
+            numericCandidateIndex: state.contentWatch?.candidateIndex ?? 0,
             textSelector: state.textWatch?.selector || '',
             textSourceMode,
             includePageText,
@@ -986,6 +1117,10 @@ async function captureMonitoringSnapshot(tabId, state) {
                 success: Boolean(response?.numeric?.success),
                 selectorFound: Boolean(response?.numeric?.selectorFound),
                 numericValue: response?.numeric?.numericValue ?? null,
+                numericCandidates: normalizeNumericCandidates(response?.numeric?.numericCandidates),
+                selectedCandidateIndex: Number.isFinite(Number(response?.numeric?.selectedCandidateIndex))
+                    ? Number(response.numeric.selectedCandidateIndex)
+                    : state.contentWatch?.candidateIndex ?? 0,
                 previewText: response?.numeric?.previewText || ''
             },
             text: {
@@ -1000,7 +1135,7 @@ async function captureMonitoringSnapshot(tabId, state) {
         console.log('Snapshot capture failed:', error.message);
         return {
             success: false,
-            numeric: { success: false, selectorFound: false, numericValue: null, previewText: '' },
+            numeric: { success: false, selectorFound: false, numericValue: null, numericCandidates: [], selectedCandidateIndex: state.contentWatch?.candidateIndex ?? 0, previewText: '' },
             text: { success: false, selectorFound: false, monitoredText: '', previewText: '', debugText: '' }
         };
     }
@@ -1454,7 +1589,7 @@ async function getRuntimeI18nContext() {
     };
 }
 
-async function handleSelectorPicked(tabId, tabUrl, watchType, selector, value, previewText) {
+async function handleSelectorPicked(tabId, tabUrl, watchType, selector, value, previewText, candidateIndex = 0, candidates = []) {
     if (!tabId || !tabUrl) {
         console.error('handleSelectorPicked: missing tabId or tabUrl');
         return { success: false, error: 'Missing tab info' };
@@ -1480,7 +1615,9 @@ async function handleSelectorPicked(tabId, tabUrl, watchType, selector, value, p
                 ...existing.contentWatch,
                 enabled: true,
                 selector,
-                lastValue: value
+                lastValue: value,
+                candidateIndex: Number.isFinite(Number(candidateIndex)) ? Number(candidateIndex) : 0,
+                lastCandidates: normalizeNumericCandidates(candidates)
             }
         }, tabUrl);
 
@@ -1493,6 +1630,8 @@ async function handleSelectorPicked(tabId, tabUrl, watchType, selector, value, p
         watchType,
         selector,
         value,
+        candidateIndex: Number.isFinite(Number(candidateIndex)) ? Number(candidateIndex) : 0,
+        candidates: normalizeNumericCandidates(candidates),
         previewText
     }).catch(() => { });
 

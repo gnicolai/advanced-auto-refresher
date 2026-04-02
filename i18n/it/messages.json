@@ -1,461 +1,500 @@
 {
-    "appDesc": {
-        "message": "Auto-refresh delle schede con timing stocastico e rilevamento cambiamenti"
-    },
-    "appName": {
-        "message": "Auto Refresh & Page Monitor with Telegram Alerts"
-    },
-    "status_active": {
-        "message": "Attivo"
-    },
-    "status_inactive": {
-        "message": "Disattivo"
-    },
-    "timer_title": {
-        "message": "Timer Auto-Refresh"
-    },
-    "timer_interval": {
-        "message": "Intervallo (secondi)"
-    },
-    "timer_start": {
-        "message": "Avvia"
-    },
-    "timer_stop": {
-        "message": "Ferma"
-    },
-    "stochastic_mode": {
-        "message": "Modalità stocastica"
-    },
-    "stochastic_tooltip": {
-        "message": "Varia casualmente il tempo di refresh per evitare pattern rilevabili"
-    },
-    "stochastic_minLimit": {
-        "message": "Limite minimo (secondi)"
-    },
-    "stochastic_distribution": {
-        "message": "Distribuzione"
-    },
-    "stochastic_uniform": {
-        "message": "Uniforme"
-    },
-    "stochastic_uniformTooltip": {
-        "message": "Tempo casuale tra min e (2×target−min)"
-    },
-    "stochastic_gaussian": {
-        "message": "Gaussiana"
-    },
-    "stochastic_gaussianTooltip": {
-        "message": "Tempo centrato sul target con variazione naturale"
-    },
-    "contentWatch_title": {
-        "message": "Rilevamento Cambiamenti"
-    },
-    "contentWatch_enable": {
-        "message": "Monitora contenuto"
-    },
-    "contentWatch_method": {
-        "message": "Metodo selezione"
-    },
-    "contentWatch_select": {
-        "message": "Seleziona"
-    },
-    "contentWatch_advanced": {
-        "message": "Avanzato"
-    },
-    "contentWatch_pickElement": {
-        "message": "Clicca per selezionare elemento"
-    },
-    "contentWatch_cssSelector": {
-        "message": "Selettore CSS"
-    },
-    "contentWatch_testSelector": {
-        "message": "Testa Selettore"
-    },
-    "contentWatch_selectedElement": {
-        "message": "Elemento selezionato:"
-    },
-    "contentWatch_none": {
-        "message": "Nessuno"
-    },
-    "contentWatch_currentValue": {
-        "message": "Valore attuale:"
-    },
-    "contentWatch_error": {
-        "message": "Errore"
-    },
-    "contentWatch_alertMode": {
-        "message": "Modalità allarme"
-    },
-    "contentWatch_alertModeIncrease": {
-        "message": "📈 Aumento"
-    },
-    "contentWatch_alertModeDecrease": {
-        "message": "📉 Diminuzione"
-    },
-    "contentWatch_alertModeAny": {
-        "message": "🔄 Qualsiasi cambio"
-    },
-    "contentWatch_alertModeAbove": {
-        "message": "⬆️ Sopra soglia"
-    },
-    "contentWatch_alertModeBelow": {
-        "message": "⬇️ Sotto soglia"
-    },
-    "contentWatch_thresholdValue": {
-        "message": "Valore soglia"
-    },
-    "lists_title": {
-        "message": "Blacklist / Whitelist"
-    },
-    "lists_blacklist": {
-        "message": "Blacklist"
-    },
-    "lists_whitelist": {
-        "message": "Whitelist"
-    },
-    "lists_blacklistDesc": {
-        "message": "🚫 Il refresh verrà saltato su questi URL (es: checkout, login)"
-    },
-    "lists_whitelistDesc": {
-        "message": "✅ Questi URL ignorano la blacklist (ha priorità)"
-    },
-    "lists_blacklistPlaceholder": {
-        "message": "*checkout*"
-    },
-    "lists_whitelistPlaceholder": {
-        "message": "*deals*"
-    },
-    "telegram_title": {
-        "message": "Notifiche Telegram"
-    },
-    "telegram_howtoTitle": {
-        "message": "📖 Come configurare il bot Telegram"
-    },
-    "telegram_howtoStep1": {
-        "message": "Apri Telegram e cerca <strong>@BotFather</strong>"
-    },
-    "telegram_howtoStep2": {
-        "message": "Invia <code>/newbot</code> e segui le istruzioni"
-    },
-    "telegram_howtoStep3": {
-        "message": "Copia il <strong>Token</strong> che ricevi"
-    },
-    "telegram_howtoStep4": {
-        "message": "Cerca <strong>@userinfobot</strong> e invia un messaggio"
-    },
-    "telegram_howtoStep5": {
-        "message": "Copia il tuo <strong>Chat ID</strong> numerico"
-    },
-    "telegram_howtoStep6": {
-        "message": "Incolla entrambi qui sotto e premi \"Test\""
-    },
-    "telegram_botToken": {
-        "message": "Bot Token"
-    },
-    "telegram_botTokenPlaceholder": {
-        "message": "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
-    },
-    "telegram_chatId": {
-        "message": "Chat ID"
-    },
-    "telegram_chatIdPlaceholder": {
-        "message": "123456789"
-    },
-    "telegram_testButton": {
-        "message": "Testa Notifica"
-    },
-    "alert_newContent": {
-        "message": "Nuovo contenuto rilevato!"
-    },
-    "alert_stopAlarm": {
-        "message": "Ferma Allarme"
-    },
-    "footer_createdBy": {
-        "message": "Creato da Giulio Nicolai"
-    },
-    "footer_donate": {
-        "message": "Donate"
-    },
-    "footer_donateText": {
-        "message": "Ti piace l'estensione?"
-    },
-    "picker_title": {
-        "message": "Seleziona un elemento da monitorare"
-    },
-    "picker_hint": {
-        "message": "Premi ESC per annullare"
-    },
-    "picker_selected": {
-        "message": "Elemento selezionato!"
-    },
-    "picker_initialValue": {
-        "message": "Valore iniziale:"
-    },
-    "alertSound_title": {
-        "message": "Suono allarme"
-    },
-    "alertSound_siren": {
-        "message": "🚨 Sirena"
-    },
-    "alertSound_beep": {
-        "message": "🔔 Beep"
-    },
-    "alertSound_chime": {
-        "message": "🎵 Chime"
-    },
-    "alertSound_alarm": {
-        "message": "⏰ Sveglia"
-    },
-    "alertSound_bell": {
-        "message": "🔔 Campana"
-    },
-    "alertSound_digital": {
-        "message": "💻 Digitale"
-    },
-    "alertSound_volume": {
-        "message": "Volume"
-    },
-    "alertSound_preview": {
-        "message": "▶ Anteprima"
-    },
-    "keywordWatch_enable": {
-        "message": "Monitora parole chiave o frasi"
-    },
-    "keywordWatch_help": {
-        "message": "Se hai impostato un selettore, le parole chiave vengono cercate dentro quell'elemento. Altrimenti viene analizzato il testo dell'intera pagina dopo ogni refresh."
-    },
-    "keywordWatch_list": {
-        "message": "Parole chiave / frasi"
-    },
-    "keywordWatch_placeholder": {
-        "message": "una parola chiave o frase per riga"
-    },
-    "keywordWatch_source": {
-        "message": "Sorgente da analizzare"
-    },
-    "keywordWatch_sourceAuto": {
-        "message": "Testo elemento selezionato (fallback testo pagina)"
-    },
-    "keywordWatch_sourcePageText": {
-        "message": "Testo intera pagina"
-    },
-    "keywordWatch_sourcePageHtml": {
-        "message": "HTML intera pagina"
-    },
-    "clickStop_enable": {
-        "message": "Ferma il refresh quando l'utente clicca sulla pagina"
-    },
-    "clickStop_pausedToast": {
-        "message": "Auto-refresh in pausa dopo il click."
-    },
-    "notification_title": {
-        "message": "Avviso Auto Refresh"
-    },
-    "notification_defaultBody": {
-        "message": "Una pagina monitorata e cambiata."
-    },
-    "notification_numericChanged": {
-        "message": "Il valore numerico e cambiato."
-    },
-    "notification_keywordsFound": {
-        "message": "Parole chiave trovate:"
-    },
-    "notification_valueChanged": {
-        "message": "Valore cambiato"
-    },
-    "changeHighlight_default": {
-        "message": "Cambio rilevato dopo il refresh."
-    },
-    "changeHighlight_combined": {
-        "message": "Rilevati cambiamenti numerici e testuali."
-    },
-    "changeHighlight_numeric": {
-        "message": "Il valore monitorato e cambiato dopo il refresh."
-    },
-    "changeHighlight_keywords": {
-        "message": "Trovate parole chiave monitorate dopo il refresh."
-    },
-    "numericWatch_title": {
-        "message": "Monitora numero"
-    },
-    "numericWatch_enable": {
-        "message": "Monitora numero"
-    },
-    "textWatch_title": {
-        "message": "Monitora testo"
-    },
-    "textWatch_enable": {
-        "message": "Monitora testo o parole chiave"
-    },
-    "textWatch_help": {
-        "message": "Monitora il testo di un elemento, il testo dell'intera pagina o l'HTML completo. Le parole chiave restano opzionali e aggiuntive."
-    },
-    "textWatch_method": {
-        "message": "Metodo selezione"
-    },
-    "textWatch_select": {
-        "message": "Seleziona"
-    },
-    "textWatch_advanced": {
-        "message": "Avanzato"
-    },
-    "textWatch_pickElement": {
-        "message": "Clicca per selezionare elemento"
-    },
-    "textWatch_cssSelector": {
-        "message": "Selettore CSS"
-    },
-    "textWatch_testSelector": {
-        "message": "Testa selettore"
-    },
-    "textWatch_selectedElement": {
-        "message": "Elemento selezionato:"
-    },
-    "textWatch_none": {
-        "message": "Nessuno"
-    },
-    "textWatch_currentPreview": {
-        "message": "Anteprima attuale:"
-    },
-    "textWatch_source": {
-        "message": "Sorgente da analizzare"
-    },
-    "textWatch_sourceSelector": {
-        "message": "Testo elemento selezionato"
-    },
-    "textWatch_sourcePageText": {
-        "message": "Testo intera pagina"
-    },
-    "textWatch_sourcePageHtml": {
-        "message": "HTML intera pagina"
-    },
-    "textWatch_alertMode": {
-        "message": "Modalita monitor testo"
-    },
-    "textWatch_alertModeChange": {
-        "message": "Qualsiasi comparsa, scomparsa o cambio testo"
-    },
-    "textWatch_alertModeKeywords": {
-        "message": "Cambio stato parole chiave"
-    },
-    "textWatch_alertModeChangeOrKeywords": {
-        "message": "Cambio testo o parole chiave"
-    },
-    "textWatch_keywords": {
-        "message": "Parole chiave / frasi"
-    },
-    "textWatch_placeholder": {
-        "message": "una parola chiave o frase per riga"
-    },
-    "textWatch_jumpHint": {
-        "message": "Clicca per andare all'elemento."
-    },
-    "alertRouting_mode": {
-        "message": "Configurazione allarmi"
-    },
-    "alertRouting_shared": {
-        "message": "Allarme condiviso"
-    },
-    "alertRouting_separate": {
-        "message": "Allarmi separati"
-    },
-    "alertRouting_sharedSound": {
-        "message": "Suono allarme condiviso"
-    },
-    "alertRouting_sharedVolume": {
-        "message": "Volume condiviso"
-    },
-    "notification_textChanged": {
-        "message": "Il testo e cambiato."
-    },
-    "changeHighlight_text": {
-        "message": "Il testo monitorato e cambiato dopo il refresh."
-    },
-    "textWatch_keywordsHelp": {
-        "message": "Inserisci una parola chiave o frase per riga."
-    },
-    "textWatch_debug": {
-        "message": "Debug: mostra il contenuto catturato dopo ogni refresh"
-    },
-    "textWatch_debugHelp": {
-        "message": "Mostra sulla pagina un estratto del testo o HTML catturato per verificare cosa viene monitorato."
-    },
-    "textWatch_debugTitle": {
-        "message": "Debug monitor testo"
-    },
-    "textWatch_debugSource": {
-        "message": "Sorgente"
-    },
-    "textWatch_debugSelector": {
-        "message": "Selettore"
-    },
-    "textWatch_debugMatches": {
-        "message": "Parole chiave trovate"
-    },
-    "textWatch_debugPreview": {
-        "message": "Anteprima"
-    },
-    "toast_actionNumber": {
-        "message": "Vai al numero"
-    },
-    "toast_actionText": {
-        "message": "Vai al testo"
-    },
-    "toast_actionDebug": {
-        "message": "Apri debug"
-    },
-    "textWatch_debugClose": {
-        "message": "Chiudi"
-    },
-    "textWatch_debugEmpty": {
-        "message": "Nessun contenuto catturato disponibile."
-    },
-    "textWatch_alertModeKeywordState": {
-        "message": "Solo comparsa o scomparsa parole chiave"
-    },
-    "notification_keywordsGone": {
-        "message": "Parole chiave scomparse:"
-    },
-    "telegram_testMissingCredentials": {
-        "message": "Inserisci Bot Token e Chat ID"
-    },
-    "telegram_testSending": {
-        "message": "Invio in corso..."
-    },
-    "telegram_testMessage": {
-        "message": "Auto Refresh & Page Monitor\\n\\nTest Telegram completato con successo."
-    },
-    "telegram_testSuccess": {
-        "message": "Notifica inviata con successo"
-    },
-    "telegram_statusAutomaticLast": {
-        "message": "Ultimo evento Telegram automatico"
-    },
-    "telegram_statusSentSuccessfully": {
-        "message": "Inviata con successo"
-    },
-    "telegram_statusFailed": {
-        "message": "Fallita"
-    },
-    "telegram_statusUnknownError": {
-        "message": "Errore sconosciuto"
-    },
-    "telegram_statusNetworkError": {
-        "message": "Errore di rete"
-    },
-    "telegram_messageTitle": {
-        "message": "Avviso: valore monitorato cambiato!"
-    },
-    "telegram_messageValue": {
-        "message": "Valore"
-    },
-    "telegram_messageUrl": {
-        "message": "URL"
-    },
-    "telegram_messageTime": {
-        "message": "Ora"
-    },
-    "telegram_messageUnknownUrl": {
-        "message": "Sconosciuto"
-    }
+  "appDesc": {
+    "message": "Auto-refresh delle schede con timing stocastico e rilevamento cambiamenti"
+  },
+  "appName": {
+    "message": "Auto Refresh & Page Monitor with Telegram Alerts"
+  },
+  "status_active": {
+    "message": "Attivo"
+  },
+  "status_inactive": {
+    "message": "Disattivo"
+  },
+  "timer_title": {
+    "message": "Timer Auto-Refresh"
+  },
+  "timer_interval": {
+    "message": "Intervallo (secondi)"
+  },
+  "timer_start": {
+    "message": "Avvia"
+  },
+  "timer_stop": {
+    "message": "Ferma"
+  },
+  "stochastic_mode": {
+    "message": "Modalità stocastica"
+  },
+  "stochastic_tooltip": {
+    "message": "Varia casualmente il tempo di refresh per evitare pattern rilevabili"
+  },
+  "stochastic_minLimit": {
+    "message": "Limite minimo (secondi)"
+  },
+  "stochastic_distribution": {
+    "message": "Distribuzione"
+  },
+  "stochastic_uniform": {
+    "message": "Uniforme"
+  },
+  "stochastic_uniformTooltip": {
+    "message": "Tempo casuale tra min e (2×target−min)"
+  },
+  "stochastic_gaussian": {
+    "message": "Gaussiana"
+  },
+  "stochastic_gaussianTooltip": {
+    "message": "Tempo centrato sul target con variazione naturale"
+  },
+  "contentWatch_title": {
+    "message": "Rilevamento Cambiamenti"
+  },
+  "contentWatch_enable": {
+    "message": "Monitora contenuto"
+  },
+  "contentWatch_method": {
+    "message": "Metodo selezione"
+  },
+  "contentWatch_select": {
+    "message": "Seleziona"
+  },
+  "contentWatch_advanced": {
+    "message": "Avanzato"
+  },
+  "contentWatch_pickElement": {
+    "message": "Clicca per selezionare elemento"
+  },
+  "contentWatch_cssSelector": {
+    "message": "Selettore CSS"
+  },
+  "contentWatch_testSelector": {
+    "message": "Testa Selettore"
+  },
+  "contentWatch_selectedElement": {
+    "message": "Elemento selezionato:"
+  },
+  "contentWatch_none": {
+    "message": "Nessuno"
+  },
+  "contentWatch_currentValue": {
+    "message": "Valore attuale:"
+  },
+  "contentWatch_error": {
+    "message": "Errore"
+  },
+  "contentWatch_alertMode": {
+    "message": "Modalità allarme"
+  },
+  "contentWatch_alertModeIncrease": {
+    "message": "📈 Aumento"
+  },
+  "contentWatch_alertModeDecrease": {
+    "message": "📉 Diminuzione"
+  },
+  "contentWatch_alertModeAny": {
+    "message": "🔄 Qualsiasi cambio"
+  },
+  "contentWatch_alertModeAbove": {
+    "message": "⬆️ Sopra soglia"
+  },
+  "contentWatch_alertModeBelow": {
+    "message": "⬇️ Sotto soglia"
+  },
+  "contentWatch_thresholdValue": {
+    "message": "Valore soglia"
+  },
+  "lists_title": {
+    "message": "Blacklist / Whitelist"
+  },
+  "lists_blacklist": {
+    "message": "Blacklist"
+  },
+  "lists_whitelist": {
+    "message": "Whitelist"
+  },
+  "lists_blacklistDesc": {
+    "message": "🚫 Il refresh verrà saltato su questi URL (es: checkout, login)"
+  },
+  "lists_whitelistDesc": {
+    "message": "✅ Questi URL ignorano la blacklist (ha priorità)"
+  },
+  "lists_blacklistPlaceholder": {
+    "message": "*checkout*"
+  },
+  "lists_whitelistPlaceholder": {
+    "message": "*deals*"
+  },
+  "telegram_title": {
+    "message": "Notifiche Telegram"
+  },
+  "telegram_howtoTitle": {
+    "message": "📖 Come configurare il bot Telegram"
+  },
+  "telegram_howtoStep1": {
+    "message": "Apri Telegram e cerca <strong>@BotFather</strong>"
+  },
+  "telegram_howtoStep2": {
+    "message": "Invia <code>/newbot</code> e segui le istruzioni"
+  },
+  "telegram_howtoStep3": {
+    "message": "Copia il <strong>Token</strong> che ricevi"
+  },
+  "telegram_howtoStep4": {
+    "message": "Cerca <strong>@userinfobot</strong> e invia un messaggio"
+  },
+  "telegram_howtoStep5": {
+    "message": "Copia il tuo <strong>Chat ID</strong> numerico"
+  },
+  "telegram_howtoStep6": {
+    "message": "Incolla entrambi qui sotto e premi \"Test\""
+  },
+  "telegram_botToken": {
+    "message": "Bot Token"
+  },
+  "telegram_botTokenPlaceholder": {
+    "message": "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+  },
+  "telegram_chatId": {
+    "message": "Chat ID"
+  },
+  "telegram_chatIdPlaceholder": {
+    "message": "123456789"
+  },
+  "telegram_testButton": {
+    "message": "Testa Notifica"
+  },
+  "alert_newContent": {
+    "message": "Nuovo contenuto rilevato!"
+  },
+  "alert_stopAlarm": {
+    "message": "Ferma Allarme"
+  },
+  "footer_createdBy": {
+    "message": "Creato da Giulio Nicolai"
+  },
+  "footer_donate": {
+    "message": "Donate"
+  },
+  "footer_donateText": {
+    "message": "Ti piace l'estensione?"
+  },
+  "picker_title": {
+    "message": "Seleziona un elemento da monitorare"
+  },
+  "picker_hint": {
+    "message": "Premi ESC per annullare"
+  },
+  "picker_selected": {
+    "message": "Elemento selezionato!"
+  },
+  "picker_initialValue": {
+    "message": "Valore iniziale:"
+  },
+  "alertSound_title": {
+    "message": "Suono allarme"
+  },
+  "alertSound_siren": {
+    "message": "🚨 Sirena"
+  },
+  "alertSound_beep": {
+    "message": "🔔 Beep"
+  },
+  "alertSound_chime": {
+    "message": "🎵 Chime"
+  },
+  "alertSound_alarm": {
+    "message": "⏰ Sveglia"
+  },
+  "alertSound_bell": {
+    "message": "🔔 Campana"
+  },
+  "alertSound_digital": {
+    "message": "💻 Digitale"
+  },
+  "alertSound_volume": {
+    "message": "Volume"
+  },
+  "alertSound_preview": {
+    "message": "▶ Anteprima"
+  },
+  "keywordWatch_enable": {
+    "message": "Monitora parole chiave o frasi"
+  },
+  "keywordWatch_help": {
+    "message": "Se hai impostato un selettore, le parole chiave vengono cercate dentro quell'elemento. Altrimenti viene analizzato il testo dell'intera pagina dopo ogni refresh."
+  },
+  "keywordWatch_list": {
+    "message": "Parole chiave / frasi"
+  },
+  "keywordWatch_placeholder": {
+    "message": "una parola chiave o frase per riga"
+  },
+  "keywordWatch_source": {
+    "message": "Sorgente da analizzare"
+  },
+  "keywordWatch_sourceAuto": {
+    "message": "Testo elemento selezionato (fallback testo pagina)"
+  },
+  "keywordWatch_sourcePageText": {
+    "message": "Testo intera pagina"
+  },
+  "keywordWatch_sourcePageHtml": {
+    "message": "HTML intera pagina"
+  },
+  "clickStop_enable": {
+    "message": "Ferma il refresh quando l'utente clicca sulla pagina"
+  },
+  "clickStop_pausedToast": {
+    "message": "Auto-refresh in pausa dopo il click."
+  },
+  "notification_title": {
+    "message": "Avviso Auto Refresh"
+  },
+  "notification_defaultBody": {
+    "message": "Una pagina monitorata e cambiata."
+  },
+  "notification_numericChanged": {
+    "message": "Il valore numerico e cambiato."
+  },
+  "notification_keywordsFound": {
+    "message": "Parole chiave trovate:"
+  },
+  "notification_valueChanged": {
+    "message": "Valore cambiato"
+  },
+  "changeHighlight_default": {
+    "message": "Cambio rilevato dopo il refresh."
+  },
+  "changeHighlight_combined": {
+    "message": "Rilevati cambiamenti numerici e testuali."
+  },
+  "changeHighlight_numeric": {
+    "message": "Il valore monitorato e cambiato dopo il refresh."
+  },
+  "changeHighlight_keywords": {
+    "message": "Trovate parole chiave monitorate dopo il refresh."
+  },
+  "numericWatch_title": {
+    "message": "Monitora numero"
+  },
+  "numericWatch_enable": {
+    "message": "Monitora numero"
+  },
+  "textWatch_title": {
+    "message": "Monitora testo"
+  },
+  "textWatch_enable": {
+    "message": "Monitora testo o parole chiave"
+  },
+  "textWatch_help": {
+    "message": "Monitora il testo di un elemento, il testo dell'intera pagina o l'HTML completo. Le parole chiave restano opzionali e aggiuntive."
+  },
+  "textWatch_method": {
+    "message": "Metodo selezione"
+  },
+  "textWatch_select": {
+    "message": "Seleziona"
+  },
+  "textWatch_advanced": {
+    "message": "Avanzato"
+  },
+  "textWatch_pickElement": {
+    "message": "Clicca per selezionare elemento"
+  },
+  "textWatch_cssSelector": {
+    "message": "Selettore CSS"
+  },
+  "textWatch_testSelector": {
+    "message": "Testa selettore"
+  },
+  "textWatch_selectedElement": {
+    "message": "Elemento selezionato:"
+  },
+  "textWatch_none": {
+    "message": "Nessuno"
+  },
+  "textWatch_currentPreview": {
+    "message": "Anteprima attuale:"
+  },
+  "textWatch_source": {
+    "message": "Sorgente da analizzare"
+  },
+  "textWatch_sourceSelector": {
+    "message": "Testo elemento selezionato"
+  },
+  "textWatch_sourcePageText": {
+    "message": "Testo intera pagina"
+  },
+  "textWatch_sourcePageHtml": {
+    "message": "HTML intera pagina"
+  },
+  "textWatch_alertMode": {
+    "message": "Modalita monitor testo"
+  },
+  "textWatch_alertModeChange": {
+    "message": "Qualsiasi comparsa, scomparsa o cambio testo"
+  },
+  "textWatch_alertModeKeywords": {
+    "message": "Cambio stato parole chiave"
+  },
+  "textWatch_alertModeChangeOrKeywords": {
+    "message": "Cambio testo o parole chiave"
+  },
+  "textWatch_keywords": {
+    "message": "Parole chiave / frasi"
+  },
+  "textWatch_placeholder": {
+    "message": "una parola chiave o frase per riga"
+  },
+  "textWatch_jumpHint": {
+    "message": "Clicca per andare all'elemento."
+  },
+  "alertRouting_mode": {
+    "message": "Configurazione allarmi"
+  },
+  "alertRouting_shared": {
+    "message": "Allarme condiviso"
+  },
+  "alertRouting_separate": {
+    "message": "Allarmi separati"
+  },
+  "alertRouting_sharedSound": {
+    "message": "Suono allarme condiviso"
+  },
+  "alertRouting_sharedVolume": {
+    "message": "Volume condiviso"
+  },
+  "notification_textChanged": {
+    "message": "Il testo e cambiato."
+  },
+  "changeHighlight_text": {
+    "message": "Il testo monitorato e cambiato dopo il refresh."
+  },
+  "textWatch_keywordsHelp": {
+    "message": "Inserisci una parola chiave o frase per riga."
+  },
+  "textWatch_debug": {
+    "message": "Debug: mostra il contenuto catturato dopo ogni refresh"
+  },
+  "textWatch_debugHelp": {
+    "message": "Mostra sulla pagina un estratto del testo o HTML catturato per verificare cosa viene monitorato."
+  },
+  "textWatch_debugTitle": {
+    "message": "Debug monitor testo"
+  },
+  "textWatch_debugSource": {
+    "message": "Sorgente"
+  },
+  "textWatch_debugSelector": {
+    "message": "Selettore"
+  },
+  "textWatch_debugMatches": {
+    "message": "Parole chiave trovate"
+  },
+  "textWatch_debugPreview": {
+    "message": "Anteprima"
+  },
+  "toast_actionNumber": {
+    "message": "Vai al numero"
+  },
+  "toast_actionText": {
+    "message": "Vai al testo"
+  },
+  "toast_actionDebug": {
+    "message": "Apri debug"
+  },
+  "textWatch_debugClose": {
+    "message": "Chiudi"
+  },
+  "textWatch_debugEmpty": {
+    "message": "Nessun contenuto catturato disponibile."
+  },
+  "textWatch_alertModeKeywordState": {
+    "message": "Comparsa o scomparsa parole chiave"
+  },
+  "notification_keywordsGone": {
+    "message": "Parole chiave scomparse:"
+  },
+  "telegram_testMissingCredentials": {
+    "message": "Inserisci Bot Token e Chat ID"
+  },
+  "telegram_testSending": {
+    "message": "Invio in corso..."
+  },
+  "telegram_testMessage": {
+    "message": "Auto Refresh & Page Monitor\\n\\nTest Telegram completato con successo."
+  },
+  "telegram_testSuccess": {
+    "message": "Notifica inviata con successo"
+  },
+  "telegram_statusAutomaticLast": {
+    "message": "Ultimo evento Telegram automatico"
+  },
+  "telegram_statusSentSuccessfully": {
+    "message": "Inviata con successo"
+  },
+  "telegram_statusFailed": {
+    "message": "Fallita"
+  },
+  "telegram_statusUnknownError": {
+    "message": "Errore sconosciuto"
+  },
+  "telegram_statusNetworkError": {
+    "message": "Errore di rete"
+  },
+  "telegram_messageTitle": {
+    "message": "Avviso: valore monitorato cambiato!"
+  },
+  "telegram_messageValue": {
+    "message": "Valore"
+  },
+  "telegram_messageUrl": {
+    "message": "URL"
+  },
+  "telegram_messageTime": {
+    "message": "Ora"
+  },
+  "telegram_messageUnknownUrl": {
+    "message": "Sconosciuto"
+  },
+  "textWatch_alertModeKeywordAppeared": {
+    "message": "Solo comparsa parole chiave"
+  },
+  "textWatch_alertModeKeywordDisappeared": {
+    "message": "Solo scomparsa parole chiave"
+  },
+  "urlLock_pausedToast": {
+    "message": "Auto-refresh in pausa: la tab ha aperto un'altra pagina."
+  },
+  "contentWatch_numberTarget": {
+    "message": "Numero da monitorare"
+  },
+  "contentWatch_numberCandidatesEmpty": {
+    "message": "Seleziona o testa un elemento per vedere tutti i numeri rilevati."
+  },
+  "contentWatch_numberCandidatesFound": {
+    "message": "Numeri rilevati"
+  },
+  "contentWatch_numberCandidatesSingle": {
+    "message": "Numero rilevato"
+  },
+  "urlLock_enable": {
+    "message": "Blocca il monitoraggio all?ambito URL corrente"
+  },
+  "urlLock_help": {
+    "message": "Scegli quanto rigidamente l?auto-refresh deve restare legato alla pagina da cui ? stato avviato il monitoraggio."
+  },
+  "urlLock_mode": {
+    "message": "Modalit? blocco URL"
+  },
+  "urlLock_modeExact": {
+    "message": "URL esatto"
+  },
+  "urlLock_modePath": {
+    "message": "Stesso percorso"
+  },
+  "urlLock_modeOrigin": {
+    "message": "Stesso dominio"
+  }
 }

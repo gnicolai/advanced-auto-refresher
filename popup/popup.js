@@ -31,6 +31,9 @@ const elements = {
   testSelector: document.getElementById('testSelector'),
   selectedValue: document.getElementById('selectedValue'),
   currentValue: document.getElementById('currentValue'),
+  numericCandidateGroup: document.getElementById('numericCandidateGroup'),
+  numericCandidateSelect: document.getElementById('numericCandidateSelect'),
+  numericDetectedNumbers: document.getElementById('numericDetectedNumbers'),
   alertMode: document.getElementById('alertMode'),
   thresholdValue: document.getElementById('thresholdValue'),
   thresholdGroup: document.getElementById('thresholdGroup'),
@@ -63,6 +66,9 @@ const elements = {
   previewTextSound: document.getElementById('previewTextSound'),
 
   stopOnClick: document.getElementById('stopOnClick'),
+  urlLockEnabled: document.getElementById('urlLockEnabled'),
+  urlLockModeGroup: document.getElementById('urlLockModeGroup'),
+  urlLockMode: document.getElementById('urlLockMode'),
 
   blacklistToggle: document.getElementById('blacklistToggle'),
   blacklistUrl: document.getElementById('blacklistUrl'),
@@ -98,6 +104,8 @@ function getDefaults() {
       enabled: false,
       selector: '',
       lastValue: null,
+      candidateIndex: 0,
+      lastCandidates: [],
       alertMode: 'increase',
       threshold: 0,
       alertSound: 'siren',
@@ -107,7 +115,7 @@ function getDefaults() {
       enabled: false,
       selector: '',
       sourceMode: 'selectorText',
-      detectMode: 'keywords',
+      detectMode: 'keywordAppeared',
       keywords: [],
       lastMatchedKeywords: [],
       debugEnabled: false,
@@ -118,6 +126,11 @@ function getDefaults() {
       mode: 'shared',
       sharedSound: 'siren',
       sharedVolume: 80
+    },
+    urlLock: {
+      enabled: true,
+      mode: 'exact',
+      lockedUrl: ''
     },
     stopOnClick: false
   };
@@ -191,7 +204,7 @@ function migrateTextWatch(response = {}) {
     enabled: Boolean(legacyKeywordWatch.enabled),
     selector: sourceMode === 'selectorText' ? (legacyContentWatch.selector || '') : '',
     sourceMode,
-    detectMode: 'keywords',
+    detectMode: 'keywordAppeared',
     keywords: Array.isArray(legacyKeywordWatch.keywords) ? legacyKeywordWatch.keywords : [],
     lastMatchedKeywords: [],
     alertSound: legacyContentWatch.alertSound || 'chime',
@@ -227,10 +240,22 @@ async function loadTabSettings() {
     ...(response || {}),
     contentWatch: {
       ...defaults.contentWatch,
-      ...(response?.contentWatch || {})
+      ...(response?.contentWatch || {}),
+      candidateIndex: Number.isFinite(Number(response?.contentWatch?.candidateIndex))
+        ? Number(response.contentWatch.candidateIndex)
+        : defaults.contentWatch.candidateIndex,
+      lastCandidates: Array.isArray(response?.contentWatch?.lastCandidates)
+        ? response.contentWatch.lastCandidates
+          .map((value) => Number(value))
+          .filter((value) => Number.isFinite(value))
+        : defaults.contentWatch.lastCandidates
     },
     textWatch: migrateTextWatch(response),
-    alertRouting: migrateAlertRouting(response)
+    alertRouting: migrateAlertRouting(response),
+    urlLock: {
+      ...defaults.urlLock,
+      ...(response?.urlLock || {})
+    }
   };
 }
 
@@ -274,6 +299,13 @@ function updateTimerUI() {
   if (!isElementBeingEdited(elements.stopOnClick)) {
     elements.stopOnClick.checked = Boolean(tabSettings.stopOnClick);
   }
+  if (!isElementBeingEdited(elements.urlLockEnabled)) {
+    elements.urlLockEnabled.checked = tabSettings.urlLock?.enabled !== false;
+  }
+  if (!isElementBeingEdited(elements.urlLockMode)) {
+    elements.urlLockMode.value = tabSettings.urlLock?.mode || 'exact';
+  }
+  elements.urlLockModeGroup.classList.toggle('hidden', elements.urlLockEnabled.checked === false);
 }
 
 function updateNumericUI() {
@@ -287,6 +319,7 @@ function updateNumericUI() {
   }
   elements.selectedValue.textContent = numeric.selector || window.i18n.t('contentWatch.none');
   elements.currentValue.textContent = numeric.lastValue ?? '--';
+  updateNumericCandidateUI(numeric);
   if (!isElementBeingEdited(elements.alertMode)) {
     elements.alertMode.value = numeric.alertMode || 'increase';
   }
@@ -317,7 +350,7 @@ function updateTextUI() {
   elements.textSelectedValue.textContent = textWatch.selector || window.i18n.t('textWatch.none');
   elements.textCurrentPreview.textContent = textWatch.previewText || '--';
   if (!isElementBeingEdited(elements.textAlertMode)) {
-    elements.textAlertMode.value = textWatch.detectMode || 'keywords';
+    elements.textAlertMode.value = textWatch.detectMode || 'keywordAppeared';
   }
   if (!isElementBeingEdited(elements.textKeywordList)) {
     elements.textKeywordList.value = (textWatch.keywords || []).join('\n');
@@ -356,6 +389,81 @@ function updateTextSourceControls() {
   elements.textSelectorControls.classList.toggle('hidden', !showSelectorControls);
 }
 
+function updateNumericCandidateUI(numeric = {}) {
+  const candidates = Array.isArray(numeric.lastCandidates)
+    ? numeric.lastCandidates.filter((value) => Number.isFinite(Number(value))).map((value) => Number(value))
+    : [];
+  const hasCandidates = candidates.length > 0;
+  const hasMultiple = candidates.length > 1;
+  const safeIndex = clampCandidateIndex(numeric.candidateIndex, candidates.length);
+
+  elements.numericCandidateGroup.classList.toggle('hidden', !hasCandidates);
+  elements.numericCandidateSelect.innerHTML = '';
+
+  if (hasCandidates) {
+    candidates.forEach((value, index) => {
+      const option = document.createElement('option');
+      option.value = String(index);
+      option.textContent = `${index + 1}. ${formatNumericCandidate(value)}`;
+      if (index === safeIndex) {
+        option.selected = true;
+      }
+      elements.numericCandidateSelect.appendChild(option);
+    });
+  }
+
+  elements.numericCandidateSelect.disabled = !hasMultiple;
+  if (hasMultiple) {
+    elements.numericDetectedNumbers.textContent = `${t('contentWatch.numberCandidatesFound', 'Detected numbers')}: ${candidates.map((value) => formatNumericCandidate(value)).join(', ')}`;
+  } else if (hasCandidates) {
+    elements.numericDetectedNumbers.textContent = `${t('contentWatch.numberCandidatesSingle', 'Detected number')}: ${formatNumericCandidate(candidates[0])}`;
+  } else {
+    elements.numericDetectedNumbers.textContent = t('contentWatch.numberCandidatesEmpty', 'Select or test an element to see all detected numbers.');
+  }
+
+  tabSettings.contentWatch.candidateIndex = safeIndex;
+}
+
+function clampCandidateIndex(candidateIndex, candidateCount) {
+  if (!candidateCount) {
+    return 0;
+  }
+
+  const parsed = parseInt(candidateIndex, 10);
+  if (!Number.isFinite(parsed) || parsed < 0) {
+    return candidateCount - 1;
+  }
+
+  return Math.min(parsed, candidateCount - 1);
+}
+
+function syncNumericValueFromSelection() {
+  const candidates = Array.isArray(tabSettings.contentWatch?.lastCandidates)
+    ? tabSettings.contentWatch.lastCandidates
+    : [];
+  const safeIndex = clampCandidateIndex(tabSettings.contentWatch?.candidateIndex, candidates.length);
+  tabSettings.contentWatch.candidateIndex = safeIndex;
+  tabSettings.contentWatch.lastValue = candidates.length > 0 ? candidates[safeIndex] : tabSettings.contentWatch.lastValue;
+  elements.currentValue.textContent = tabSettings.contentWatch.lastValue ?? '--';
+}
+
+function formatNumericCandidate(value) {
+  const numericValue = Number(value);
+  if (!Number.isFinite(numericValue)) {
+    return '--';
+  }
+
+  const locale = getUiLocale();
+  if (Number.isInteger(numericValue)) {
+    return numericValue.toLocaleString(locale);
+  }
+
+  return numericValue.toLocaleString(locale, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2
+  });
+}
+
 function setVolumeUI(input, valueLabel, volume) {
   input.value = volume;
   valueLabel.textContent = `${volume}%`;
@@ -392,6 +500,12 @@ function setupEventListeners() {
   elements.startPicker.addEventListener('click', () => startElementPicker('numeric'));
   elements.testSelector.addEventListener('click', () => testCssSelector('numeric'));
   elements.cssSelector.addEventListener('change', saveSettings);
+  elements.numericCandidateSelect.addEventListener('change', async () => {
+    const selectedIndex = parseInt(elements.numericCandidateSelect.value, 10);
+    tabSettings.contentWatch.candidateIndex = Number.isFinite(selectedIndex) ? selectedIndex : 0;
+    syncNumericValueFromSelection();
+    await saveSettings();
+  });
   elements.alertMode.addEventListener('change', () => {
     elements.thresholdGroup.classList.toggle('hidden', !['above', 'below'].includes(elements.alertMode.value));
     saveSettings();
@@ -426,6 +540,11 @@ function setupEventListeners() {
   elements.previewTextSound.addEventListener('click', () => previewSound(elements.textAlertSound.value, elements.textAlertVolume.value));
 
   elements.stopOnClick.addEventListener('change', saveSettings);
+  elements.urlLockEnabled.addEventListener('change', () => {
+    elements.urlLockModeGroup.classList.toggle('hidden', !elements.urlLockEnabled.checked);
+    saveSettings();
+  });
+  elements.urlLockMode.addEventListener('change', saveSettings);
 
   elements.blacklistToggle.addEventListener('click', () => {
     const section = elements.blacklistToggle.closest('.collapsible');
@@ -503,7 +622,11 @@ function handleSelectorUpdated(message) {
       ...tabSettings.contentWatch,
       enabled: true,
       selector: message.selector,
-      lastValue: message.value
+      lastValue: message.value,
+      candidateIndex: Number.isFinite(Number(message.candidateIndex)) ? Number(message.candidateIndex) : 0,
+      lastCandidates: Array.isArray(message.candidates)
+        ? message.candidates.map((value) => Number(value)).filter((value) => Number.isFinite(value))
+        : []
     };
     elements.selectedValue.textContent = message.selector;
     elements.cssSelector.value = message.selector;
@@ -547,7 +670,15 @@ function startStatePolling() {
       if (response.contentWatch) {
         tabSettings.contentWatch = {
           ...tabSettings.contentWatch,
-          lastValue: response.contentWatch.lastValue ?? tabSettings.contentWatch.lastValue
+          lastValue: response.contentWatch.lastValue ?? tabSettings.contentWatch.lastValue,
+          candidateIndex: Number.isFinite(Number(response.contentWatch.candidateIndex))
+            ? Number(response.contentWatch.candidateIndex)
+            : tabSettings.contentWatch.candidateIndex,
+          lastCandidates: Array.isArray(response.contentWatch.lastCandidates)
+            ? response.contentWatch.lastCandidates
+              .map((value) => Number(value))
+              .filter((value) => Number.isFinite(value))
+            : tabSettings.contentWatch.lastCandidates
         };
       }
       if (response.textWatch) {
@@ -556,8 +687,16 @@ function startStatePolling() {
           previewText: response.textWatch.previewText ?? tabSettings.textWatch.previewText
         };
       }
+      if (response.urlLock) {
+        tabSettings.urlLock = {
+          ...tabSettings.urlLock,
+          ...response.urlLock
+        };
+      }
 
       updateStatusUI();
+      updateTimerUI();
+      updateNumericCandidateUI(tabSettings.contentWatch);
       elements.currentValue.textContent = tabSettings.contentWatch.lastValue ?? '--';
       elements.textCurrentPreview.textContent = tabSettings.textWatch.previewText || '--';
     } catch {
@@ -593,6 +732,8 @@ function getSettingsFromUI() {
       enabled: elements.contentWatchEnabled.checked,
       selector: elements.cssSelector.value.trim(),
       lastValue: tabSettings.contentWatch?.lastValue ?? null,
+      candidateIndex: parseInt(elements.numericCandidateSelect.value, 10) || 0,
+      lastCandidates: Array.isArray(tabSettings.contentWatch?.lastCandidates) ? tabSettings.contentWatch.lastCandidates : [],
       alertMode: elements.alertMode.value || 'increase',
       threshold: parseInt(elements.thresholdValue.value, 10) || 0,
       alertSound: elements.numericAlertSound.value || 'siren',
@@ -602,7 +743,7 @@ function getSettingsFromUI() {
       enabled: elements.textWatchEnabled.checked,
       selector: elements.textCssSelector.value.trim(),
       sourceMode: elements.textSourceMode.value || 'selectorText',
-      detectMode: elements.textAlertMode.value || 'keywords',
+      detectMode: elements.textAlertMode.value || 'keywordAppeared',
       keywords,
       lastMatchedKeywords: tabSettings.textWatch?.lastMatchedKeywords || [],
       debugEnabled: elements.textDebugEnabled.checked,
@@ -615,6 +756,11 @@ function getSettingsFromUI() {
       sharedSound: elements.sharedAlertSound.value || 'siren',
       sharedVolume: parseInt(elements.sharedAlertVolume.value, 10) || 80
     },
+    urlLock: {
+      enabled: elements.urlLockEnabled.checked,
+      mode: elements.urlLockMode.value || 'exact',
+      lockedUrl: tabSettings.urlLock?.lockedUrl || currentTabUrl || ''
+    },
     stopOnClick: elements.stopOnClick.checked
   };
 }
@@ -626,7 +772,8 @@ async function saveSettings() {
     ...settings,
     contentWatch: settings.contentWatch,
     textWatch: settings.textWatch,
-    alertRouting: settings.alertRouting
+    alertRouting: settings.alertRouting,
+    urlLock: settings.urlLock
   };
 
   await chrome.runtime.sendMessage({
@@ -681,8 +828,15 @@ async function testCssSelector(watchType) {
       tabSettings.textWatch.previewText = preview;
       await saveSettings();
     } else {
+      tabSettings.contentWatch.lastCandidates = Array.isArray(response.numericCandidates)
+        ? response.numericCandidates.map((value) => Number(value)).filter((value) => Number.isFinite(value))
+        : [];
+      tabSettings.contentWatch.candidateIndex = Number.isFinite(Number(response.selectedCandidateIndex))
+        ? Number(response.selectedCandidateIndex)
+        : 0;
       elements.currentValue.textContent = response.numericValue ?? '--';
       tabSettings.contentWatch.lastValue = response.numericValue ?? null;
+      updateNumericCandidateUI(tabSettings.contentWatch);
       await saveSettings();
     }
   } catch (error) {

@@ -173,6 +173,12 @@
             <span class="value-number" id="currentValue">--</span>
           </div>
 
+          <div class="control-group hidden" id="numericCandidateGroup">
+            <label for="numericCandidateSelect" data-i18n="contentWatch.numberTarget">Number to monitor</label>
+            <select id="numericCandidateSelect" class="select-field"></select>
+            <p class="helper-text" id="numericDetectedNumbers" data-i18n="contentWatch.numberCandidatesEmpty">Select or test an element to see all detected numbers.</p>
+          </div>
+
           <div class="control-group">
             <label for="alertMode" data-i18n="contentWatch.alertMode">Alert mode</label>
             <select id="alertMode" class="select-field">
@@ -287,8 +293,9 @@
             <label for="textAlertMode" data-i18n="textWatch.alertMode">Text alert mode</label>
             <select id="textAlertMode" class="select-field">
               <option value="change" data-i18n="textWatch.alertModeChange">Any text appearance, disappearance, or change</option>
-              <option value="keywords" data-i18n="textWatch.alertModeKeywords">Only keywords or phrases</option>
-              <option value="keywordState" data-i18n="textWatch.alertModeKeywordState">Keyword appearance or disappearance only</option>
+              <option value="keywordAppeared" data-i18n="textWatch.alertModeKeywordAppeared">Only keyword appearance</option>
+              <option value="keywordDisappeared" data-i18n="textWatch.alertModeKeywordDisappeared">Only keyword disappearance</option>
+              <option value="keywordState" data-i18n="textWatch.alertModeKeywordState">Keyword appearance or disappearance</option>
               <option value="changeOrKeywords" data-i18n="textWatch.alertModeChangeOrKeywords">Text change or keywords</option>
             </select>
           </div>
@@ -344,6 +351,23 @@
           <input type="checkbox" id="stopOnClick" class="checkbox">
           <label for="stopOnClick" data-i18n="clickStop.enable">Stop refresh when user clicks on the page</label>
         </div>
+      </div>
+
+      <div class="control-group">
+        <div class="checkbox-row">
+          <input type="checkbox" id="urlLockEnabled" class="checkbox">
+          <label for="urlLockEnabled" data-i18n="urlLock.enable">Lock monitoring to the current URL scope</label>
+        </div>
+        <p class="helper-text" data-i18n="urlLock.help">Choose how strictly auto-refresh should stay attached to the page where monitoring started.</p>
+      </div>
+
+      <div class="control-group" id="urlLockModeGroup">
+        <label for="urlLockMode" data-i18n="urlLock.mode">URL lock mode</label>
+        <select id="urlLockMode" class="select-field">
+          <option value="exact" data-i18n="urlLock.modeExact">Exact URL</option>
+          <option value="path" data-i18n="urlLock.modePath">Same path</option>
+          <option value="origin" data-i18n="urlLock.modeOrigin">Same domain</option>
+        </select>
       </div>
     </section>
 
@@ -441,7 +465,7 @@
     </div>
 
     <footer class="footer">
-      <span class="version" id="versionText">v1.0.19</span>
+      <span class="version" id="versionText">v1.0.20</span>
       <a href="https://giulionicolai.com" target="_blank" class="creator-link" data-i18n="footer.createdBy">Created by Giulio Nicolai</a>
       <div class="donate-section">
         <span class="donate-text" data-i18n="footer.donateText">Enjoying the extension?</span>
