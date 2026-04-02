@@ -145,7 +145,8 @@ function getDefaultTabSettings(tabUrl = '') {
         urlLock: {
             enabled: true,
             mode: 'exact',
-            lockedUrl: tabUrl
+            lockedUrl: tabUrl,
+            pausedByMismatch: false
         },
         stopOnClick: false,
         schedule: {
@@ -282,6 +283,7 @@ function normalizeSettings(settings = {}, tabUrl = settings.tabUrl || '') {
     normalized.urlLock.enabled = normalized.urlLock.enabled !== false;
     normalized.urlLock.mode = ['exact', 'path', 'origin'].includes(normalized.urlLock.mode) ? normalized.urlLock.mode : 'exact';
     normalized.urlLock.lockedUrl = normalized.urlLock.lockedUrl || normalized.tabUrl || '';
+    normalized.urlLock.pausedByMismatch = Boolean(normalized.urlLock.pausedByMismatch);
     normalized.stopOnClick = Boolean(normalized.stopOnClick);
     normalized.isActive = Boolean(normalized.isActive);
 
@@ -324,7 +326,8 @@ async function toggleRefresh(tabId, tabUrl, settings) {
             ...nextState.urlLock,
             enabled: nextState.urlLock?.enabled !== false,
             mode: ['exact', 'path', 'origin'].includes(nextState.urlLock?.mode) ? nextState.urlLock.mode : 'exact',
-            lockedUrl: tabUrl || nextState.tabUrl || existing.urlLock?.lockedUrl || ''
+            lockedUrl: tabUrl || nextState.tabUrl || existing.urlLock?.lockedUrl || '',
+            pausedByMismatch: false
         };
         await primeMonitoringState(tabId, nextState);
         await startTimer(tabId, nextState);
@@ -352,7 +355,7 @@ async function updateSettings(tabId, tabUrl, settings) {
     const existing = await getTabSettings(tabId);
     const nextState = normalizeSettings({ ...existing, ...settings }, tabUrl);
 
-    if (tabUrl) {
+    if (tabUrl && !nextState.urlLock?.pausedByMismatch) {
         nextState.urlLock = {
             ...nextState.urlLock,
             lockedUrl: tabUrl
@@ -422,6 +425,10 @@ async function restoreTimers() {
             restored = normalizeSettings({
                 ...restored,
                 isActive: false,
+                urlLock: {
+                    ...restored.urlLock,
+                    pausedByMismatch: true
+                },
                 pendingRefresh: null,
                 schedule: {
                     ...restored.schedule,
@@ -434,6 +441,15 @@ async function restoreTimers() {
 
         if (restored.isActive) {
             await resumeTimer(tab.id, restored);
+        } else if (restored.urlLock?.enabled && restored.urlLock?.pausedByMismatch && !shouldPauseForUrlChange({ ...restored, isActive: true }, tab.url || restored.tabUrl)) {
+            const resumedState = normalizeSettings({
+                ...restored,
+                urlLock: {
+                    ...restored.urlLock,
+                    pausedByMismatch: false
+                }
+            }, tab.url || restored.tabUrl);
+            await resumeTimer(tab.id, resumedState);
         }
     }
 
@@ -486,6 +502,10 @@ async function pauseTimer(tabId, { keepState = false, reason = 'manual' } = {}) 
     const nextState = normalizeSettings({
         ...existing,
         isActive: false,
+        urlLock: {
+            ...existing.urlLock,
+            pausedByMismatch: reason === 'url-changed'
+        },
         pendingRefresh: null,
         schedule: {
             ...existing.schedule,
@@ -697,6 +717,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     }
 
     const currentUrl = tab?.url || changeInfo.url || state.tabUrl;
+    const urlLockPaused = !state.isActive && state.urlLock?.enabled && state.urlLock?.pausedByMismatch;
 
     if (state.isActive && currentUrl && shouldPauseForUrlChange(state, currentUrl)) {
         const pausedState = await pauseTimer(tabId, { keepState: true, reason: 'url-changed' });
@@ -715,6 +736,25 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     if (currentUrl) {
         state.tabUrl = currentUrl;
         tabStates.set(tabId, state);
+    }
+
+    if (urlLockPaused && currentUrl && !shouldPauseForUrlChange({ ...state, isActive: true }, currentUrl)) {
+        if (changeInfo.status !== 'complete') {
+            return;
+        }
+
+        const resumedState = normalizeSettings({
+            ...state,
+            tabUrl: currentUrl,
+            urlLock: {
+                ...state.urlLock,
+                pausedByMismatch: false
+            }
+        }, currentUrl);
+        await resumeTimer(tabId, resumedState);
+        const i18n = await getRuntimeI18nContext();
+        await showPageSummary(tabId, i18n.t('urlLock_resumedToast', 'Auto-refresh resumed after returning to the monitored page.'));
+        return;
     }
 
     if (changeInfo.status !== 'complete') {

@@ -496,5 +496,8 @@
   },
   "urlLock_modeOrigin": {
     "message": "Ta sama domena"
+  },
+  "urlLock_resumedToast": {
+    "message": "Automatyczne od?wie?anie wznowiono po powrocie do monitorowanej strony."
   }
 }

@@ -496,5 +496,8 @@
   },
   "urlLock_modeOrigin": {
     "message": "Mismo dominio"
+  },
+  "urlLock_resumedToast": {
+    "message": "El auto-refresh se reanud? al volver a la p?gina monitorizada."
   }
 }

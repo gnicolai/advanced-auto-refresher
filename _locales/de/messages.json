@@ -496,5 +496,8 @@
   },
   "urlLock_modeOrigin": {
     "message": "Gleiche Domain"
+  },
+  "urlLock_resumedToast": {
+    "message": "Auto-Refresh wurde fortgesetzt, nachdem du zur ?berwachten Seite zur?ckgekehrt bist."
   }
 }

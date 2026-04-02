@@ -496,5 +496,8 @@
   },
   "urlLock_modeOrigin": {
     "message": "M?me domaine"
+  },
+  "urlLock_resumedToast": {
+    "message": "L?actualisation automatique a repris apr?s le retour sur la page surveill?e."
   }
 }
