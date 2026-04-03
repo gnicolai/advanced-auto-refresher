@@ -59,6 +59,7 @@ const elements = {
   textSelectedValue: document.getElementById('textSelectedValue'),
   textCurrentPreview: document.getElementById('textCurrentPreview'),
   textAlertMode: document.getElementById('textAlertMode'),
+  textKeywordGroup: document.getElementById('textKeywordGroup'),
   textKeywordList: document.getElementById('textKeywordList'),
   textDebugEnabled: document.getElementById('textDebugEnabled'),
   textAlertSettings: document.getElementById('textAlertSettings'),
@@ -101,7 +102,9 @@ const LEGACY_TEXT_SOURCE_MODE_MAP = {
   selectorHtml: 'areaHtml'
 };
 
-const SELECTOR_TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml'];
+const TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml', 'areaMedia', 'pageText', 'pageHtml'];
+const SELECTOR_TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml', 'areaMedia'];
+const MEDIA_TEXT_SOURCE_MODES = ['areaMedia'];
 
 function getDefaults() {
   return {
@@ -161,13 +164,35 @@ function t(key, fallback = '') {
 
 function normalizeTextSourceMode(sourceMode = '') {
   const normalized = LEGACY_TEXT_SOURCE_MODE_MAP[sourceMode] || sourceMode;
-  return ['elementText', 'areaText', 'areaHtml', 'pageText', 'pageHtml'].includes(normalized)
+  return TEXT_SOURCE_MODES.includes(normalized)
     ? normalized
     : 'elementText';
 }
 
 function isSelectorBasedTextSourceMode(sourceMode = '') {
   return SELECTOR_TEXT_SOURCE_MODES.includes(normalizeTextSourceMode(sourceMode));
+}
+
+function isMediaSourceMode(sourceMode = '') {
+  return MEDIA_TEXT_SOURCE_MODES.includes(normalizeTextSourceMode(sourceMode));
+}
+
+function normalizeTextDetectMode(detectMode = '', sourceMode = 'elementText') {
+  const normalizedSourceMode = normalizeTextSourceMode(sourceMode);
+  const normalizedDetectMode = detectMode === 'keywords' ? 'keywordAppeared' : detectMode;
+  const validModes = isMediaSourceMode(normalizedSourceMode)
+    ? ['change', 'mediaAdded']
+    : ['change', 'keywordAppeared', 'keywordDisappeared', 'keywordState', 'changeOrKeywords'];
+
+  if (validModes.includes(normalizedDetectMode)) {
+    return normalizedDetectMode;
+  }
+
+  if (!isMediaSourceMode(normalizedSourceMode) && normalizedDetectMode === 'mediaAdded') {
+    return 'change';
+  }
+
+  return isMediaSourceMode(normalizedSourceMode) ? 'mediaAdded' : 'keywordAppeared';
 }
 
 function getTextPickerCopy(sourceMode = '') {
@@ -221,6 +246,7 @@ function migrateTextWatch(response = {}) {
       ...getDefaults().textWatch,
       ...response.textWatch,
       sourceMode: normalizeTextSourceMode(response.textWatch.sourceMode),
+      detectMode: normalizeTextDetectMode(response.textWatch.detectMode, response.textWatch.sourceMode),
       keywords: Array.isArray(response.textWatch.keywords) ? response.textWatch.keywords : [],
       lastMatchedKeywords: Array.isArray(response.textWatch.lastMatchedKeywords) ? response.textWatch.lastMatchedKeywords : []
     };
@@ -244,7 +270,7 @@ function migrateTextWatch(response = {}) {
     enabled: Boolean(legacyKeywordWatch.enabled),
     selector: isSelectorBasedTextSourceMode(sourceMode) ? (legacyContentWatch.selector || '') : '',
     sourceMode: normalizeTextSourceMode(sourceMode),
-    detectMode: 'keywordAppeared',
+    detectMode: normalizeTextDetectMode(legacyKeywordWatch.detectMode, sourceMode),
     keywords: Array.isArray(legacyKeywordWatch.keywords) ? legacyKeywordWatch.keywords : [],
     lastMatchedKeywords: [],
     alertSound: legacyContentWatch.alertSound || 'chime',
@@ -395,7 +421,7 @@ function updateTextUI() {
   elements.textSelectedValue.textContent = textWatch.selector || window.i18n.t('textWatch.none');
   elements.textCurrentPreview.textContent = textWatch.previewText || '--';
   if (!isElementBeingEdited(elements.textAlertMode)) {
-    elements.textAlertMode.value = textWatch.detectMode || 'keywordAppeared';
+    elements.textAlertMode.value = normalizeTextDetectMode(textWatch.detectMode, textWatch.sourceMode);
   }
   if (!isElementBeingEdited(elements.textKeywordList)) {
     elements.textKeywordList.value = (textWatch.keywords || []).join('\n');
@@ -438,13 +464,26 @@ function updateVisualFeedbackUI() {
 function updateTextSourceControls() {
   const sourceMode = normalizeTextSourceMode(elements.textSourceMode.value);
   const showSelectorControls = isSelectorBasedTextSourceMode(sourceMode);
+  const mediaMode = isMediaSourceMode(sourceMode);
   const copy = getTextPickerCopy(sourceMode);
+  const areaMediaOption = elements.textSourceMode.querySelector('option[value="areaMedia"]');
+  const mediaAddedOption = elements.textAlertMode.querySelector('option[value="mediaAdded"]');
+  if (areaMediaOption) {
+    areaMediaOption.textContent = t('textWatch.sourceAreaMedia', 'Area media (images/videos)');
+  }
+  if (mediaAddedOption) {
+    mediaAddedOption.textContent = t('textWatch.alertModeMediaAdded', 'Only new images/videos added');
+  }
   elements.textSelectorControls.classList.toggle('hidden', !showSelectorControls);
+  elements.textKeywordGroup?.classList.toggle('hidden', mediaMode);
   if (elements.textPickerActionText) {
     elements.textPickerActionText.textContent = copy.buttonLabel;
   }
   if (elements.textSelectedLabel) {
     elements.textSelectedLabel.textContent = copy.selectedLabel;
+  }
+  if (!isElementBeingEdited(elements.textAlertMode)) {
+    elements.textAlertMode.value = normalizeTextDetectMode(elements.textAlertMode.value, sourceMode);
   }
 }
 
@@ -582,6 +621,9 @@ function setupEventListeners() {
   });
   elements.textSourceMode.addEventListener('change', () => {
     updateTextSourceControls();
+    if (elements.textSelectedValue.textContent === window.i18n.t('textWatch.none')) {
+      elements.textCurrentPreview.textContent = '--';
+    }
     saveSettings();
   });
   elements.textPickerModeBtn.addEventListener('click', () => toggleSelectorMode('text', 'picker'));
@@ -810,7 +852,7 @@ function getSettingsFromUI() {
       enabled: elements.textWatchEnabled.checked,
       selector: elements.textCssSelector.value.trim(),
       sourceMode: normalizeTextSourceMode(elements.textSourceMode.value),
-      detectMode: elements.textAlertMode.value || 'keywordAppeared',
+      detectMode: normalizeTextDetectMode(elements.textAlertMode.value, elements.textSourceMode.value),
       keywords,
       lastMatchedKeywords: tabSettings.textWatch?.lastMatchedKeywords || [],
       debugEnabled: elements.textDebugEnabled.checked,

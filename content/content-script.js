@@ -21,7 +21,9 @@ const LEGACY_TEXT_SOURCE_MODE_MAP = {
     selectorHtml: 'areaHtml'
 };
 
-const SELECTOR_TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml'];
+const TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml', 'areaMedia', 'pageText', 'pageHtml'];
+const SELECTOR_TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml', 'areaMedia'];
+const MEDIA_TEXT_SOURCE_MODES = ['areaMedia'];
 
 document.addEventListener('click', handleMonitoredPageClick, true);
 
@@ -98,13 +100,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 function normalizeTextSourceMode(sourceMode = '') {
     const normalized = LEGACY_TEXT_SOURCE_MODE_MAP[sourceMode] || sourceMode;
-    return ['elementText', 'areaText', 'areaHtml', 'pageText', 'pageHtml'].includes(normalized)
+    return TEXT_SOURCE_MODES.includes(normalized)
         ? normalized
         : 'elementText';
 }
 
 function isSelectorBasedTextSourceMode(sourceMode = '') {
     return SELECTOR_TEXT_SOURCE_MODES.includes(normalizeTextSourceMode(sourceMode));
+}
+
+function isMediaSourceMode(sourceMode = '') {
+    return MEDIA_TEXT_SOURCE_MODES.includes(normalizeTextSourceMode(sourceMode));
 }
 
 function startPicker(watchType, sourceMode = 'elementText') {
@@ -188,10 +194,13 @@ function highlightElement(element) {
     const label = document.createElement('div');
     label.className = 'aar-highlight-label';
     const textContent = normalizeText(element.innerText || element.textContent);
+    const mediaSnapshot = extractAreaMediaSnapshot(element);
     const numericCandidates = extractNumberCandidates(textContent);
     const numericValue = getSelectedNumericValue(numericCandidates);
     label.textContent = pickerWatchType === 'numeric' && numericValue !== null
         ? `Value: ${numericValue}`
+        : pickerWatchType === 'text' && isMediaSourceMode(pickerSourceMode)
+            ? `Media: ${mediaSnapshot.signatures.length || 0} item(s)`
         : `Text: ${truncatePreview(textContent, 60) || 'N/A'}`;
 
     highlightedOverlay.appendChild(label);
@@ -218,12 +227,16 @@ function handlePickerClick(event) {
     const selector = generateSelector(targetElement);
     const textContent = normalizeText(targetElement.innerText || targetElement.textContent);
     const htmlContent = String(targetElement.outerHTML || '');
+    const mediaSnapshot = extractAreaMediaSnapshot(targetElement);
     const numericCandidates = extractNumberCandidates(textContent);
     const selectedCandidateIndex = getDefaultCandidateIndex(numericCandidates);
     const numericValue = getSelectedNumericValue(numericCandidates, selectedCandidateIndex);
-    const previewText = normalizeTextSourceMode(pickerSourceMode) === 'areaHtml'
+    const normalizedSourceMode = normalizeTextSourceMode(pickerSourceMode);
+    const previewText = normalizedSourceMode === 'areaHtml'
         ? truncatePreview(normalizeText(htmlContent), 120)
-        : truncatePreview(textContent, 120);
+        : normalizedSourceMode === 'areaMedia'
+            ? mediaSnapshot.previewText
+            : truncatePreview(textContent, 120);
 
     chrome.runtime.sendMessage({
         type: 'SELECTOR_PICKED',
@@ -334,10 +347,13 @@ function testSelector(selector, sourceMode = 'elementText') {
         const normalizedSourceMode = normalizeTextSourceMode(sourceMode);
         const textContent = normalizeText(element.innerText || element.textContent);
         const areaHtml = String(element.outerHTML || '');
+        const mediaSnapshot = extractAreaMediaSnapshot(element);
         const numericCandidates = extractNumberCandidates(textContent);
         const selectedCandidateIndex = getDefaultCandidateIndex(numericCandidates);
         const previewValue = normalizedSourceMode === 'areaHtml'
             ? truncatePreview(normalizeText(areaHtml), 120)
+            : normalizedSourceMode === 'areaMedia'
+                ? mediaSnapshot.previewText
             : truncatePreview(textContent, 120);
         return {
             success: true,
@@ -401,17 +417,24 @@ function captureTextSnapshot(selector, sourceMode, includePageText, includePageH
         const selectorFound = Boolean(element);
         const selectorText = selectorFound ? normalizeText(element.innerText || element.textContent) : '';
         const selectorHtml = selectorFound ? String(element.outerHTML || '') : '';
+        const mediaSnapshot = selectorFound ? extractAreaMediaSnapshot(element) : { signatures: [], previewText: '', debugText: '' };
         const pageText = includePageText ? getPageText() : '';
         const pageHtml = includePageHtml ? getPageHtml() : '';
 
         let monitoredText = '';
         let previewText = '';
         let debugText = '';
+        let mediaSignatures = [];
 
         if (normalizedSourceMode === 'areaHtml') {
             monitoredText = selectorHtml;
             previewText = truncatePreview(normalizeText(selectorHtml), 120);
             debugText = truncateRaw(selectorHtml, 1800);
+        } else if (normalizedSourceMode === 'areaMedia') {
+            monitoredText = mediaSnapshot.signatures.join('\n');
+            previewText = mediaSnapshot.previewText;
+            debugText = mediaSnapshot.debugText;
+            mediaSignatures = mediaSnapshot.signatures.slice();
         } else if (normalizedSourceMode === 'pageHtml') {
             monitoredText = pageHtml;
             previewText = truncatePreview(normalizeText(pageHtml), 120);
@@ -426,13 +449,14 @@ function captureTextSnapshot(selector, sourceMode, includePageText, includePageH
             debugText = truncatePreview(selectorText, 1800);
         }
 
-        if (!monitoredText) {
+        if (!monitoredText && !(normalizedSourceMode === 'areaMedia' && selectorFound)) {
             return {
                 success: false,
                 selectorFound,
                 monitoredText: '',
                 previewText: '',
-                debugText: ''
+                debugText: '',
+                mediaSignatures: []
             };
         }
 
@@ -441,7 +465,8 @@ function captureTextSnapshot(selector, sourceMode, includePageText, includePageH
             selectorFound,
             monitoredText,
             previewText,
-            debugText
+            debugText,
+            mediaSignatures
         };
     } catch (error) {
         return {
@@ -450,6 +475,7 @@ function captureTextSnapshot(selector, sourceMode, includePageText, includePageH
             monitoredText: '',
             previewText: '',
             debugText: '',
+            mediaSignatures: [],
             error: error.message
         };
     }
@@ -753,6 +779,8 @@ function applyTemporaryHighlight(element, durationMs = 5000) {
 
 function getTextSourceLabel(sourceMode) {
     switch (normalizeTextSourceMode(sourceMode)) {
+        case 'areaMedia':
+            return chrome.i18n.getMessage('textWatch_sourceAreaMedia') || 'Area media';
         case 'areaText':
             return chrome.i18n.getMessage('textWatch_sourceAreaText') || 'Area text';
         case 'areaHtml':
@@ -764,6 +792,125 @@ function getTextSourceLabel(sourceMode) {
         case 'elementText':
         default:
             return chrome.i18n.getMessage('textWatch_sourceElementText') || 'Element text';
+    }
+}
+
+function extractAreaMediaSnapshot(element) {
+    if (!(element instanceof Element)) {
+        return {
+            signatures: [],
+            previewText: chrome.i18n.getMessage('textWatch_mediaEmpty') || 'No media items found yet.',
+            debugText: ''
+        };
+    }
+
+    const signatureSet = new Set();
+    const roots = [element, ...element.querySelectorAll('*')];
+
+    roots.forEach((node) => {
+        if (!(node instanceof Element)) {
+            return;
+        }
+
+        if (node.matches('a[href]')) {
+            const href = normalizeMediaUrl(node.getAttribute('href') || node.href || '');
+            const hrefLooksMedia = /\/(video|photo|reel|reels|shorts|clip|watch|p)\b/i.test(href);
+            const hasEmbeddedMedia = Boolean(node.querySelector('img, video, picture, source'));
+            if (href && (hrefLooksMedia || hasEmbeddedMedia)) {
+                signatureSet.add(`link:${href}`);
+            }
+        }
+
+        if (node.matches('img')) {
+            collectMediaUrls(node.currentSrc || '', 'img', signatureSet);
+            collectMediaUrls(node.getAttribute('src') || '', 'img', signatureSet);
+            collectSrcsetUrls(node.getAttribute('srcset') || '', 'img', signatureSet);
+        }
+
+        if (node.matches('video')) {
+            collectMediaUrls(node.currentSrc || '', 'video', signatureSet);
+            collectMediaUrls(node.getAttribute('src') || '', 'video', signatureSet);
+            collectMediaUrls(node.getAttribute('poster') || '', 'poster', signatureSet);
+        }
+
+        if (node.matches('source')) {
+            collectMediaUrls(node.getAttribute('src') || '', 'source', signatureSet);
+            collectSrcsetUrls(node.getAttribute('srcset') || '', 'source', signatureSet);
+        }
+
+        const backgroundImage = node instanceof HTMLElement ? node.style?.backgroundImage || '' : '';
+        extractCssUrls(backgroundImage).forEach((url) => collectMediaUrls(url, 'bg', signatureSet));
+    });
+
+    const signatures = Array.from(signatureSet).sort();
+    const previewItems = signatures.slice(0, 3).map(formatMediaSignatureDisplay);
+    const previewText = signatures.length > 0
+        ? `${signatures.length} media item(s): ${previewItems.join(' | ')}`
+        : (chrome.i18n.getMessage('textWatch_mediaEmpty') || 'No media items found yet.');
+
+    return {
+        signatures,
+        previewText: truncatePreview(previewText, 120),
+        debugText: signatures.length > 0
+            ? signatures.map(formatMediaSignatureDisplay).join('\n')
+            : (chrome.i18n.getMessage('textWatch_mediaEmpty') || 'No media items found yet.')
+    };
+}
+
+function collectMediaUrls(rawValue, kind, signatureSet) {
+    const normalized = normalizeMediaUrl(rawValue);
+    if (normalized) {
+        signatureSet.add(`${kind}:${normalized}`);
+    }
+}
+
+function collectSrcsetUrls(srcset, kind, signatureSet) {
+    String(srcset || '')
+        .split(',')
+        .map((entry) => entry.trim().split(/\s+/)[0] || '')
+        .filter(Boolean)
+        .forEach((entry) => collectMediaUrls(entry, kind, signatureSet));
+}
+
+function extractCssUrls(value) {
+    const matches = String(value || '').match(/url\((['"]?)(.*?)\1\)/gi) || [];
+    return matches
+        .map((match) => match.replace(/^url\((['"]?)/i, '').replace(/(['"]?)\)$/i, '').trim())
+        .filter(Boolean);
+}
+
+function normalizeMediaUrl(rawValue) {
+    const value = String(rawValue || '').trim();
+    if (!value || value.startsWith('data:') || value.startsWith('blob:') || value === 'about:blank') {
+        return '';
+    }
+
+    try {
+        const parsed = new URL(value, window.location.href);
+        parsed.hash = '';
+        parsed.search = '';
+        return parsed.toString();
+    } catch {
+        return value.split('#')[0].split('?')[0].trim();
+    }
+}
+
+function formatMediaSignatureDisplay(signature) {
+    const [kind, rawValue = ''] = String(signature || '').split(/:(.+)/);
+    const label = ({
+        link: 'Link',
+        img: 'Image',
+        video: 'Video',
+        poster: 'Poster',
+        source: 'Source',
+        bg: 'Background'
+    })[kind] || 'Media';
+
+    try {
+        const parsed = new URL(rawValue);
+        return `${label}: ${parsed.pathname || parsed.hostname || rawValue}`;
+    } catch {
+        return `${label}: ${rawValue}`;
     }
 }
 

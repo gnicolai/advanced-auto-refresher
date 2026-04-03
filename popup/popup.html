@@ -262,6 +262,7 @@
               <option value="elementText" data-i18n="textWatch.sourceElementText">Element text</option>
               <option value="areaText" data-i18n="textWatch.sourceAreaText">Area text</option>
               <option value="areaHtml" data-i18n="textWatch.sourceAreaHtml">Area HTML</option>
+              <option value="areaMedia">Area media (images/videos)</option>
               <option value="pageText" data-i18n="textWatch.sourcePageText">Page text</option>
               <option value="pageHtml" data-i18n="textWatch.sourcePageHtml">Page HTML</option>
             </select>
@@ -315,6 +316,7 @@
             </div>
             <select id="textAlertMode" class="select-field">
               <option value="change" data-i18n="textWatch.alertModeChange">Any text appearance, disappearance, or change</option>
+              <option value="mediaAdded">Only new images/videos added</option>
               <option value="keywordAppeared" data-i18n="textWatch.alertModeKeywordAppeared">Only keyword appearance</option>
               <option value="keywordDisappeared" data-i18n="textWatch.alertModeKeywordDisappeared">Only keyword disappearance</option>
               <option value="keywordState" data-i18n="textWatch.alertModeKeywordState">Keyword appearance or disappearance</option>
@@ -322,7 +324,7 @@
             </select>
           </div>
 
-          <div class="control-group">
+          <div class="control-group" id="textKeywordGroup">
             <label for="textKeywordList" data-i18n="textWatch.keywords">Keywords / phrases</label>
             <textarea id="textKeywordList" class="input-field textarea-field" rows="3"
               data-i18n-placeholder="textWatch.placeholder"
@@ -505,7 +507,7 @@
     </div>
 
     <footer class="footer">
-          <span class="version" id="versionText">v1.0.22</span>
+          <span class="version" id="versionText">v1.0.23</span>
       <a href="https://giulionicolai.com" target="_blank" class="creator-link" data-i18n="footer.createdBy">Created by Giulio Nicolai</a>
       <div class="donate-section">
         <span class="donate-text" data-i18n="footer.donateText">Enjoying the extension?</span>

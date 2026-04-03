@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.0.22-blue.svg" alt="Version">
+  <img src="https://img.shields.io/badge/version-1.0.23-blue.svg" alt="Version">
   <img src="https://img.shields.io/badge/manifest-v3-green.svg" alt="Manifest V3">
   <img src="https://img.shields.io/badge/languages-9-orange.svg" alt="Languages">
   <img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License">

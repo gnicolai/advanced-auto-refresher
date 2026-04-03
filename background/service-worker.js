@@ -37,7 +37,9 @@ const LEGACY_TEXT_SOURCE_MODE_MAP = {
     selectorHtml: 'areaHtml'
 };
 
-const SELECTOR_TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml'];
+const TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml', 'areaMedia', 'pageText', 'pageHtml'];
+const SELECTOR_TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml', 'areaMedia'];
+const MEDIA_TEXT_SOURCE_MODES = ['areaMedia'];
 
 chrome.runtime.onInstalled.addListener(async () => {
     console.log('Auto Refresh & Page Monitor installed');
@@ -178,6 +180,18 @@ function normalizeKeywords(keywords) {
         .filter(Boolean);
 }
 
+function normalizeMediaSignatures(signatures) {
+    if (!Array.isArray(signatures)) {
+        return [];
+    }
+
+    return Array.from(new Set(
+        signatures
+            .map((entry) => String(entry || '').trim())
+            .filter(Boolean)
+    )).sort();
+}
+
 function normalizeNumericCandidates(candidates) {
     if (!Array.isArray(candidates)) {
         return [];
@@ -190,7 +204,7 @@ function normalizeNumericCandidates(candidates) {
 
 function normalizeTextSourceMode(sourceMode = '') {
     const normalized = LEGACY_TEXT_SOURCE_MODE_MAP[sourceMode] || sourceMode;
-    return ['elementText', 'areaText', 'areaHtml', 'pageText', 'pageHtml'].includes(normalized)
+    return TEXT_SOURCE_MODES.includes(normalized)
         ? normalized
         : 'elementText';
 }
@@ -199,12 +213,36 @@ function isSelectorBasedTextSourceMode(sourceMode = '') {
     return SELECTOR_TEXT_SOURCE_MODES.includes(normalizeTextSourceMode(sourceMode));
 }
 
+function isMediaSourceMode(sourceMode = '') {
+    return MEDIA_TEXT_SOURCE_MODES.includes(normalizeTextSourceMode(sourceMode));
+}
+
+function normalizeTextDetectMode(detectMode = '', sourceMode = 'elementText') {
+    const normalizedSourceMode = normalizeTextSourceMode(sourceMode);
+    const normalizedDetectMode = detectMode === 'keywords' ? 'keywordAppeared' : detectMode;
+    const validModes = isMediaSourceMode(normalizedSourceMode)
+        ? ['change', 'mediaAdded']
+        : ['change', 'keywordAppeared', 'keywordDisappeared', 'keywordState', 'changeOrKeywords'];
+
+    if (validModes.includes(normalizedDetectMode)) {
+        return normalizedDetectMode;
+    }
+
+    if (!isMediaSourceMode(normalizedSourceMode) && normalizedDetectMode === 'mediaAdded') {
+        return 'change';
+    }
+
+    return isMediaSourceMode(normalizedSourceMode) ? 'mediaAdded' : 'keywordAppeared';
+}
+
 function normalizeTextWatch(settings = {}, defaults, legacyContentWatch = {}, legacyKeywordWatch = {}) {
     if (settings.textWatch) {
+        const sourceMode = normalizeTextSourceMode(settings.textWatch.sourceMode);
         return {
             ...defaults.textWatch,
             ...settings.textWatch,
-            sourceMode: normalizeTextSourceMode(settings.textWatch.sourceMode),
+            sourceMode,
+            detectMode: normalizeTextDetectMode(settings.textWatch.detectMode, sourceMode),
             keywords: normalizeKeywords(settings.textWatch.keywords),
             lastMatchedKeywords: normalizeKeywords(settings.textWatch.lastMatchedKeywords)
         };
@@ -227,7 +265,7 @@ function normalizeTextWatch(settings = {}, defaults, legacyContentWatch = {}, le
         keywords: normalizeKeywords(legacyKeywordWatch.keywords),
         lastMatchedKeywords: [],
         sourceMode: normalizeTextSourceMode(sourceMode),
-        detectMode: 'keywordAppeared',
+        detectMode: normalizeTextDetectMode(legacyKeywordWatch.detectMode, sourceMode),
         alertSound: legacyContentWatch.alertSound || defaults.textWatch.alertSound,
         alertVolume: legacyContentWatch.alertVolume ?? defaults.textWatch.alertVolume
     };
@@ -302,12 +340,7 @@ function normalizeSettings(settings = {}, tabUrl = settings.tabUrl || '') {
     normalized.textWatch.keywords = normalizeKeywords(normalized.textWatch.keywords);
     normalized.textWatch.lastMatchedKeywords = normalizeKeywords(normalized.textWatch.lastMatchedKeywords);
     normalized.textWatch.sourceMode = normalizeTextSourceMode(normalized.textWatch.sourceMode);
-    normalized.textWatch.detectMode = ['change', 'keywords', 'keywordAppeared', 'keywordDisappeared', 'keywordState', 'changeOrKeywords'].includes(normalized.textWatch.detectMode)
-        ? normalized.textWatch.detectMode
-        : 'keywordAppeared';
-    if (normalized.textWatch.detectMode === 'keywords') {
-        normalized.textWatch.detectMode = 'keywordAppeared';
-    }
+    normalized.textWatch.detectMode = normalizeTextDetectMode(normalized.textWatch.detectMode, normalized.textWatch.sourceMode);
     normalized.textWatch.debugEnabled = Boolean(normalized.textWatch.debugEnabled);
     normalized.textWatch.alertVolume = Math.max(0, Math.min(100, parseInt(normalized.textWatch.alertVolume, 10) || defaults.textWatch.alertVolume));
     normalized.alertRouting.mode = ['shared', 'separate'].includes(normalized.alertRouting.mode)
@@ -935,19 +968,30 @@ function buildAlertSequence(state, evaluation) {
     return sequence;
 }
 
+function getMediaSignatureDiff(previousSignatures = [], currentSignatures = []) {
+    const previousSet = new Set(normalizeMediaSignatures(previousSignatures));
+    return normalizeMediaSignatures(currentSignatures)
+        .filter((signature) => !previousSet.has(signature));
+}
+
 function evaluateMonitoring(state, preSnapshot, postSnapshot, i18n) {
     const previousNumericValue = state.contentWatch?.lastValue ?? null;
     const currentNumericValue = postSnapshot.numeric?.success ? postSnapshot.numeric.numericValue : null;
     const numericTriggered = evaluateNumericAlert(state.contentWatch, previousNumericValue, currentNumericValue);
+    const textSourceMode = normalizeTextSourceMode(state.textWatch?.sourceMode);
+    const mediaSourceMode = isMediaSourceMode(textSourceMode);
     const preText = preSnapshot?.text?.monitoredText || '';
     const postText = postSnapshot.text?.monitoredText || '';
+    const mediaAddedSignatures = mediaSourceMode
+        ? getMediaSignatureDiff(preSnapshot?.text?.mediaSignatures, postSnapshot?.text?.mediaSignatures)
+        : [];
     const previousMatchedKeywords = normalizeKeywords(state.textWatch?.lastMatchedKeywords || []);
-    const matchedKeywords = state.textWatch?.enabled
+    const matchedKeywords = state.textWatch?.enabled && !mediaSourceMode
         ? findMatchedKeywords(postText, state.textWatch.keywords)
         : [];
     const textChanged = Boolean(state.textWatch?.enabled && (preText || postText) && preText !== postText);
     const keywordState = getKeywordState(previousMatchedKeywords, matchedKeywords);
-    const textTriggered = evaluateTextAlert(state.textWatch, textChanged, matchedKeywords, keywordState);
+    const textTriggered = evaluateTextAlert(state.textWatch, textChanged, matchedKeywords, keywordState, mediaAddedSignatures);
     const numericChanged = previousNumericValue !== null && currentNumericValue !== null && previousNumericValue !== currentNumericValue;
     const shouldHighlight = Boolean(textTriggered || numericChanged || numericTriggered);
     const highlightSelector = state.textWatch?.enabled
@@ -963,8 +1007,18 @@ function evaluateMonitoring(state, preSnapshot, postSnapshot, i18n) {
     let highlightMessage = i18n.t('changeHighlight_default', 'Change detected after refresh.');
     const textFragments = [];
 
+    if (mediaAddedSignatures.length > 0) {
+        textFragments.push(`${i18n.t('notification_mediaAdded', 'New media detected:')} ${mediaAddedSignatures.length}`);
+    }
+
     if (textChanged) {
-        textFragments.push(i18n.t('notification_textChanged', 'Text changed.'));
+        if (mediaSourceMode) {
+            if (mediaAddedSignatures.length === 0) {
+                textFragments.push(i18n.t('notification_mediaChanged', 'Media list changed.'));
+            }
+        } else {
+            textFragments.push(i18n.t('notification_textChanged', 'Text changed.'));
+        }
     }
 
     if (matchedKeywords.length > 0) {
@@ -982,8 +1036,13 @@ function evaluateMonitoring(state, preSnapshot, postSnapshot, i18n) {
         notificationMessage = `${i18n.t('notification_valueChanged', 'Value changed')}: ${previousNumericValue ?? 'N/A'} -> ${currentNumericValue ?? 'N/A'}`;
         highlightMessage = i18n.t('changeHighlight_numeric', 'Monitored value changed after refresh.');
     } else if (textTriggered) {
-        notificationMessage = textFragments.join(' ') || i18n.t('notification_textChanged', 'Text changed.');
-        highlightMessage = matchedKeywords.length > 0
+        notificationMessage = textFragments.join(' ')
+            || (mediaAddedSignatures.length > 0
+                ? i18n.t('notification_mediaAdded', 'New media detected:')
+                : i18n.t('notification_textChanged', 'Text changed.'));
+        highlightMessage = mediaAddedSignatures.length > 0
+            ? i18n.t('changeHighlight_mediaAdded', 'New media detected after refresh.')
+            : matchedKeywords.length > 0
             ? i18n.t('changeHighlight_keywords', 'Monitored keywords found after refresh.')
             : i18n.t('changeHighlight_text', 'Monitored text changed after refresh.');
     }
@@ -1003,7 +1062,9 @@ function evaluateMonitoring(state, preSnapshot, postSnapshot, i18n) {
                 type: 'selector',
                 role: 'text',
                 selector: state.textWatch.selector,
-                label: i18n.t('toast_actionText', 'Go to text')
+                label: mediaSourceMode
+                    ? i18n.t('toast_actionMedia', 'Go to media')
+                    : i18n.t('toast_actionText', 'Go to text')
             });
         } else if (matchedKeywords.length > 0) {
             toastActions.push({
@@ -1029,9 +1090,11 @@ function evaluateMonitoring(state, preSnapshot, postSnapshot, i18n) {
         textChanged,
         keywordStateChanged: keywordState.changed,
         matchedKeywords,
+        mediaAddedSignatures,
+        mediaAddedCount: mediaAddedSignatures.length,
         textPreview: postSnapshot.text?.previewText || '',
         textDebugText: postSnapshot.text?.debugText || '',
-        textSourceMode: normalizeTextSourceMode(state.textWatch?.sourceMode),
+        textSourceMode,
         shouldNotify: Boolean(numericTriggered || textTriggered),
         shouldHighlight,
         highlightSelector,
@@ -1045,7 +1108,7 @@ function evaluateMonitoring(state, preSnapshot, postSnapshot, i18n) {
     };
 }
 
-function evaluateTextAlert(textWatch, textChanged, matchedKeywords, keywordState) {
+function evaluateTextAlert(textWatch, textChanged, matchedKeywords, keywordState, mediaAddedSignatures = []) {
     if (!textWatch?.enabled) {
         return false;
     }
@@ -1053,6 +1116,8 @@ function evaluateTextAlert(textWatch, textChanged, matchedKeywords, keywordState
     switch (textWatch.detectMode) {
         case 'change':
             return textChanged;
+        case 'mediaAdded':
+            return mediaAddedSignatures.length > 0;
         case 'keywords':
         case 'keywordAppeared':
             return keywordState.appeared.length > 0;
@@ -1175,7 +1240,7 @@ async function captureMonitoringSnapshot(tabId, state) {
         return {
             success: false,
             numeric: { success: false, selectorFound: false, numericValue: null, numericCandidates: [], selectedCandidateIndex: 0, previewText: '' },
-            text: { success: false, selectorFound: false, monitoredText: '', previewText: '', debugText: '' }
+            text: { success: false, selectorFound: false, monitoredText: '', previewText: '', debugText: '', mediaSignatures: [] }
         };
     }
 
@@ -1207,7 +1272,8 @@ async function captureMonitoringSnapshot(tabId, state) {
                 selectorFound: Boolean(response?.text?.selectorFound),
                 monitoredText: response?.text?.monitoredText || '',
                 previewText: response?.text?.previewText || '',
-                debugText: response?.text?.debugText || ''
+                debugText: response?.text?.debugText || '',
+                mediaSignatures: normalizeMediaSignatures(response?.text?.mediaSignatures)
             }
         };
     } catch (error) {
@@ -1215,7 +1281,7 @@ async function captureMonitoringSnapshot(tabId, state) {
         return {
             success: false,
             numeric: { success: false, selectorFound: false, numericValue: null, numericCandidates: [], selectedCandidateIndex: state.contentWatch?.candidateIndex ?? 0, previewText: '' },
-            text: { success: false, selectorFound: false, monitoredText: '', previewText: '', debugText: '' }
+            text: { success: false, selectorFound: false, monitoredText: '', previewText: '', debugText: '', mediaSignatures: [] }
         };
     }
 }
@@ -1607,6 +1673,8 @@ async function sendTelegramNotification(url, evaluation, state, postSnapshot, i1
 
 function getTextSourceLabel(sourceMode, i18n) {
     switch (normalizeTextSourceMode(sourceMode)) {
+        case 'areaMedia':
+            return i18n.t('textWatch_sourceAreaMedia', 'Area media');
         case 'areaHtml':
             return i18n.t('textWatch_sourceAreaHtml', 'Area HTML');
         case 'areaText':
