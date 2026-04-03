@@ -276,19 +276,19 @@
     "message": "Trovate parole chiave monitorate dopo il refresh."
   },
   "numericWatch_title": {
-    "message": "Monitora numero"
+    "message": "Monitor numero"
   },
   "numericWatch_enable": {
     "message": "Monitora numero"
   },
   "textWatch_title": {
-    "message": "Monitora testo"
+    "message": "Monitor testo / parole chiave / area"
   },
   "textWatch_enable": {
-    "message": "Monitora testo o parole chiave"
+    "message": "Monitora testo, parole chiave o cambiamenti d’area"
   },
   "textWatch_help": {
-    "message": "Monitora il testo di un elemento, il testo dell'intera pagina o l'HTML completo. Le parole chiave restano opzionali e aggiuntive."
+    "message": "Monitora un elemento selezionato, un’area DOM o l’intera pagina. L’HTML dell’area è consigliato per cambiamenti cosmetici o visibili solo al passaggio del mouse."
   },
   "textWatch_method": {
     "message": "Metodo selezione"
@@ -324,16 +324,16 @@
     "message": "Testo elemento selezionato"
   },
   "textWatch_sourcePageText": {
-    "message": "Testo intera pagina"
+    "message": "Testo pagina"
   },
   "textWatch_sourcePageHtml": {
-    "message": "HTML intera pagina"
+    "message": "HTML pagina"
   },
   "textWatch_alertMode": {
     "message": "Modalita monitor testo"
   },
   "textWatch_alertModeChange": {
-    "message": "Qualsiasi comparsa, scomparsa o cambio testo"
+    "message": "Qualsiasi comparsa, scomparsa o cambiamento del contenuto"
   },
   "textWatch_alertModeKeywords": {
     "message": "Cambio stato parole chiave"
@@ -480,13 +480,13 @@
     "message": "Numero rilevato"
   },
   "urlLock_enable": {
-    "message": "Blocca il monitoraggio all?ambito URL corrente"
+    "message": "Blocca il monitoraggio all’ambito URL corrente"
   },
   "urlLock_help": {
-    "message": "Scegli quanto rigidamente l?auto-refresh deve restare legato alla pagina da cui ? stato avviato il monitoraggio."
+    "message": "Scegli quanto rigidamente l’auto-refresh deve restare legato alla pagina da cui è stato avviato il monitoraggio."
   },
   "urlLock_mode": {
-    "message": "Modalit? blocco URL"
+    "message": "Modalità blocco URL"
   },
   "urlLock_modeExact": {
     "message": "URL esatto"
@@ -498,6 +498,75 @@
     "message": "Stesso dominio"
   },
   "urlLock_resumedToast": {
-    "message": "L?auto-refresh ? ripreso dopo essere tornato alla pagina monitorata."
+    "message": "L’auto-refresh è ripreso dopo essere tornato alla pagina monitorata."
+  },
+  "monitoring_title": {
+    "message": "Monitoraggio"
+  },
+  "monitoring_help": {
+    "message": "Monitora numeri, testo, parole chiave o cambiamenti di aree DOM dopo ogni refresh."
+  },
+  "monitoring_summary": {
+    "message": "Un’unica sezione Monitoraggio con strumenti separati per numero e testo/area."
+  },
+  "timer_help": {
+    "message": "Configura quando la scheda si aggiorna automaticamente."
+  },
+  "alertRouting_help": {
+    "message": "Usa un allarme condiviso per tutti i trigger, oppure allarmi separati per monitor numero e testo."
+  },
+  "numericWatch_help": {
+    "message": "Traccia un valore numerico da un elemento selezionato della pagina o da un selettore."
+  },
+  "textWatch_groupHelp": {
+    "message": "Monitora testo, parole chiave o cambiamenti HTML di un’area DOM dentro una regione selezionata o nell’intera pagina."
+  },
+  "textWatch_sourceHelp": {
+    "message": "Scegli se analizzare testo visibile o HTML grezzo da un elemento selezionato, un’area DOM o l’intera pagina. L’HTML dell’area è consigliato per cambiamenti cosmetici, nascosti o visibili solo su hover."
+  },
+  "textWatch_pickArea": {
+    "message": "Clicca per selezionare area"
+  },
+  "textWatch_selectedArea": {
+    "message": "Area selezionata:"
+  },
+  "textWatch_sourceElementText": {
+    "message": "Testo elemento"
+  },
+  "textWatch_sourceAreaText": {
+    "message": "Testo area"
+  },
+  "textWatch_sourceAreaHtml": {
+    "message": "HTML area"
+  },
+  "textWatch_alertModeHelp": {
+    "message": "Scegli se gli avvisi devono reagire a qualsiasi cambiamento di contenuto, alla comparsa o scomparsa di parole chiave, o a entrambe."
+  },
+  "clickStop_help": {
+    "message": "Metti in pausa l’auto-refresh non appena interagisci con la pagina monitorata."
+  },
+  "telegram_help": {
+    "message": "Invia avvisi automatici al telefono usando il tuo bot Telegram."
+  },
+  "lists_help": {
+    "message": "Usa regole con wildcard per saltare il refresh su URL corrispondenti o consentirli esplicitamente."
+  },
+  "visualFeedback_duration": {
+    "message": "Durata avviso"
+  },
+  "visualFeedback_help": {
+    "message": "Scegli per quanto tempo il toast e l’evidenziazione nella pagina restano visibili."
+  },
+  "visualFeedback_duration5s": {
+    "message": "5 secondi"
+  },
+  "visualFeedback_duration30s": {
+    "message": "30 secondi"
+  },
+  "visualFeedback_durationManual": {
+    "message": "Chiusura manuale"
+  },
+  "toast_close": {
+    "message": "Chiudi"
   }
 }

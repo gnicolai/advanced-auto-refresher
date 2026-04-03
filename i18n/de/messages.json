@@ -276,19 +276,19 @@
     "message": "Gesamtes Seiten-HTML"
   },
   "numericWatch_title": {
-    "message": "Zahl ueberwachen"
+    "message": "Zahlenmonitor"
   },
   "numericWatch_enable": {
     "message": "Zahl ueberwachen"
   },
   "textWatch_title": {
-    "message": "Text ueberwachen"
+    "message": "Text- / Keyword- / Bereichsmonitor"
   },
   "textWatch_enable": {
-    "message": "Text oder Schluesselwoerter ueberwachen"
+    "message": "Text, Keywords oder Bereichsänderungen überwachen"
   },
   "textWatch_help": {
-    "message": "Ueberwache den Text eines Elements, den gesamten Seitentext oder das komplette Seiten-HTML. Schluesselwoerter bleiben optional und zusaetzlich."
+    "message": "Überwache ein ausgewähltes Element, einen DOM-Bereich oder die ganze Seite. Bereichs-HTML wird für kosmetische oder per Hover sichtbare Änderungen empfohlen."
   },
   "textWatch_method": {
     "message": "Auswahlmethode"
@@ -324,16 +324,16 @@
     "message": "Text des ausgewaehlten Elements"
   },
   "textWatch_sourcePageText": {
-    "message": "Gesamter Seitentext"
+    "message": "Seitentext"
   },
   "textWatch_sourcePageHtml": {
-    "message": "Gesamtes Seiten-HTML"
+    "message": "Seiten-HTML"
   },
   "textWatch_alertMode": {
     "message": "Text-Alarmmodus"
   },
   "textWatch_alertModeChange": {
-    "message": "Jedes Erscheinen, Verschwinden oder jede Aenderung von Text"
+    "message": "Beliebiges Erscheinen, Verschwinden oder Ändern von Inhalt"
   },
   "textWatch_alertModeKeywords": {
     "message": "Keyword state changes"
@@ -468,10 +468,10 @@
     "message": "Auto-Refresh pausiert, weil der Tab zu einer anderen Seite gewechselt hat."
   },
   "contentWatch_numberTarget": {
-    "message": "Zu ?berwachende Zahl"
+    "message": "Zu überwachende Zahl"
   },
   "contentWatch_numberCandidatesEmpty": {
-    "message": "W?hle oder teste ein Element, um alle erkannten Zahlen zu sehen."
+    "message": "Wähle oder teste ein Element, um alle erkannten Zahlen zu sehen."
   },
   "contentWatch_numberCandidatesFound": {
     "message": "Erkannte Zahlen"
@@ -480,10 +480,10 @@
     "message": "Erkannte Zahl"
   },
   "urlLock_enable": {
-    "message": "?berwachung an den aktuellen URL-Bereich binden"
+    "message": "Überwachung an den aktuellen URL-Bereich binden"
   },
   "urlLock_help": {
-    "message": "Lege fest, wie strikt der Auto-Refresh an die Seite gebunden bleiben soll, auf der die ?berwachung gestartet wurde."
+    "message": "Lege fest, wie strikt der Auto-Refresh an die Seite gebunden bleiben soll, auf der die Überwachung gestartet wurde."
   },
   "urlLock_mode": {
     "message": "URL-Sperrmodus"
@@ -498,6 +498,75 @@
     "message": "Gleiche Domain"
   },
   "urlLock_resumedToast": {
-    "message": "Auto-Refresh wurde fortgesetzt, nachdem du zur ?berwachten Seite zur?ckgekehrt bist."
+    "message": "Auto-Refresh wurde fortgesetzt, nachdem du zur überwachten Seite zurückgekehrt bist."
+  },
+  "monitoring_title": {
+    "message": "Überwachung"
+  },
+  "monitoring_help": {
+    "message": "Überwacht Zahlen, Text, Keywords oder DOM-Bereichsänderungen nach jeder Aktualisierung."
+  },
+  "monitoring_summary": {
+    "message": "Ein Überwachungsbereich mit getrennten Werkzeugen für Zahl sowie Text/Bereich."
+  },
+  "timer_help": {
+    "message": "Lege fest, wann der Tab automatisch aktualisiert wird."
+  },
+  "alertRouting_help": {
+    "message": "Nutze einen gemeinsamen Alarm für alle Treffer oder getrennte Alarme für Zahlen- und Textüberwachung."
+  },
+  "numericWatch_help": {
+    "message": "Überwacht einen Zahlenwert aus einem ausgewählten Seitenelement oder CSS-Selektor."
+  },
+  "textWatch_groupHelp": {
+    "message": "Überwacht Text, Keywords oder DOM-Bereichs-HTML innerhalb eines ausgewählten Bereichs oder auf der ganzen Seite."
+  },
+  "textWatch_sourceHelp": {
+    "message": "Wähle, ob sichtbarer Text oder rohes HTML aus einem ausgewählten Element, DOM-Bereich oder der ganzen Seite geprüft wird. Bereichs-HTML wird für kosmetische, versteckte oder per Hover sichtbare Änderungen empfohlen."
+  },
+  "textWatch_pickArea": {
+    "message": "Klicken, um Bereich auszuwählen"
+  },
+  "textWatch_selectedArea": {
+    "message": "Ausgewählter Bereich:"
+  },
+  "textWatch_sourceElementText": {
+    "message": "Elementtext"
+  },
+  "textWatch_sourceAreaText": {
+    "message": "Bereichstext"
+  },
+  "textWatch_sourceAreaHtml": {
+    "message": "Bereichs-HTML"
+  },
+  "textWatch_alertModeHelp": {
+    "message": "Wähle, ob Benachrichtigungen auf Inhaltsänderungen, das Erscheinen oder Verschwinden von Keywords oder beides reagieren sollen."
+  },
+  "clickStop_help": {
+    "message": "Pausiere Auto-Refresh, sobald du mit der überwachten Seite interagierst."
+  },
+  "telegram_help": {
+    "message": "Sende automatische Benachrichtigungen mit deinem eigenen Telegram-Bot an dein Handy."
+  },
+  "lists_help": {
+    "message": "Nutze Wildcard-Regeln, um Aktualisierungen auf passenden URLs zu überspringen oder explizit zu erlauben."
+  },
+  "visualFeedback_duration": {
+    "message": "Alarmdauer"
+  },
+  "visualFeedback_help": {
+    "message": "Lege fest, wie lange der In-Page-Toast und die Hervorhebung sichtbar bleiben."
+  },
+  "visualFeedback_duration5s": {
+    "message": "5 Sekunden"
+  },
+  "visualFeedback_duration30s": {
+    "message": "30 Sekunden"
+  },
+  "visualFeedback_durationManual": {
+    "message": "Manuell schließen"
+  },
+  "toast_close": {
+    "message": "Schließen"
   }
 }

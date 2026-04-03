@@ -54,6 +54,8 @@ const elements = {
   textStartPicker: document.getElementById('textStartPicker'),
   textCssSelector: document.getElementById('textCssSelector'),
   textTestSelector: document.getElementById('textTestSelector'),
+  textPickerActionText: document.getElementById('textPickerActionText'),
+  textSelectedLabel: document.getElementById('textSelectedLabel'),
   textSelectedValue: document.getElementById('textSelectedValue'),
   textCurrentPreview: document.getElementById('textCurrentPreview'),
   textAlertMode: document.getElementById('textAlertMode'),
@@ -64,6 +66,7 @@ const elements = {
   textAlertVolume: document.getElementById('textAlertVolume'),
   textAlertVolumeValue: document.getElementById('textAlertVolumeValue'),
   previewTextSound: document.getElementById('previewTextSound'),
+  alertDuration: document.getElementById('alertDuration'),
 
   stopOnClick: document.getElementById('stopOnClick'),
   urlLockEnabled: document.getElementById('urlLockEnabled'),
@@ -93,6 +96,13 @@ const elements = {
   stopAlert: document.getElementById('stopAlert')
 };
 
+const LEGACY_TEXT_SOURCE_MODE_MAP = {
+  selectorText: 'elementText',
+  selectorHtml: 'areaHtml'
+};
+
+const SELECTOR_TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml'];
+
 function getDefaults() {
   return {
     isActive: false,
@@ -114,7 +124,7 @@ function getDefaults() {
     textWatch: {
       enabled: false,
       selector: '',
-      sourceMode: 'selectorText',
+      sourceMode: 'elementText',
       detectMode: 'keywordAppeared',
       keywords: [],
       lastMatchedKeywords: [],
@@ -126,6 +136,9 @@ function getDefaults() {
       mode: 'shared',
       sharedSound: 'siren',
       sharedVolume: 80
+    },
+    visualFeedback: {
+      alertDuration: '30s'
     },
     urlLock: {
       enabled: true,
@@ -144,6 +157,32 @@ let saveSettingsDebounce = null;
 
 function t(key, fallback = '') {
   return window.i18n?.t ? window.i18n.t(key, fallback) : (fallback || key);
+}
+
+function normalizeTextSourceMode(sourceMode = '') {
+  const normalized = LEGACY_TEXT_SOURCE_MODE_MAP[sourceMode] || sourceMode;
+  return ['elementText', 'areaText', 'areaHtml', 'pageText', 'pageHtml'].includes(normalized)
+    ? normalized
+    : 'elementText';
+}
+
+function isSelectorBasedTextSourceMode(sourceMode = '') {
+  return SELECTOR_TEXT_SOURCE_MODES.includes(normalizeTextSourceMode(sourceMode));
+}
+
+function getTextPickerCopy(sourceMode = '') {
+  const normalized = normalizeTextSourceMode(sourceMode);
+  if (normalized === 'elementText') {
+    return {
+      buttonLabel: t('textWatch.pickElement', 'Click to select element'),
+      selectedLabel: t('textWatch.selectedElement', 'Selected element:')
+    };
+  }
+
+  return {
+    buttonLabel: t('textWatch.pickArea', 'Click to select area'),
+    selectedLabel: t('textWatch.selectedArea', 'Selected area:')
+  };
 }
 
 function getUiLocale() {
@@ -181,6 +220,7 @@ function migrateTextWatch(response = {}) {
     return {
       ...getDefaults().textWatch,
       ...response.textWatch,
+      sourceMode: normalizeTextSourceMode(response.textWatch.sourceMode),
       keywords: Array.isArray(response.textWatch.keywords) ? response.textWatch.keywords : [],
       lastMatchedKeywords: Array.isArray(response.textWatch.lastMatchedKeywords) ? response.textWatch.lastMatchedKeywords : []
     };
@@ -190,7 +230,7 @@ function migrateTextWatch(response = {}) {
   const legacyContentWatch = response.contentWatch || {};
   const legacySourceMode = legacyKeywordWatch.sourceMode || 'auto';
 
-  let sourceMode = 'selectorText';
+  let sourceMode = 'elementText';
   if (legacySourceMode === 'pageText') {
     sourceMode = 'pageText';
   } else if (legacySourceMode === 'pageHtml') {
@@ -202,8 +242,8 @@ function migrateTextWatch(response = {}) {
   return {
     ...getDefaults().textWatch,
     enabled: Boolean(legacyKeywordWatch.enabled),
-    selector: sourceMode === 'selectorText' ? (legacyContentWatch.selector || '') : '',
-    sourceMode,
+    selector: isSelectorBasedTextSourceMode(sourceMode) ? (legacyContentWatch.selector || '') : '',
+    sourceMode: normalizeTextSourceMode(sourceMode),
     detectMode: 'keywordAppeared',
     keywords: Array.isArray(legacyKeywordWatch.keywords) ? legacyKeywordWatch.keywords : [],
     lastMatchedKeywords: [],
@@ -252,6 +292,10 @@ async function loadTabSettings() {
     },
     textWatch: migrateTextWatch(response),
     alertRouting: migrateAlertRouting(response),
+    visualFeedback: {
+      ...defaults.visualFeedback,
+      ...(response?.visualFeedback || {})
+    },
     urlLock: {
       ...defaults.urlLock,
       ...(response?.urlLock || {})
@@ -265,6 +309,7 @@ function updateUI() {
   updateNumericUI();
   updateTextUI();
   updateAlertRoutingUI();
+  updateVisualFeedbackUI();
 }
 
 function updateStatusUI() {
@@ -342,7 +387,7 @@ function updateTextUI() {
   }
   elements.textWatchOptions.classList.toggle('visible', Boolean(textWatch.enabled));
   if (!isElementBeingEdited(elements.textSourceMode)) {
-    elements.textSourceMode.value = textWatch.sourceMode || 'selectorText';
+    elements.textSourceMode.value = normalizeTextSourceMode(textWatch.sourceMode);
   }
   if (!isElementBeingEdited(elements.textCssSelector)) {
     elements.textCssSelector.value = textWatch.selector || '';
@@ -384,9 +429,23 @@ function updateAlertRoutingUI() {
   }
 }
 
+function updateVisualFeedbackUI() {
+  if (!isElementBeingEdited(elements.alertDuration)) {
+    elements.alertDuration.value = tabSettings.visualFeedback?.alertDuration || '30s';
+  }
+}
+
 function updateTextSourceControls() {
-  const showSelectorControls = elements.textSourceMode.value === 'selectorText';
+  const sourceMode = normalizeTextSourceMode(elements.textSourceMode.value);
+  const showSelectorControls = isSelectorBasedTextSourceMode(sourceMode);
+  const copy = getTextPickerCopy(sourceMode);
   elements.textSelectorControls.classList.toggle('hidden', !showSelectorControls);
+  if (elements.textPickerActionText) {
+    elements.textPickerActionText.textContent = copy.buttonLabel;
+  }
+  if (elements.textSelectedLabel) {
+    elements.textSelectedLabel.textContent = copy.selectedLabel;
+  }
 }
 
 function updateNumericCandidateUI(numeric = {}) {
@@ -538,6 +597,7 @@ function setupEventListeners() {
   elements.textAlertVolume.addEventListener('input', () => setVolumeUI(elements.textAlertVolume, elements.textAlertVolumeValue, elements.textAlertVolume.value));
   elements.textAlertVolume.addEventListener('change', saveSettings);
   elements.previewTextSound.addEventListener('click', () => previewSound(elements.textAlertSound.value, elements.textAlertVolume.value));
+  elements.alertDuration.addEventListener('change', saveSettings);
 
   elements.stopOnClick.addEventListener('change', saveSettings);
   elements.urlLockEnabled.addEventListener('change', () => {
@@ -687,6 +747,12 @@ function startStatePolling() {
           previewText: response.textWatch.previewText ?? tabSettings.textWatch.previewText
         };
       }
+      if (response.visualFeedback) {
+        tabSettings.visualFeedback = {
+          ...tabSettings.visualFeedback,
+          ...response.visualFeedback
+        };
+      }
       if (response.urlLock) {
         tabSettings.urlLock = {
           ...tabSettings.urlLock,
@@ -699,6 +765,7 @@ function startStatePolling() {
       updateNumericCandidateUI(tabSettings.contentWatch);
       elements.currentValue.textContent = tabSettings.contentWatch.lastValue ?? '--';
       elements.textCurrentPreview.textContent = tabSettings.textWatch.previewText || '--';
+      updateVisualFeedbackUI();
     } catch {
       // Ignore transient popup polling errors.
     }
@@ -742,7 +809,7 @@ function getSettingsFromUI() {
     textWatch: {
       enabled: elements.textWatchEnabled.checked,
       selector: elements.textCssSelector.value.trim(),
-      sourceMode: elements.textSourceMode.value || 'selectorText',
+      sourceMode: normalizeTextSourceMode(elements.textSourceMode.value),
       detectMode: elements.textAlertMode.value || 'keywordAppeared',
       keywords,
       lastMatchedKeywords: tabSettings.textWatch?.lastMatchedKeywords || [],
@@ -755,6 +822,9 @@ function getSettingsFromUI() {
       mode: elements.alertRoutingMode.value || 'shared',
       sharedSound: elements.sharedAlertSound.value || 'siren',
       sharedVolume: parseInt(elements.sharedAlertVolume.value, 10) || 80
+    },
+    visualFeedback: {
+      alertDuration: elements.alertDuration.value || '30s'
     },
     urlLock: {
       enabled: elements.urlLockEnabled.checked,
@@ -773,6 +843,7 @@ async function saveSettings() {
     contentWatch: settings.contentWatch,
     textWatch: settings.textWatch,
     alertRouting: settings.alertRouting,
+    visualFeedback: settings.visualFeedback,
     urlLock: settings.urlLock
   };
 
@@ -799,7 +870,11 @@ function toggleSelectorMode(watchType, mode) {
 }
 
 async function startElementPicker(watchType) {
-  await chrome.tabs.sendMessage(currentTabId, { type: 'START_PICKER', watchType });
+  await chrome.tabs.sendMessage(currentTabId, {
+    type: 'START_PICKER',
+    watchType,
+    sourceMode: watchType === 'text' ? normalizeTextSourceMode(elements.textSourceMode.value) : 'elementText'
+  });
   window.close();
 }
 
@@ -810,7 +885,8 @@ async function testCssSelector(watchType) {
   try {
     const response = await chrome.tabs.sendMessage(currentTabId, {
       type: 'TEST_SELECTOR',
-      selector
+      selector,
+      sourceMode: watchType === 'text' ? normalizeTextSourceMode(elements.textSourceMode.value) : 'elementText'
     });
 
     if (!response.success) {

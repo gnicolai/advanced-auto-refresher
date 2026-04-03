@@ -276,19 +276,19 @@
     "message": "Pelny HTML strony"
   },
   "numericWatch_title": {
-    "message": "Monitoruj liczbe"
+    "message": "Monitor liczb"
   },
   "numericWatch_enable": {
     "message": "Monitoruj liczbe"
   },
   "textWatch_title": {
-    "message": "Monitoruj tekst"
+    "message": "Monitor tekstu / słów kluczowych / obszaru"
   },
   "textWatch_enable": {
-    "message": "Monitoruj tekst lub slowa kluczowe"
+    "message": "Monitoruj tekst, słowa kluczowe lub zmiany obszaru"
   },
   "textWatch_help": {
-    "message": "Monitoruj tekst elementu, caly tekst strony albo pelny HTML strony. Slowa kluczowe pozostaja opcjonalne i dodatkowe."
+    "message": "Monitoruj wybrany element, obszar DOM albo całą stronę. HTML obszaru jest zalecany przy zmianach kosmetycznych lub widocznych dopiero po najechaniu."
   },
   "textWatch_method": {
     "message": "Metoda wyboru"
@@ -324,16 +324,16 @@
     "message": "Tekst wybranego elementu"
   },
   "textWatch_sourcePageText": {
-    "message": "Caly tekst strony"
+    "message": "Tekst strony"
   },
   "textWatch_sourcePageHtml": {
-    "message": "Pelny HTML strony"
+    "message": "HTML strony"
   },
   "textWatch_alertMode": {
     "message": "Tryb alertu tekstowego"
   },
   "textWatch_alertModeChange": {
-    "message": "Kazde pojawienie sie, znikniecie lub zmiana tekstu"
+    "message": "Dowolne pojawienie się, zniknięcie lub zmiana treści"
   },
   "textWatch_alertModeKeywords": {
     "message": "Keyword state changes"
@@ -471,7 +471,7 @@
     "message": "Liczba do monitorowania"
   },
   "contentWatch_numberCandidatesEmpty": {
-    "message": "Wybierz lub przetestuj element, aby zobaczy? wszystkie wykryte liczby."
+    "message": "Wybierz lub przetestuj element, aby zobaczyć wszystkie wykryte liczby."
   },
   "contentWatch_numberCandidatesFound": {
     "message": "Wykryte liczby"
@@ -480,24 +480,93 @@
     "message": "Wykryta liczba"
   },
   "urlLock_enable": {
-    "message": "Zablokuj monitorowanie do bie??cego zakresu URL"
+    "message": "Zablokuj monitorowanie do bieżącego zakresu URL"
   },
   "urlLock_help": {
-    "message": "Wybierz, jak ?ci?le auto-refresh ma pozosta? przypi?ty do strony, na kt?rej uruchomiono monitorowanie."
+    "message": "Wybierz, jak ściśle auto-refresh ma pozostać przypięty do strony, na której uruchomiono monitorowanie."
   },
   "urlLock_mode": {
     "message": "Tryb blokady URL"
   },
   "urlLock_modeExact": {
-    "message": "Dok?adny URL"
+    "message": "Dokładny URL"
   },
   "urlLock_modePath": {
-    "message": "Ta sama ?cie?ka"
+    "message": "Ta sama ścieżka"
   },
   "urlLock_modeOrigin": {
     "message": "Ta sama domena"
   },
   "urlLock_resumedToast": {
-    "message": "Automatyczne od?wie?anie wznowiono po powrocie do monitorowanej strony."
+    "message": "Automatyczne odświeżanie wznowiono po powrocie do monitorowanej strony."
+  },
+  "monitoring_title": {
+    "message": "Monitorowanie"
+  },
+  "monitoring_help": {
+    "message": "Monitoruje liczby, tekst, słowa kluczowe lub zmiany obszaru DOM po każdym odświeżeniu."
+  },
+  "monitoring_summary": {
+    "message": "Jedna sekcja monitorowania z osobnymi narzędziami dla liczb oraz tekstu/obszarów."
+  },
+  "timer_help": {
+    "message": "Skonfiguruj, kiedy karta ma być automatycznie odświeżana."
+  },
+  "alertRouting_help": {
+    "message": "Użyj jednego wspólnego alarmu dla wszystkich zdarzeń albo osobnych alarmów dla monitorowania liczb i tekstu."
+  },
+  "numericWatch_help": {
+    "message": "Śledzi wartość liczbową z wybranego elementu strony lub selektora."
+  },
+  "textWatch_groupHelp": {
+    "message": "Monitoruje tekst, słowa kluczowe lub zmiany HTML obszaru DOM w wybranym regionie albo na całej stronie."
+  },
+  "textWatch_sourceHelp": {
+    "message": "Wybierz, czy analizować widoczny tekst czy surowy HTML z wybranego elementu, obszaru DOM lub całej strony. HTML obszaru jest zalecany przy zmianach kosmetycznych, ukrytych albo widocznych po najechaniu."
+  },
+  "textWatch_pickArea": {
+    "message": "Kliknij, aby wybrać obszar"
+  },
+  "textWatch_selectedArea": {
+    "message": "Wybrany obszar:"
+  },
+  "textWatch_sourceElementText": {
+    "message": "Tekst elementu"
+  },
+  "textWatch_sourceAreaText": {
+    "message": "Tekst obszaru"
+  },
+  "textWatch_sourceAreaHtml": {
+    "message": "HTML obszaru"
+  },
+  "textWatch_alertModeHelp": {
+    "message": "Wybierz, czy alerty mają reagować na każdą zmianę treści, pojawienie się lub zniknięcie słów kluczowych, czy na oba przypadki."
+  },
+  "clickStop_help": {
+    "message": "Wstrzymaj auto-refresh, gdy tylko wejdziesz w interakcję z monitorowaną stroną."
+  },
+  "telegram_help": {
+    "message": "Wysyłaj automatyczne alerty na telefon za pomocą własnego bota Telegram."
+  },
+  "lists_help": {
+    "message": "Używaj reguł z wildcardami, aby pomijać odświeżanie dla pasujących adresów URL albo jawnie je zezwalać."
+  },
+  "visualFeedback_duration": {
+    "message": "Czas alertu"
+  },
+  "visualFeedback_help": {
+    "message": "Wybierz, jak długo toast i podświetlenie na stronie mają pozostać widoczne."
+  },
+  "visualFeedback_duration5s": {
+    "message": "5 sekund"
+  },
+  "visualFeedback_duration30s": {
+    "message": "30 sekund"
+  },
+  "visualFeedback_durationManual": {
+    "message": "Zamknięcie ręczne"
+  },
+  "toast_close": {
+    "message": "Zamknij"
   }
 }

@@ -5,18 +5,30 @@
 
 let isPickerActive = false;
 let pickerWatchType = 'numeric';
+let pickerSourceMode = 'elementText';
 let pickerOverlay = null;
 let highlightedOverlay = null;
 let stopOnClickEnabled = false;
 let clickPauseSent = false;
 let lastTextDebugPayload = null;
+let activeMonitorToast = null;
+let activeMonitorToastTimeout = null;
+let activeHighlightedElements = new Set();
+let activeHighlightTimeout = null;
+
+const LEGACY_TEXT_SOURCE_MODE_MAP = {
+    selectorText: 'elementText',
+    selectorHtml: 'areaHtml'
+};
+
+const SELECTOR_TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml'];
 
 document.addEventListener('click', handleMonitoredPageClick, true);
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.type) {
         case 'START_PICKER':
-            startPicker(message.watchType || 'numeric');
+            startPicker(message.watchType || 'numeric', message.sourceMode || 'elementText');
             sendResponse({ success: true });
             break;
 
@@ -26,7 +38,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             break;
 
         case 'TEST_SELECTOR':
-            sendResponse(testSelector(message.selector));
+            sendResponse(testSelector(message.selector, message.sourceMode || 'elementText'));
             break;
 
         case 'CAPTURE_MONITOR_SNAPSHOT':
@@ -34,14 +46,24 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             break;
 
         case 'APPLY_CHANGE_HIGHLIGHT':
-            applyChangeHighlight(message.selector, message.mode, message.message, message.jumpToSelector, message.toastActions || []);
+            applyChangeHighlight(
+                message.selector,
+                message.mode,
+                message.message,
+                message.jumpToSelector,
+                message.toastActions || [],
+                message.options || {}
+            );
             sendResponse({ success: true });
             break;
 
         case 'SHOW_MONITOR_TOAST':
             showMonitorToast(message.message, {
                 tone: message.tone || 'info',
-                jumpSelector: message.jumpSelector || ''
+                jumpSelector: message.jumpSelector || '',
+                actions: message.actions || [],
+                durationMs: message.durationMs,
+                manualClose: message.manualClose
             });
             sendResponse({ success: true });
             break;
@@ -74,12 +96,24 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
 });
 
-function startPicker(watchType) {
+function normalizeTextSourceMode(sourceMode = '') {
+    const normalized = LEGACY_TEXT_SOURCE_MODE_MAP[sourceMode] || sourceMode;
+    return ['elementText', 'areaText', 'areaHtml', 'pageText', 'pageHtml'].includes(normalized)
+        ? normalized
+        : 'elementText';
+}
+
+function isSelectorBasedTextSourceMode(sourceMode = '') {
+    return SELECTOR_TEXT_SOURCE_MODES.includes(normalizeTextSourceMode(sourceMode));
+}
+
+function startPicker(watchType, sourceMode = 'elementText') {
     if (isPickerActive) {
         return;
     }
 
     pickerWatchType = watchType || 'numeric';
+    pickerSourceMode = normalizeTextSourceMode(sourceMode);
     isPickerActive = true;
     createPickerOverlay();
     document.addEventListener('mouseover', handleMouseOver, true);
@@ -99,12 +133,15 @@ function stopPicker() {
 }
 
 function createPickerOverlay() {
+    const title = pickerWatchType === 'text' && pickerSourceMode !== 'elementText'
+        ? (chrome.i18n.getMessage('textWatch_pickArea') || 'Click to select area')
+        : (chrome.i18n.getMessage('picker_title') || 'Select an element to monitor');
     pickerOverlay = document.createElement('div');
     pickerOverlay.id = 'aar-picker-overlay';
     pickerOverlay.innerHTML = `
         <div class="aar-picker-header">
             <span class="aar-picker-icon">*</span>
-            <span class="aar-picker-title">${chrome.i18n.getMessage('picker_title') || 'Select an element to monitor'}</span>
+            <span class="aar-picker-title">${title}</span>
             <span class="aar-picker-hint">${chrome.i18n.getMessage('picker_hint') || 'Press ESC to cancel'}</span>
         </div>
     `;
@@ -180,9 +217,13 @@ function handlePickerClick(event) {
     const targetElement = highlightedOverlay?._targetElement || event.target;
     const selector = generateSelector(targetElement);
     const textContent = normalizeText(targetElement.innerText || targetElement.textContent);
+    const htmlContent = String(targetElement.outerHTML || '');
     const numericCandidates = extractNumberCandidates(textContent);
     const selectedCandidateIndex = getDefaultCandidateIndex(numericCandidates);
     const numericValue = getSelectedNumericValue(numericCandidates, selectedCandidateIndex);
+    const previewText = normalizeTextSourceMode(pickerSourceMode) === 'areaHtml'
+        ? truncatePreview(normalizeText(htmlContent), 120)
+        : truncatePreview(textContent, 120);
 
     chrome.runtime.sendMessage({
         type: 'SELECTOR_PICKED',
@@ -191,7 +232,7 @@ function handlePickerClick(event) {
         value: numericValue,
         candidateIndex: selectedCandidateIndex,
         candidates: numericCandidates,
-        previewText: truncatePreview(textContent, 120)
+        previewText
     });
 
     stopPicker();
@@ -283,19 +324,24 @@ function generateSelector(element) {
     return path.join(' > ');
 }
 
-function testSelector(selector) {
+function testSelector(selector, sourceMode = 'elementText') {
     try {
         const element = document.querySelector(selector);
         if (!element) {
             return { success: false, error: 'Element not found' };
         }
 
+        const normalizedSourceMode = normalizeTextSourceMode(sourceMode);
         const textContent = normalizeText(element.innerText || element.textContent);
+        const areaHtml = String(element.outerHTML || '');
         const numericCandidates = extractNumberCandidates(textContent);
         const selectedCandidateIndex = getDefaultCandidateIndex(numericCandidates);
+        const previewValue = normalizedSourceMode === 'areaHtml'
+            ? truncatePreview(normalizeText(areaHtml), 120)
+            : truncatePreview(textContent, 120);
         return {
             success: true,
-            value: truncatePreview(textContent, 120),
+            value: previewValue,
             numericValue: getSelectedNumericValue(numericCandidates, selectedCandidateIndex),
             numericCandidates,
             selectedCandidateIndex
@@ -309,7 +355,7 @@ function captureMonitorSnapshot(message) {
     const numeric = captureNumericSnapshot(message.numericSelector || '', message.numericCandidateIndex);
     const text = captureTextSnapshot(
         message.textSelector || '',
-        message.textSourceMode || 'selectorText',
+        message.textSourceMode || 'elementText',
         Boolean(message.includePageText),
         Boolean(message.includePageHtml)
     );
@@ -350,9 +396,11 @@ function captureNumericSnapshot(selector, preferredIndex) {
 
 function captureTextSnapshot(selector, sourceMode, includePageText, includePageHtml) {
     try {
+        const normalizedSourceMode = normalizeTextSourceMode(sourceMode);
         const element = selector ? document.querySelector(selector) : null;
         const selectorFound = Boolean(element);
         const selectorText = selectorFound ? normalizeText(element.innerText || element.textContent) : '';
+        const selectorHtml = selectorFound ? String(element.outerHTML || '') : '';
         const pageText = includePageText ? getPageText() : '';
         const pageHtml = includePageHtml ? getPageHtml() : '';
 
@@ -360,11 +408,15 @@ function captureTextSnapshot(selector, sourceMode, includePageText, includePageH
         let previewText = '';
         let debugText = '';
 
-        if (sourceMode === 'pageHtml') {
+        if (normalizedSourceMode === 'areaHtml') {
+            monitoredText = selectorHtml;
+            previewText = truncatePreview(normalizeText(selectorHtml), 120);
+            debugText = truncateRaw(selectorHtml, 1800);
+        } else if (normalizedSourceMode === 'pageHtml') {
             monitoredText = pageHtml;
             previewText = truncatePreview(normalizeText(pageHtml), 120);
             debugText = truncateRaw(pageHtml, 1800);
-        } else if (sourceMode === 'pageText') {
+        } else if (normalizedSourceMode === 'pageText') {
             monitoredText = pageText;
             previewText = truncatePreview(pageText, 120);
             debugText = truncatePreview(pageText, 1800);
@@ -403,19 +455,21 @@ function captureTextSnapshot(selector, sourceMode, includePageText, includePageH
     }
 }
 
-function applyChangeHighlight(selector, mode, message, jumpToSelector, toastActions = []) {
+function applyChangeHighlight(selector, mode, message, jumpToSelector, toastActions = [], options = {}) {
+    clearManagedAlertPresentation();
+    const displayOptions = normalizeAlertDisplayOptions(options);
+
     if (mode === 'element' && selector) {
         const element = document.querySelector(selector);
         if (element) {
-            element.classList.add('aar-change-highlight');
-            window.setTimeout(() => {
-                element.classList.remove('aar-change-highlight');
-            }, 5000);
+            applyManagedHighlight(element, displayOptions.highlightDurationMs);
 
             showMonitorToast(message || (chrome.i18n.getMessage('changeHighlight_default') || 'Change detected after refresh.'), {
                 tone: 'info',
                 jumpSelector: jumpToSelector ? selector : '',
-                actions: toastActions
+                actions: toastActions,
+                durationMs: displayOptions.toastDurationMs,
+                manualClose: displayOptions.manualClose
             });
             return;
         }
@@ -423,7 +477,9 @@ function applyChangeHighlight(selector, mode, message, jumpToSelector, toastActi
 
     showMonitorToast(message || (chrome.i18n.getMessage('changeHighlight_default') || 'Change detected after refresh.'), {
         tone: 'info',
-        actions: toastActions
+        actions: toastActions,
+        durationMs: displayOptions.toastDurationMs,
+        manualClose: displayOptions.manualClose
     });
 }
 
@@ -435,15 +491,15 @@ function showMonitorToast(message, options = {}) {
     const tone = options.tone || 'info';
     const jumpSelector = options.jumpSelector || '';
     const actions = Array.isArray(options.actions) ? options.actions : [];
-    const existingToast = document.getElementById('aar-monitor-toast');
-    if (existingToast) {
-        existingToast.remove();
-    }
+    const durationMs = Number.isFinite(Number(options.durationMs)) ? Number(options.durationMs) : 5000;
+    const manualClose = Boolean(options.manualClose);
+    clearExistingMonitorToast();
 
     const toast = document.createElement('div');
     toast.id = 'aar-monitor-toast';
     toast.className = `aar-monitor-toast aar-monitor-toast-${tone}${jumpSelector ? ' aar-monitor-toast-clickable' : ''}`;
     toast.innerHTML = `
+        <button type="button" class="aar-monitor-toast-close" aria-label="${chrome.i18n.getMessage('toast_close') || 'Close'}">×</button>
         <div class="aar-monitor-toast-title">${chrome.i18n.getMessage('notification_title') || 'Auto Refresh alert'}</div>
         <div class="aar-monitor-toast-message">${message}</div>
         ${actions.length > 0 ? `<div class="aar-monitor-toast-actions"></div>` : ''}
@@ -471,18 +527,26 @@ function showMonitorToast(message, options = {}) {
         });
     }
 
+    toast.querySelector('.aar-monitor-toast-close')?.addEventListener('click', (event) => {
+        event.stopPropagation();
+        clearManagedAlertPresentation();
+    });
+
     document.body.appendChild(toast);
+    activeMonitorToast = toast;
     window.setTimeout(() => toast.classList.add('visible'), 10);
-    window.setTimeout(() => {
-        toast.classList.remove('visible');
-        window.setTimeout(() => toast.remove(), 300);
-    }, 5000);
+
+    if (!manualClose) {
+        activeMonitorToastTimeout = window.setTimeout(() => {
+            clearManagedAlertPresentation();
+        }, durationMs);
+    }
 }
 
 function showTextDebugPanel(options = {}) {
     lastTextDebugPayload = { ...options };
     const {
-        sourceMode = 'selectorText',
+        sourceMode = 'elementText',
         selector = '',
         previewText = '',
         debugText = '',
@@ -494,13 +558,10 @@ function showTextDebugPanel(options = {}) {
         existing.remove();
     }
 
-    if (sourceMode === 'selectorText' && selector) {
+    if (isSelectorBasedTextSourceMode(sourceMode) && selector) {
         const element = document.querySelector(selector);
         if (element) {
-            element.classList.add('aar-change-highlight');
-            window.setTimeout(() => {
-                element.classList.remove('aar-change-highlight');
-            }, 5000);
+            applyTemporaryHighlight(element, 5000);
         }
     }
 
@@ -512,7 +573,7 @@ function showTextDebugPanel(options = {}) {
             <div class="aar-debug-title">${chrome.i18n.getMessage('textWatch_debugTitle') || 'Text monitor debug'}</div>
             <button type="button" class="aar-debug-close">${chrome.i18n.getMessage('textWatch_debugClose') || 'Close'}</button>
         </div>
-        <div class="aar-debug-row"><strong>${chrome.i18n.getMessage('textWatch_debugSource') || 'Source'}:</strong> ${sourceMode}</div>
+        <div class="aar-debug-row"><strong>${chrome.i18n.getMessage('textWatch_debugSource') || 'Source'}:</strong> ${escapeHtml(getTextSourceLabel(sourceMode))}</div>
         ${selector ? `<div class="aar-debug-row"><strong>${chrome.i18n.getMessage('textWatch_debugSelector') || 'Selector'}:</strong> ${escapeHtml(selector)}</div>` : ''}
         <div class="aar-debug-row"><strong>${chrome.i18n.getMessage('textWatch_debugMatches') || 'Matched keywords'}:</strong> ${escapeHtml(keywordsLine)}</div>
         <div class="aar-debug-row"><strong>${chrome.i18n.getMessage('textWatch_debugPreview') || 'Preview'}:</strong> ${escapeHtml(previewText || '-')}</div>
@@ -592,10 +653,7 @@ function jumpToKeywords(keywords = []) {
     }
 
     target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
-    target.classList.add('aar-change-highlight');
-    window.setTimeout(() => {
-        target.classList.remove('aar-change-highlight');
-    }, 5000);
+    applyTemporaryHighlight(target, 5000);
     return true;
 }
 
@@ -610,11 +668,103 @@ function jumpToSelector(selector) {
     }
 
     element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+    applyTemporaryHighlight(element, 5000);
+    return true;
+}
+
+function normalizeAlertDisplayOptions(options = {}) {
+    const durationMs = Number.isFinite(Number(options.durationMs)) ? Number(options.durationMs) : 5000;
+    const manualClose = Boolean(options.manualClose);
+    return {
+        manualClose,
+        toastDurationMs: manualClose ? null : durationMs,
+        highlightDurationMs: manualClose ? null : durationMs
+    };
+}
+
+function applyManagedHighlight(element, durationMs = null) {
+    if (!(element instanceof Element)) {
+        return;
+    }
+
+    element.classList.add('aar-change-highlight');
+    activeHighlightedElements.add(element);
+
+    if (activeHighlightTimeout) {
+        clearTimeout(activeHighlightTimeout);
+        activeHighlightTimeout = null;
+    }
+
+    if (Number.isFinite(Number(durationMs)) && Number(durationMs) > 0) {
+        activeHighlightTimeout = window.setTimeout(() => {
+            clearManagedHighlights();
+        }, Number(durationMs));
+    }
+}
+
+function clearManagedHighlights() {
+    activeHighlightedElements.forEach((element) => {
+        if (element instanceof Element) {
+            element.classList.remove('aar-change-highlight');
+        }
+    });
+    activeHighlightedElements.clear();
+
+    if (activeHighlightTimeout) {
+        clearTimeout(activeHighlightTimeout);
+        activeHighlightTimeout = null;
+    }
+}
+
+function clearExistingMonitorToast() {
+    if (activeMonitorToastTimeout) {
+        clearTimeout(activeMonitorToastTimeout);
+        activeMonitorToastTimeout = null;
+    }
+
+    const existingToast = activeMonitorToast || document.getElementById('aar-monitor-toast');
+    if (!existingToast) {
+        activeMonitorToast = null;
+        return;
+    }
+
+    existingToast.classList.remove('visible');
+    window.setTimeout(() => {
+        existingToast.remove();
+    }, 300);
+    activeMonitorToast = null;
+}
+
+function clearManagedAlertPresentation() {
+    clearExistingMonitorToast();
+    clearManagedHighlights();
+}
+
+function applyTemporaryHighlight(element, durationMs = 5000) {
+    if (!(element instanceof Element)) {
+        return;
+    }
+
     element.classList.add('aar-change-highlight');
     window.setTimeout(() => {
         element.classList.remove('aar-change-highlight');
-    }, 5000);
-    return true;
+    }, durationMs);
+}
+
+function getTextSourceLabel(sourceMode) {
+    switch (normalizeTextSourceMode(sourceMode)) {
+        case 'areaText':
+            return chrome.i18n.getMessage('textWatch_sourceAreaText') || 'Area text';
+        case 'areaHtml':
+            return chrome.i18n.getMessage('textWatch_sourceAreaHtml') || 'Area HTML';
+        case 'pageText':
+            return chrome.i18n.getMessage('textWatch_sourcePageText') || 'Page text';
+        case 'pageHtml':
+            return chrome.i18n.getMessage('textWatch_sourcePageHtml') || 'Page HTML';
+        case 'elementText':
+        default:
+            return chrome.i18n.getMessage('textWatch_sourceElementText') || 'Element text';
+    }
 }
 
 function getPageText() {

@@ -1,123 +1,123 @@
 {
   "appDesc": {
-    "message": "Automatic refresh with stochastic timing and content change detection"
+    "message": "Auto-refresh tabs with stochastic timing and content change detection"
   },
   "appName": {
     "message": "Auto Refresh & Page Monitor with Telegram Alerts"
   },
   "status_active": {
-    "message": "نشط"
+    "message": "Active"
   },
   "status_inactive": {
-    "message": "غير نشط"
+    "message": "Inactive"
   },
   "timer_title": {
-    "message": "مؤقت التحديث التلقائي"
+    "message": "Auto-Refresh Timer"
   },
   "timer_interval": {
-    "message": "الفاصل الزمني (ثواني)"
+    "message": "Interval (seconds)"
   },
   "timer_start": {
-    "message": "ابدأ"
+    "message": "Start"
   },
   "timer_stop": {
-    "message": "توقف"
+    "message": "Stop"
   },
   "stochastic_mode": {
-    "message": "الوضع العشوائي"
+    "message": "Stochastic mode"
   },
   "stochastic_tooltip": {
-    "message": "يغير وقت التحديث عشوائياً لتجنب الأنماط القابلة للكشف"
+    "message": "Randomly varies refresh time to avoid detectable patterns"
   },
   "stochastic_minLimit": {
-    "message": "الحد الأدنى (ثواني)"
+    "message": "Minimum limit (seconds)"
   },
   "stochastic_distribution": {
-    "message": "التوزيع"
+    "message": "Distribution"
   },
   "stochastic_uniform": {
-    "message": "منتظم"
+    "message": "Uniform"
   },
   "stochastic_uniformTooltip": {
-    "message": "وقت عشوائي بين الحد الأدنى و (2×الهدف−الحد الأدنى)"
+    "message": "Random time between min and (2×target−min)"
   },
   "stochastic_gaussian": {
-    "message": "غاوسي"
+    "message": "Gaussian"
   },
   "stochastic_gaussianTooltip": {
-    "message": "وقت متمركز على الهدف مع تباين طبيعي"
+    "message": "Time centered on target with natural variation"
   },
   "contentWatch_title": {
-    "message": "كشف التغييرات"
+    "message": "Change Detection"
   },
   "contentWatch_enable": {
-    "message": "مراقبة المحتوى"
+    "message": "Monitor content"
   },
   "contentWatch_method": {
-    "message": "طريقة الاختيار"
+    "message": "Selection method"
   },
   "contentWatch_select": {
-    "message": "اختر"
+    "message": "Select"
   },
   "contentWatch_advanced": {
-    "message": "متقدم"
+    "message": "Advanced"
   },
   "contentWatch_pickElement": {
-    "message": "انقر لاختيار عنصر"
+    "message": "Click to select element"
   },
   "contentWatch_cssSelector": {
-    "message": "محدد CSS"
+    "message": "CSS Selector"
   },
   "contentWatch_testSelector": {
-    "message": "اختبار المحدد"
+    "message": "Test Selector"
   },
   "contentWatch_selectedElement": {
-    "message": "العنصر المحدد:"
+    "message": "Selected element:"
   },
   "contentWatch_none": {
-    "message": "لا شيء"
+    "message": "None"
   },
   "contentWatch_currentValue": {
-    "message": "القيمة الحالية:"
+    "message": "Current value:"
   },
   "contentWatch_error": {
-    "message": "خطأ"
+    "message": "Error"
   },
   "contentWatch_alertMode": {
-    "message": "وضع التنبيه"
+    "message": "Alert mode"
   },
   "contentWatch_alertModeIncrease": {
-    "message": "📈 زيادة"
+    "message": "📈 Increase"
   },
   "contentWatch_alertModeDecrease": {
-    "message": "📉 نقصان"
+    "message": "📉 Decrease"
   },
   "contentWatch_alertModeAny": {
-    "message": "🔄 أي تغيير"
+    "message": "🔄 Any change"
   },
   "contentWatch_alertModeAbove": {
-    "message": "⬆️ فوق الحد"
+    "message": "⬆️ Above threshold"
   },
   "contentWatch_alertModeBelow": {
-    "message": "⬇️ تحت الحد"
+    "message": "⬇️ Below threshold"
   },
   "contentWatch_thresholdValue": {
-    "message": "قيمة الحد"
+    "message": "Threshold value"
   },
   "lists_title": {
-    "message": "القائمة السوداء / القائمة البيضاء"
+    "message": "Blacklist / Whitelist"
   },
   "lists_blacklist": {
-    "message": "القائمة السوداء"
+    "message": "Blacklist"
   },
   "lists_whitelist": {
-    "message": "القائمة البيضاء"
+    "message": "Whitelist"
   },
   "lists_blacklistDesc": {
-    "message": "🚫 سيتم تخطي التحديث في هذه الروابط (مثل: الدفع، تسجيل الدخول)"
+    "message": "🚫 Refresh will be skipped on these URLs (e.g. checkout, login)"
   },
   "lists_whitelistDesc": {
-    "message": "✅ هذه الروابط تتجاوز القائمة السوداء (لها الأولوية)"
+    "message": "✅ These URLs override the blacklist (has priority)"
   },
   "lists_blacklistPlaceholder": {
     "message": "*checkout*"
@@ -126,250 +126,250 @@
     "message": "*deals*"
   },
   "telegram_title": {
-    "message": "إشعارات تيليجرام"
+    "message": "Telegram Notifications"
   },
   "telegram_howtoTitle": {
-    "message": "📖 كيفية إعداد بوت تيليجرام"
+    "message": "📖 How to setup Telegram bot"
   },
   "telegram_howtoStep1": {
-    "message": "افتح تيليجرام وابحث عن <strong>@BotFather</strong>"
+    "message": "Open Telegram and search for <strong>@BotFather</strong>"
   },
   "telegram_howtoStep2": {
-    "message": "أرسل <code>/newbot</code> واتبع التعليمات"
+    "message": "Send <code>/newbot</code> and follow the instructions"
   },
   "telegram_howtoStep3": {
-    "message": "انسخ <strong>الرمز</strong> الذي تتلقاه"
+    "message": "Copy the <strong>Token</strong> you receive"
   },
   "telegram_howtoStep4": {
-    "message": "ابحث عن <strong>@userinfobot</strong> وأرسل رسالة"
+    "message": "Search for <strong>@userinfobot</strong> and send a message"
   },
   "telegram_howtoStep5": {
-    "message": "انسخ <strong>معرف الدردشة</strong> الرقمي الخاص بك"
+    "message": "Copy your numeric <strong>Chat ID</strong>"
   },
   "telegram_howtoStep6": {
-    "message": "الصق كليهما أدناه واضغط \"اختبار\""
+    "message": "Paste both below and press \"Test\""
   },
   "telegram_botToken": {
-    "message": "رمز البوت"
+    "message": "Bot Token"
   },
   "telegram_botTokenPlaceholder": {
     "message": "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
   },
   "telegram_chatId": {
-    "message": "معرف الدردشة"
+    "message": "Chat ID"
   },
   "telegram_chatIdPlaceholder": {
     "message": "123456789"
   },
   "telegram_testButton": {
-    "message": "اختبار الإشعار"
+    "message": "Test Notification"
   },
   "alert_newContent": {
-    "message": "تم اكتشاف محتوى جديد!"
+    "message": "New content detected!"
   },
   "alert_stopAlarm": {
-    "message": "إيقاف التنبيه"
+    "message": "Stop Alarm"
   },
   "footer_createdBy": {
-    "message": "تم الإنشاء بواسطة Giulio Nicolai"
+    "message": "Created by Giulio Nicolai"
   },
   "footer_donate": {
-    "message": "تبرع"
+    "message": "Donate"
   },
   "footer_donateText": {
-    "message": "هل أعجبك الامتداد؟"
+    "message": "Enjoying the extension?"
   },
   "picker_title": {
-    "message": "اختر عنصراً للمراقبة"
+    "message": "Select an element to monitor"
   },
   "picker_hint": {
-    "message": "اضغط ESC للإلغاء"
+    "message": "Press ESC to cancel"
   },
   "picker_selected": {
-    "message": "تم اختيار العنصر!"
+    "message": "Element selected!"
   },
   "picker_initialValue": {
-    "message": "القيمة الأولية:"
+    "message": "Initial value:"
   },
   "alertSound_title": {
-    "message": "صوت التنبيه"
+    "message": "Alert Sound"
   },
   "alertSound_siren": {
-    "message": "🚨 صفارة إنذار"
+    "message": "🚨 Siren"
   },
   "alertSound_beep": {
-    "message": "🔔 صافرة"
+    "message": "🔔 Beep"
   },
   "alertSound_chime": {
-    "message": "🎵 رنين"
+    "message": "🎵 Chime"
   },
   "alertSound_alarm": {
-    "message": "⏰ منبه"
+    "message": "⏰ Alarm"
   },
   "alertSound_bell": {
-    "message": "🔔 جرس"
+    "message": "🔔 Bell"
   },
   "alertSound_digital": {
-    "message": "💻 رقمي"
+    "message": "💻 Digital"
   },
   "alertSound_volume": {
-    "message": "مستوى الصوت"
+    "message": "Volume"
   },
   "alertSound_preview": {
-    "message": "▶ معاينة"
+    "message": "▶ Preview"
   },
   "keywordWatch_enable": {
-    "message": "?????? ??????? ????????? ?? ????????"
+    "message": "Monitor keywords or phrases"
   },
   "keywordWatch_help": {
-    "message": "??? ?? ????? ????? ????? ??? ??????? ????????? ???? ??? ??????. ???? ????? ????? ?? ?????? ??????? ??? ?? ?????."
+    "message": "If a selector is configured, keywords are checked inside that element. Otherwise the whole page text is scanned after each refresh."
   },
   "keywordWatch_list": {
-    "message": "??????? ????????? / ????????"
+    "message": "Keywords / phrases"
   },
   "keywordWatch_placeholder": {
-    "message": "???? ??????? ?? ????? ????? ?? ?? ???"
+    "message": "one keyword or phrase per line"
   },
   "clickStop_enable": {
-    "message": "???? ??????? ????? ???? ???????? ??? ??????"
+    "message": "Stop refresh when user clicks on the page"
   },
   "clickStop_pausedToast": {
-    "message": "?? ????? ??????? ???????? ????? ??? ?????."
+    "message": "Auto-refresh paused after click."
   },
   "notification_title": {
-    "message": "????? Auto Refresh"
+    "message": "Auto Refresh alert"
   },
   "notification_defaultBody": {
-    "message": "?? ????? ???? ??? ????????."
+    "message": "A monitored page changed."
   },
   "notification_numericChanged": {
-    "message": "????? ?????? ???????."
+    "message": "Numeric value changed."
   },
   "notification_keywordsFound": {
-    "message": "?? ?????? ??? ????? ???????:"
+    "message": "Keywords found:"
   },
   "notification_valueChanged": {
-    "message": "????? ??????"
+    "message": "Value changed"
   },
   "changeHighlight_default": {
-    "message": "?? ?????? ????? ??? ???????."
+    "message": "Change detected after refresh."
   },
   "changeHighlight_combined": {
-    "message": "?? ?????? ??????? ????? ?????."
+    "message": "Numeric and text changes detected."
   },
   "changeHighlight_numeric": {
-    "message": "????? ?????? ???????? ??? ???????."
+    "message": "Monitored value changed after refresh."
   },
   "changeHighlight_keywords": {
-    "message": "?? ?????? ??? ??????? ????????? ???????? ??? ???????."
+    "message": "Monitored keywords found after refresh."
   },
   "keywordWatch_source": {
-    "message": "?????? ?????? ??????"
+    "message": "Source to scan"
   },
   "keywordWatch_sourceAuto": {
-    "message": "?? ?????? ?????? (???? ??? ??????)"
+    "message": "Selected element text (fallback page text)"
   },
   "keywordWatch_sourcePageText": {
-    "message": "?? ?????? ???????"
+    "message": "Whole page text"
   },
   "keywordWatch_sourcePageHtml": {
-    "message": "HTML ?????? ???????"
+    "message": "Whole page HTML"
   },
   "numericWatch_title": {
-    "message": "?????? ?????"
+    "message": "Number Monitor"
   },
   "numericWatch_enable": {
-    "message": "?????? ?????"
+    "message": "Monitor number"
   },
   "textWatch_title": {
-    "message": "?????? ????"
+    "message": "Text / Keywords / Area Monitor"
   },
   "textWatch_enable": {
-    "message": "?????? ???? ?? ??????? ?????????"
+    "message": "Monitor text, keywords, or area changes"
   },
   "textWatch_help": {
-    "message": "???? ?? ???? ???? ?? ?? ?????? ??????? ?? HTML ?????? ??????. ???? ??????? ????????? ???????? ????? ???? ?????."
+    "message": "Watch a selected element, a selected DOM area, or the whole page. Area HTML is recommended for cosmetic or hover-revealed changes."
   },
   "textWatch_method": {
-    "message": "????? ???????"
+    "message": "Selection method"
   },
   "textWatch_select": {
-    "message": "?????"
+    "message": "Select"
   },
   "textWatch_advanced": {
-    "message": "?????"
+    "message": "Advanced"
   },
   "textWatch_pickElement": {
-    "message": "???? ?????? ????"
+    "message": "Click to select element"
   },
   "textWatch_cssSelector": {
-    "message": "???? CSS"
+    "message": "CSS selector"
   },
   "textWatch_testSelector": {
-    "message": "????? ??????"
+    "message": "Test selector"
   },
   "textWatch_selectedElement": {
-    "message": "?????? ??????:"
+    "message": "Selected element:"
   },
   "textWatch_none": {
-    "message": "?? ????"
+    "message": "None"
   },
   "textWatch_currentPreview": {
-    "message": "???????? ???????:"
+    "message": "Current preview:"
   },
   "textWatch_source": {
-    "message": "?????? ?????? ??????"
+    "message": "Source to scan"
   },
   "textWatch_sourceSelector": {
-    "message": "?? ?????? ??????"
+    "message": "Selected element text"
   },
   "textWatch_sourcePageText": {
-    "message": "?? ?????? ???????"
+    "message": "Page text"
   },
   "textWatch_sourcePageHtml": {
-    "message": "HTML ?????? ???????"
+    "message": "Page HTML"
   },
   "textWatch_alertMode": {
-    "message": "??? ????? ????"
+    "message": "Text alert mode"
   },
   "textWatch_alertModeChange": {
-    "message": "?? ???? ?? ?????? ?? ????? ?? ????"
+    "message": "Any content appearance, disappearance, or change"
   },
   "textWatch_alertModeKeywords": {
     "message": "Keyword state changes"
   },
   "textWatch_alertModeChangeOrKeywords": {
-    "message": "???? ???? ?? ??????? ?????????"
+    "message": "Text change or keywords"
   },
   "textWatch_keywords": {
-    "message": "??????? ????????? / ????????"
+    "message": "Keywords / phrases"
   },
   "textWatch_placeholder": {
-    "message": "???? ??????? ?? ????? ????? ?? ?? ???"
+    "message": "one keyword or phrase per line"
   },
   "textWatch_jumpHint": {
-    "message": "???? ???????? ??? ??????."
+    "message": "Click to jump to the element."
   },
   "alertRouting_mode": {
-    "message": "????? ?????????"
+    "message": "Alarm setup"
   },
   "alertRouting_shared": {
-    "message": "????? ?????"
+    "message": "Shared alarm"
   },
   "alertRouting_separate": {
-    "message": "??????? ??????"
+    "message": "Separate alarms"
   },
   "alertRouting_sharedSound": {
-    "message": "??? ??????? ???????"
+    "message": "Shared alert sound"
   },
   "alertRouting_sharedVolume": {
-    "message": "????? ????? ???????"
+    "message": "Shared volume"
   },
   "notification_textChanged": {
-    "message": "???? ????."
+    "message": "Text changed."
   },
   "changeHighlight_text": {
-    "message": "???? ???? ??????? ??? ???????."
+    "message": "Monitored text changed after refresh."
   },
   "textWatch_keywordsHelp": {
     "message": "Insert one keyword or phrase per line."
@@ -411,93 +411,162 @@
     "message": "No captured content available."
   },
   "textWatch_alertModeKeywordState": {
-    "message": "???? ?? ?????? ??????? ?????????"
+    "message": "Keyword appearance or disappearance"
   },
   "notification_keywordsGone": {
     "message": "Keywords disappeared:"
   },
   "telegram_testMissingCredentials": {
-    "message": "أدخل Bot Token وChat ID"
+    "message": "Insert Bot Token and Chat ID"
   },
   "telegram_testSending": {
-    "message": "جارٍ الإرسال..."
+    "message": "Sending..."
   },
   "telegram_testMessage": {
-    "message": "Auto Refresh & Page Monitor\\n\\nتم اختبار Telegram بنجاح."
+    "message": "Auto Refresh & Page Monitor\\n\\nTelegram test completed successfully."
   },
   "telegram_testSuccess": {
-    "message": "تم إرسال الإشعار بنجاح"
+    "message": "Notification sent successfully"
   },
   "telegram_statusAutomaticLast": {
-    "message": "آخر حدث Telegram تلقائي"
+    "message": "Last automatic Telegram event"
   },
   "telegram_statusSentSuccessfully": {
-    "message": "تم الإرسال بنجاح"
+    "message": "Sent successfully"
   },
   "telegram_statusFailed": {
-    "message": "فشل"
+    "message": "Failed"
   },
   "telegram_statusUnknownError": {
-    "message": "خطأ غير معروف"
+    "message": "Unknown error"
   },
   "telegram_statusNetworkError": {
-    "message": "خطأ في الشبكة"
+    "message": "Network error"
   },
   "telegram_messageTitle": {
-    "message": "تنبيه: تغيرت القيمة المراقبة!"
+    "message": "Alert: monitored value changed!"
   },
   "telegram_messageValue": {
-    "message": "القيمة"
+    "message": "Value"
   },
   "telegram_messageUrl": {
-    "message": "الرابط"
+    "message": "URL"
   },
   "telegram_messageTime": {
-    "message": "الوقت"
+    "message": "Time"
   },
   "telegram_messageUnknownUrl": {
-    "message": "غير معروف"
+    "message": "Unknown"
   },
   "textWatch_alertModeKeywordAppeared": {
-    "message": "???? ??????? ????????? ???"
+    "message": "Only keyword appearance"
   },
   "textWatch_alertModeKeywordDisappeared": {
-    "message": "?????? ??????? ????????? ???"
+    "message": "Only keyword disappearance"
   },
   "urlLock_pausedToast": {
-    "message": "?? ????? ??????? ???????? ????? ??? ??????? ????? ??? ???? ????."
+    "message": "Auto-refresh paused because the tab navigated to another page."
   },
   "contentWatch_numberTarget": {
-    "message": "????? ??????? ???????"
+    "message": "Number to monitor"
   },
   "contentWatch_numberCandidatesEmpty": {
-    "message": "???? ?????? ?? ????? ?????? ????? ?? ??????? ????????."
+    "message": "Select or test an element to see all detected numbers."
   },
   "contentWatch_numberCandidatesFound": {
-    "message": "??????? ????????"
+    "message": "Detected numbers"
   },
   "contentWatch_numberCandidatesSingle": {
-    "message": "????? ???????"
+    "message": "Detected number"
   },
   "urlLock_enable": {
-    "message": "??? ???????? ????? ????? URL ??????"
+    "message": "Lock monitoring to the current URL scope"
   },
   "urlLock_help": {
-    "message": "???? ??? ??????? ???? ??? ?? ???? ??? ??????? ???????? ??????? ??????? ???? ??? ????."
+    "message": "Choose how strictly auto-refresh should stay attached to the page where monitoring started."
   },
   "urlLock_mode": {
-    "message": "??? ??? ????? URL"
+    "message": "URL lock mode"
   },
   "urlLock_modeExact": {
-    "message": "????? URL ?????"
+    "message": "Exact URL"
   },
   "urlLock_modePath": {
-    "message": "??? ??????"
+    "message": "Same path"
   },
   "urlLock_modeOrigin": {
-    "message": "??? ??????"
+    "message": "Same domain"
   },
   "urlLock_resumedToast": {
-    "message": "?????? ??????? ???????? ??? ?????? ??? ?????? ???? ??? ????????."
+    "message": "Auto-refresh resumed after returning to the monitored page."
+  },
+  "monitoring_title": {
+    "message": "Monitoring"
+  },
+  "monitoring_help": {
+    "message": "Monitor numbers, text, keywords, or DOM area changes after each refresh."
+  },
+  "monitoring_summary": {
+    "message": "One monitoring section with separate number and text/area tools."
+  },
+  "timer_help": {
+    "message": "Configure when the tab refreshes automatically."
+  },
+  "alertRouting_help": {
+    "message": "Use one shared alert for every trigger, or separate alerts for number and text monitoring."
+  },
+  "numericWatch_help": {
+    "message": "Track a numeric value from a selected page element or selector."
+  },
+  "textWatch_groupHelp": {
+    "message": "Track text, keywords, or DOM area HTML changes inside a selected region or across the page."
+  },
+  "textWatch_sourceHelp": {
+    "message": "Choose whether to inspect visible text or raw HTML from a selected element, a DOM area, or the whole page. Area HTML is recommended for cosmetic, hidden, or hover-revealed changes."
+  },
+  "textWatch_pickArea": {
+    "message": "Click to select area"
+  },
+  "textWatch_selectedArea": {
+    "message": "Selected area:"
+  },
+  "textWatch_sourceElementText": {
+    "message": "Element text"
+  },
+  "textWatch_sourceAreaText": {
+    "message": "Area text"
+  },
+  "textWatch_sourceAreaHtml": {
+    "message": "Area HTML"
+  },
+  "textWatch_alertModeHelp": {
+    "message": "Choose whether alerts should react to any content change, keyword appearance, disappearance, or both."
+  },
+  "clickStop_help": {
+    "message": "Pause auto-refresh as soon as you interact with the monitored page."
+  },
+  "telegram_help": {
+    "message": "Send automatic alerts to your phone using your own Telegram bot."
+  },
+  "lists_help": {
+    "message": "Use wildcard rules to skip refresh on matching URLs or explicitly allow them."
+  },
+  "visualFeedback_duration": {
+    "message": "Alert duration"
+  },
+  "visualFeedback_help": {
+    "message": "Choose how long the in-page change toast and highlight remain visible."
+  },
+  "visualFeedback_duration5s": {
+    "message": "5 seconds"
+  },
+  "visualFeedback_duration30s": {
+    "message": "30 seconds"
+  },
+  "visualFeedback_durationManual": {
+    "message": "Manual close"
+  },
+  "toast_close": {
+    "message": "Close"
   }
 }

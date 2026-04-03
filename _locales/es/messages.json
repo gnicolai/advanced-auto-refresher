@@ -276,19 +276,19 @@
     "message": "HTML completo de la pagina"
   },
   "numericWatch_title": {
-    "message": "Monitorear numero"
+    "message": "Monitor de números"
   },
   "numericWatch_enable": {
     "message": "Monitorear numero"
   },
   "textWatch_title": {
-    "message": "Monitorear texto"
+    "message": "Monitor de texto / palabras clave / áreas"
   },
   "textWatch_enable": {
-    "message": "Monitorear texto o palabras clave"
+    "message": "Monitorizar texto, palabras clave o cambios de área"
   },
   "textWatch_help": {
-    "message": "Monitorea el texto de un elemento, todo el texto de la pagina o el HTML completo. Las palabras clave siguen siendo opcionales y adicionales."
+    "message": "Supervisa un elemento seleccionado, un área del DOM o toda la página. El HTML del área se recomienda para cambios cosméticos o visibles al pasar el cursor."
   },
   "textWatch_method": {
     "message": "Metodo de seleccion"
@@ -324,16 +324,16 @@
     "message": "Texto del elemento seleccionado"
   },
   "textWatch_sourcePageText": {
-    "message": "Texto completo de la pagina"
+    "message": "Texto de la página"
   },
   "textWatch_sourcePageHtml": {
-    "message": "HTML completo de la pagina"
+    "message": "HTML de la página"
   },
   "textWatch_alertMode": {
     "message": "Modo de alerta de texto"
   },
   "textWatch_alertModeChange": {
-    "message": "Cualquier aparicion, desaparicion o cambio de texto"
+    "message": "Cualquier aparición, desaparición o cambio del contenido"
   },
   "textWatch_alertModeKeywords": {
     "message": "Keyword state changes"
@@ -465,25 +465,25 @@
     "message": "Solo desaparicion de palabras clave"
   },
   "urlLock_pausedToast": {
-    "message": "Auto-refresh en pausa porque la pesta?a naveg? a otra pagina."
+    "message": "La recarga automática se pausó porque la pestaña navegó a otra página."
   },
   "contentWatch_numberTarget": {
-    "message": "N?mero a monitorizar"
+    "message": "Número a monitorizar"
   },
   "contentWatch_numberCandidatesEmpty": {
-    "message": "Selecciona o prueba un elemento para ver todos los n?meros detectados."
+    "message": "Selecciona o prueba un elemento para ver todos los números detectados."
   },
   "contentWatch_numberCandidatesFound": {
-    "message": "N?meros detectados"
+    "message": "Números detectados"
   },
   "contentWatch_numberCandidatesSingle": {
-    "message": "N?mero detectado"
+    "message": "Número detectado"
   },
   "urlLock_enable": {
     "message": "Bloquear el monitoreo al alcance actual de la URL"
   },
   "urlLock_help": {
-    "message": "Elige con qu? nivel de precisi?n el auto-refresh debe permanecer vinculado a la p?gina donde comenz? el monitoreo."
+    "message": "Elige con qué nivel de precisión la recarga automática debe permanecer vinculada a la página donde empezó la monitorización."
   },
   "urlLock_mode": {
     "message": "Modo de bloqueo de URL"
@@ -498,6 +498,75 @@
     "message": "Mismo dominio"
   },
   "urlLock_resumedToast": {
-    "message": "El auto-refresh se reanud? al volver a la p?gina monitorizada."
+    "message": "La recarga automática se reanudó al volver a la página monitorizada."
+  },
+  "monitoring_title": {
+    "message": "Monitorización"
+  },
+  "monitoring_help": {
+    "message": "Supervisa números, texto, palabras clave o cambios en áreas del DOM después de cada recarga."
+  },
+  "monitoring_summary": {
+    "message": "Una sola sección de monitorización con herramientas separadas para números y texto/áreas."
+  },
+  "timer_help": {
+    "message": "Configura cuándo se recarga automáticamente la pestaña."
+  },
+  "alertRouting_help": {
+    "message": "Usa una alarma compartida para todos los disparadores o alarmas separadas para números y texto."
+  },
+  "numericWatch_help": {
+    "message": "Supervisa un valor numérico de un elemento seleccionado de la página o de un selector."
+  },
+  "textWatch_groupHelp": {
+    "message": "Supervisa texto, palabras clave o cambios de HTML en un área del DOM dentro de una región seleccionada o en toda la página."
+  },
+  "textWatch_sourceHelp": {
+    "message": "Elige si inspeccionar texto visible o HTML sin procesar de un elemento seleccionado, un área del DOM o toda la página. El HTML del área se recomienda para cambios cosméticos, ocultos o visibles al pasar el cursor."
+  },
+  "textWatch_pickArea": {
+    "message": "Haz clic para seleccionar un área"
+  },
+  "textWatch_selectedArea": {
+    "message": "Área seleccionada:"
+  },
+  "textWatch_sourceElementText": {
+    "message": "Texto del elemento"
+  },
+  "textWatch_sourceAreaText": {
+    "message": "Texto del área"
+  },
+  "textWatch_sourceAreaHtml": {
+    "message": "HTML del área"
+  },
+  "textWatch_alertModeHelp": {
+    "message": "Elige si las alertas deben reaccionar a cualquier cambio de contenido, a la aparición o desaparición de palabras clave, o a ambos."
+  },
+  "clickStop_help": {
+    "message": "Pausa la recarga automática en cuanto interactúes con la página monitorizada."
+  },
+  "telegram_help": {
+    "message": "Envía alertas automáticas a tu teléfono con tu propio bot de Telegram."
+  },
+  "lists_help": {
+    "message": "Usa reglas con comodines para omitir la recarga en URL coincidentes o permitirlas explícitamente."
+  },
+  "visualFeedback_duration": {
+    "message": "Duración de la alerta"
+  },
+  "visualFeedback_help": {
+    "message": "Elige cuánto tiempo permanecen visibles el aviso y el resaltado dentro de la página."
+  },
+  "visualFeedback_duration5s": {
+    "message": "5 segundos"
+  },
+  "visualFeedback_duration30s": {
+    "message": "30 segundos"
+  },
+  "visualFeedback_durationManual": {
+    "message": "Cierre manual"
+  },
+  "toast_close": {
+    "message": "Cerrar"
   }
 }

@@ -29,7 +29,10 @@
     </header>
 
     <section class="section">
-      <h2 class="section-title" data-i18n="timer.title">Auto-Refresh Timer</h2>
+      <h2 class="section-title">
+        <span data-i18n="timer.title">Auto-Refresh Timer</span>
+        <span class="tooltip" data-i18n-tooltip="timer.help" data-tooltip="Configure when the tab refreshes automatically.">?</span>
+      </h2>
 
       <div class="control-group">
         <label for="intervalInput" data-i18n="timer.interval">Interval (seconds)</label>
@@ -81,12 +84,17 @@
 
     <section class="section">
       <h2 class="section-title">
-        <span data-i18n="contentWatch.title">Change Detection</span>
+        <span data-i18n="monitoring.title">Monitoring</span>
+        <span class="tooltip" data-i18n-tooltip="monitoring.help" data-tooltip="Monitor numbers, text, keywords, or DOM area changes after each refresh.">?</span>
         <span class="badge badge-new">Alert</span>
       </h2>
+      <p class="helper-text section-helper" data-i18n="monitoring.summary">One monitoring section with separate number and text/area tools.</p>
 
       <div class="control-group">
-        <label for="alertRoutingMode" data-i18n="alertRouting.mode">Alarm setup</label>
+        <div class="label-with-help">
+          <label for="alertRoutingMode" data-i18n="alertRouting.mode">Alarm setup</label>
+          <span class="tooltip" data-i18n-tooltip="alertRouting.help" data-tooltip="Use one shared alert for every trigger, or separate alerts for number and text monitoring.">?</span>
+        </div>
         <select id="alertRoutingMode" class="select-field">
           <option value="shared" data-i18n="alertRouting.shared">Shared alarm</option>
           <option value="separate" data-i18n="alertRouting.separate">Separate alarms</option>
@@ -123,7 +131,10 @@
 
       <div class="monitor-card">
         <div class="monitor-card-header">
-          <h3 class="monitor-card-title" data-i18n="numericWatch.title">Monitor number</h3>
+          <h3 class="monitor-card-title">
+            <span data-i18n="numericWatch.title">Number Monitor</span>
+            <span class="tooltip" data-i18n-tooltip="numericWatch.help" data-tooltip="Track a numeric value from a selected page element or selector.">?</span>
+          </h3>
         </div>
 
         <div class="control-group">
@@ -227,24 +238,32 @@
 
       <div class="monitor-card">
         <div class="monitor-card-header">
-          <h3 class="monitor-card-title" data-i18n="textWatch.title">Monitor text</h3>
+          <h3 class="monitor-card-title">
+            <span data-i18n="textWatch.title">Text / Keywords / Area Monitor</span>
+            <span class="tooltip" data-i18n-tooltip="textWatch.groupHelp" data-tooltip="Track text, keywords, or DOM area HTML changes inside a selected region or across the page.">?</span>
+          </h3>
         </div>
 
         <div class="control-group">
           <div class="checkbox-row">
             <input type="checkbox" id="textWatchEnabled" class="checkbox">
-            <label for="textWatchEnabled" data-i18n="textWatch.enable">Monitor text or keywords</label>
+            <label for="textWatchEnabled" data-i18n="textWatch.enable">Monitor text, keywords, or area changes</label>
           </div>
-          <p class="helper-text" data-i18n="textWatch.help">Monitor an element text, the whole page text, or the whole page HTML. Keywords remain optional and additive.</p>
+          <p class="helper-text" data-i18n="textWatch.help">Watch a selected element, a selected DOM area, or the whole page. Area HTML is recommended for cosmetic or hover-revealed changes.</p>
         </div>
 
         <div class="content-watch-options" id="textWatchOptions">
           <div class="control-group">
-            <label for="textSourceMode" data-i18n="textWatch.source">Source to scan</label>
+            <div class="label-with-help">
+              <label for="textSourceMode" data-i18n="textWatch.source">Source to scan</label>
+              <span class="tooltip" data-i18n-tooltip="textWatch.sourceHelp" data-tooltip="Choose whether to inspect visible text or raw HTML from a selected element, a DOM area, or the whole page. Area HTML is recommended for cosmetic, hidden, or hover-revealed changes.">?</span>
+            </div>
             <select id="textSourceMode" class="select-field">
-              <option value="selectorText" data-i18n="textWatch.sourceSelector">Selected element text</option>
-              <option value="pageText" data-i18n="textWatch.sourcePageText">Whole page text</option>
-              <option value="pageHtml" data-i18n="textWatch.sourcePageHtml">Whole page HTML</option>
+              <option value="elementText" data-i18n="textWatch.sourceElementText">Element text</option>
+              <option value="areaText" data-i18n="textWatch.sourceAreaText">Area text</option>
+              <option value="areaHtml" data-i18n="textWatch.sourceAreaHtml">Area HTML</option>
+              <option value="pageText" data-i18n="textWatch.sourcePageText">Page text</option>
+              <option value="pageHtml" data-i18n="textWatch.sourcePageHtml">Page HTML</option>
             </select>
           </div>
 
@@ -264,11 +283,11 @@
             </div>
 
             <div class="picker-mode" id="textPickerMode">
-              <button id="textStartPicker" class="btn btn-accent btn-full" data-i18n="textWatch.pickElement">
-                Click to select element
+              <button id="textStartPicker" class="btn btn-accent btn-full">
+                <span id="textPickerActionText" data-i18n="textWatch.pickElement">Click to select element</span>
               </button>
               <div class="selected-element">
-                <span class="selected-label" data-i18n="textWatch.selectedElement">Selected element:</span>
+                <span class="selected-label" id="textSelectedLabel" data-i18n="textWatch.selectedElement">Selected element:</span>
                 <span class="selected-value" id="textSelectedValue" data-i18n="textWatch.none">None</span>
               </div>
             </div>
@@ -290,7 +309,10 @@
           </div>
 
           <div class="control-group">
-            <label for="textAlertMode" data-i18n="textWatch.alertMode">Text alert mode</label>
+            <div class="label-with-help">
+              <label for="textAlertMode" data-i18n="textWatch.alertMode">Text alert mode</label>
+              <span class="tooltip" data-i18n-tooltip="textWatch.alertModeHelp" data-tooltip="Choose whether alerts should react to any text change, keyword appearance, disappearance, or both.">?</span>
+            </div>
             <select id="textAlertMode" class="select-field">
               <option value="change" data-i18n="textWatch.alertModeChange">Any text appearance, disappearance, or change</option>
               <option value="keywordAppeared" data-i18n="textWatch.alertModeKeywordAppeared">Only keyword appearance</option>
@@ -347,9 +369,22 @@
       </div>
 
       <div class="control-group">
+        <div class="label-with-help">
+          <label for="alertDuration" data-i18n="visualFeedback.duration">Alert duration</label>
+          <span class="tooltip" data-i18n-tooltip="visualFeedback.help" data-tooltip="Choose how long the in-page change toast and highlight remain visible.">?</span>
+        </div>
+        <select id="alertDuration" class="select-field">
+          <option value="5s" data-i18n="visualFeedback.duration5s">5 seconds</option>
+          <option value="30s" data-i18n="visualFeedback.duration30s">30 seconds</option>
+          <option value="manual" data-i18n="visualFeedback.durationManual">Manual close</option>
+        </select>
+      </div>
+
+      <div class="control-group">
         <div class="checkbox-row">
           <input type="checkbox" id="stopOnClick" class="checkbox">
           <label for="stopOnClick" data-i18n="clickStop.enable">Stop refresh when user clicks on the page</label>
+          <span class="tooltip" data-i18n-tooltip="clickStop.help" data-tooltip="Pause auto-refresh as soon as you interact with the monitored page.">?</span>
         </div>
       </div>
 
@@ -357,12 +392,15 @@
         <div class="checkbox-row">
           <input type="checkbox" id="urlLockEnabled" class="checkbox">
           <label for="urlLockEnabled" data-i18n="urlLock.enable">Lock monitoring to the current URL scope</label>
+          <span class="tooltip" data-i18n-tooltip="urlLock.help" data-tooltip="Keep monitoring tied to the original page, path, or domain.">?</span>
         </div>
-        <p class="helper-text" data-i18n="urlLock.help">Choose how strictly auto-refresh should stay attached to the page where monitoring started.</p>
       </div>
 
       <div class="control-group" id="urlLockModeGroup">
-        <label for="urlLockMode" data-i18n="urlLock.mode">URL lock mode</label>
+        <div class="label-with-help">
+          <label for="urlLockMode" data-i18n="urlLock.mode">URL lock mode</label>
+          <span class="tooltip" data-i18n-tooltip="urlLock.help" data-tooltip="Keep monitoring tied to the original page, path, or domain.">?</span>
+        </div>
         <select id="urlLockMode" class="select-field">
           <option value="exact" data-i18n="urlLock.modeExact">Exact URL</option>
           <option value="path" data-i18n="urlLock.modePath">Same path</option>
@@ -380,6 +418,7 @@
           </label>
           <span class="icon">TG</span>
           <span data-i18n="telegram.title">Telegram Notifications</span>
+          <span class="tooltip" data-i18n-tooltip="telegram.help" data-tooltip="Send automatic alerts to your phone using your own Telegram bot.">?</span>
         </div>
       </div>
 
@@ -423,6 +462,7 @@
     <section class="section collapsible">
       <h2 class="section-title clickable" id="blacklistToggle">
         <span data-i18n="lists.title">Blacklist / Whitelist</span>
+        <span class="tooltip" data-i18n-tooltip="lists.help" data-tooltip="Use wildcard rules to skip refresh on matching URLs or explicitly allow them.">?</span>
         <span class="collapse-icon">v</span>
       </h2>
 
@@ -465,7 +505,7 @@
     </div>
 
     <footer class="footer">
-      <span class="version" id="versionText">v1.0.21</span>
+          <span class="version" id="versionText">v1.0.22</span>
       <a href="https://giulionicolai.com" target="_blank" class="creator-link" data-i18n="footer.createdBy">Created by Giulio Nicolai</a>
       <div class="donate-section">
         <span class="donate-text" data-i18n="footer.donateText">Enjoying the extension?</span>

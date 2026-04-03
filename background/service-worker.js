@@ -32,6 +32,13 @@ const RUNTIME_LANGUAGE_MAP = {
 
 const runtimeTranslationCache = new Map();
 
+const LEGACY_TEXT_SOURCE_MODE_MAP = {
+    selectorText: 'elementText',
+    selectorHtml: 'areaHtml'
+};
+
+const SELECTOR_TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml'];
+
 chrome.runtime.onInstalled.addListener(async () => {
     console.log('Auto Refresh & Page Monitor installed');
 
@@ -130,7 +137,7 @@ function getDefaultTabSettings(tabUrl = '') {
             selector: '',
             keywords: [],
             lastMatchedKeywords: [],
-            sourceMode: 'selectorText',
+            sourceMode: 'elementText',
             detectMode: 'keywordAppeared',
             debugEnabled: false,
             previewText: '',
@@ -141,6 +148,9 @@ function getDefaultTabSettings(tabUrl = '') {
             mode: 'shared',
             sharedSound: 'siren',
             sharedVolume: 80
+        },
+        visualFeedback: {
+            alertDuration: '30s'
         },
         urlLock: {
             enabled: true,
@@ -178,18 +188,30 @@ function normalizeNumericCandidates(candidates) {
         .filter((value) => Number.isFinite(value));
 }
 
+function normalizeTextSourceMode(sourceMode = '') {
+    const normalized = LEGACY_TEXT_SOURCE_MODE_MAP[sourceMode] || sourceMode;
+    return ['elementText', 'areaText', 'areaHtml', 'pageText', 'pageHtml'].includes(normalized)
+        ? normalized
+        : 'elementText';
+}
+
+function isSelectorBasedTextSourceMode(sourceMode = '') {
+    return SELECTOR_TEXT_SOURCE_MODES.includes(normalizeTextSourceMode(sourceMode));
+}
+
 function normalizeTextWatch(settings = {}, defaults, legacyContentWatch = {}, legacyKeywordWatch = {}) {
     if (settings.textWatch) {
         return {
             ...defaults.textWatch,
             ...settings.textWatch,
+            sourceMode: normalizeTextSourceMode(settings.textWatch.sourceMode),
             keywords: normalizeKeywords(settings.textWatch.keywords),
             lastMatchedKeywords: normalizeKeywords(settings.textWatch.lastMatchedKeywords)
         };
     }
 
     const legacySourceMode = legacyKeywordWatch.sourceMode || 'auto';
-    let sourceMode = 'selectorText';
+    let sourceMode = 'elementText';
     if (legacySourceMode === 'pageText') {
         sourceMode = 'pageText';
     } else if (legacySourceMode === 'pageHtml') {
@@ -201,10 +223,10 @@ function normalizeTextWatch(settings = {}, defaults, legacyContentWatch = {}, le
     return {
         ...defaults.textWatch,
         enabled: Boolean(legacyKeywordWatch.enabled),
-        selector: sourceMode === 'selectorText' ? (legacyContentWatch.selector || '') : '',
+        selector: isSelectorBasedTextSourceMode(sourceMode) ? (legacyContentWatch.selector || '') : '',
         keywords: normalizeKeywords(legacyKeywordWatch.keywords),
         lastMatchedKeywords: [],
-        sourceMode,
+        sourceMode: normalizeTextSourceMode(sourceMode),
         detectMode: 'keywordAppeared',
         alertSound: legacyContentWatch.alertSound || defaults.textWatch.alertSound,
         alertVolume: legacyContentWatch.alertVolume ?? defaults.textWatch.alertVolume
@@ -227,6 +249,19 @@ function normalizeAlertRouting(settings = {}, defaults, legacyContentWatch = {})
     };
 }
 
+function normalizeVisualFeedback(settings = {}, defaults) {
+    if (settings.visualFeedback) {
+        return {
+            ...defaults.visualFeedback,
+            ...settings.visualFeedback
+        };
+    }
+
+    return {
+        ...defaults.visualFeedback
+    };
+}
+
 function normalizeSettings(settings = {}, tabUrl = settings.tabUrl || '') {
     const defaults = getDefaultTabSettings(tabUrl);
     const legacyContentWatch = settings.contentWatch || {};
@@ -241,6 +276,7 @@ function normalizeSettings(settings = {}, tabUrl = settings.tabUrl || '') {
         },
         textWatch: normalizeTextWatch(settings, defaults, legacyContentWatch, legacyKeywordWatch),
         alertRouting: normalizeAlertRouting(settings, defaults, legacyContentWatch),
+        visualFeedback: normalizeVisualFeedback(settings, defaults),
         urlLock: {
             ...defaults.urlLock,
             ...(settings.urlLock || {})
@@ -265,9 +301,7 @@ function normalizeSettings(settings = {}, tabUrl = settings.tabUrl || '') {
             : null;
     normalized.textWatch.keywords = normalizeKeywords(normalized.textWatch.keywords);
     normalized.textWatch.lastMatchedKeywords = normalizeKeywords(normalized.textWatch.lastMatchedKeywords);
-    normalized.textWatch.sourceMode = ['selectorText', 'pageText', 'pageHtml'].includes(normalized.textWatch.sourceMode)
-        ? normalized.textWatch.sourceMode
-        : 'selectorText';
+    normalized.textWatch.sourceMode = normalizeTextSourceMode(normalized.textWatch.sourceMode);
     normalized.textWatch.detectMode = ['change', 'keywords', 'keywordAppeared', 'keywordDisappeared', 'keywordState', 'changeOrKeywords'].includes(normalized.textWatch.detectMode)
         ? normalized.textWatch.detectMode
         : 'keywordAppeared';
@@ -280,6 +314,9 @@ function normalizeSettings(settings = {}, tabUrl = settings.tabUrl || '') {
         ? normalized.alertRouting.mode
         : 'shared';
     normalized.alertRouting.sharedVolume = Math.max(0, Math.min(100, parseInt(normalized.alertRouting.sharedVolume, 10) || defaults.alertRouting.sharedVolume));
+    normalized.visualFeedback.alertDuration = ['5s', '30s', 'manual'].includes(normalized.visualFeedback.alertDuration)
+        ? normalized.visualFeedback.alertDuration
+        : '30s';
     normalized.urlLock.enabled = normalized.urlLock.enabled !== false;
     normalized.urlLock.mode = ['exact', 'path', 'origin'].includes(normalized.urlLock.mode) ? normalized.urlLock.mode : 'exact';
     normalized.urlLock.lockedUrl = normalized.urlLock.lockedUrl || normalized.tabUrl || '';
@@ -841,13 +878,15 @@ async function finalizeRefreshCycle(tabId, state) {
         }
 
         if (evaluation.shouldHighlight) {
+            const alertDisplayOptions = getAlertDisplayOptions(nextState);
             await chrome.tabs.sendMessage(tabId, {
                 type: 'APPLY_CHANGE_HIGHLIGHT',
                 selector: evaluation.highlightSelector,
                 mode: evaluation.highlightSelector ? 'element' : 'summary',
                 message: evaluation.highlightMessage,
                 jumpToSelector: Boolean(evaluation.highlightSelector),
-                toastActions: evaluation.toastActions || []
+                toastActions: evaluation.toastActions || [],
+                options: alertDisplayOptions
             }).catch(() => { });
         }
 
@@ -855,7 +894,7 @@ async function finalizeRefreshCycle(tabId, state) {
             await chrome.tabs.sendMessage(tabId, {
                 type: 'SHOW_TEXT_DEBUG',
                 sourceMode: nextState.textWatch.sourceMode,
-                selector: nextState.textWatch.sourceMode === 'selectorText' ? nextState.textWatch.selector : '',
+                selector: isSelectorBasedTextSourceMode(nextState.textWatch.sourceMode) ? nextState.textWatch.selector : '',
                 previewText: postSnapshot.text.previewText || '',
                 debugText: postSnapshot.text.debugText || postSnapshot.text.previewText || '',
                 matchedKeywords: evaluation.matchedKeywords || []
@@ -912,7 +951,7 @@ function evaluateMonitoring(state, preSnapshot, postSnapshot, i18n) {
     const numericChanged = previousNumericValue !== null && currentNumericValue !== null && previousNumericValue !== currentNumericValue;
     const shouldHighlight = Boolean(textTriggered || numericChanged || numericTriggered);
     const highlightSelector = state.textWatch?.enabled
-        && state.textWatch.sourceMode === 'selectorText'
+        && isSelectorBasedTextSourceMode(state.textWatch.sourceMode)
         && postSnapshot.text?.selectorFound
         ? state.textWatch.selector
         : (numericTriggered && state.contentWatch?.selector && postSnapshot.numeric?.selectorFound ? state.contentWatch.selector : '');
@@ -959,7 +998,7 @@ function evaluateMonitoring(state, preSnapshot, postSnapshot, i18n) {
     }
 
     if (textTriggered) {
-        if (state.textWatch?.sourceMode === 'selectorText' && state.textWatch?.selector && postSnapshot.text?.selectorFound) {
+        if (isSelectorBasedTextSourceMode(state.textWatch?.sourceMode) && state.textWatch?.selector && postSnapshot.text?.selectorFound) {
             toastActions.push({
                 type: 'selector',
                 role: 'text',
@@ -992,7 +1031,7 @@ function evaluateMonitoring(state, preSnapshot, postSnapshot, i18n) {
         matchedKeywords,
         textPreview: postSnapshot.text?.previewText || '',
         textDebugText: postSnapshot.text?.debugText || '',
-        textSourceMode: state.textWatch?.sourceMode || 'selectorText',
+        textSourceMode: normalizeTextSourceMode(state.textWatch?.sourceMode),
         shouldNotify: Boolean(numericTriggered || textTriggered),
         shouldHighlight,
         highlightSelector,
@@ -1128,7 +1167,7 @@ function findMatchedKeywords(text, keywords = []) {
 async function captureMonitoringSnapshot(tabId, state) {
     const numericEnabled = Boolean(state.contentWatch?.enabled && state.contentWatch?.selector);
     const textEnabled = Boolean(state.textWatch?.enabled);
-    const textSourceMode = state.textWatch?.sourceMode || 'selectorText';
+    const textSourceMode = normalizeTextSourceMode(state.textWatch?.sourceMode);
     const includePageText = textEnabled && textSourceMode === 'pageText';
     const includePageHtml = textEnabled && textSourceMode === 'pageHtml';
 
@@ -1322,6 +1361,19 @@ function matchPattern(url, pattern) {
         return regex.test(url);
     } catch {
         return url.toLowerCase().includes(pattern.toLowerCase().replace(/\*/g, ''));
+    }
+}
+
+function getAlertDisplayOptions(state) {
+    const mode = state?.visualFeedback?.alertDuration || '30s';
+    switch (mode) {
+        case '5s':
+            return { durationMs: 5000, manualClose: false };
+        case 'manual':
+            return { durationMs: null, manualClose: true };
+        case '30s':
+        default:
+            return { durationMs: 30000, manualClose: false };
     }
 }
 
@@ -1554,14 +1606,19 @@ async function sendTelegramNotification(url, evaluation, state, postSnapshot, i1
 }
 
 function getTextSourceLabel(sourceMode, i18n) {
-    switch (sourceMode) {
+    switch (normalizeTextSourceMode(sourceMode)) {
+        case 'areaHtml':
+            return i18n.t('textWatch_sourceAreaHtml', 'Area HTML');
+        case 'areaText':
+            return i18n.t('textWatch_sourceAreaText', 'Area text');
+        case 'elementText':
+            return i18n.t('textWatch_sourceElementText', 'Element text');
         case 'pageText':
-            return i18n.t('textWatch_sourcePageText', 'Full page text');
+            return i18n.t('textWatch_sourcePageText', 'Page text');
         case 'pageHtml':
-            return i18n.t('textWatch_sourcePageHtml', 'Full page HTML');
-        case 'selectorText':
+            return i18n.t('textWatch_sourcePageHtml', 'Page HTML');
         default:
-            return i18n.t('textWatch_sourceSelector', 'Selected element text');
+            return i18n.t('textWatch_sourceElementText', 'Element text');
     }
 }
 
@@ -1644,7 +1701,9 @@ async function handleSelectorPicked(tabId, tabUrl, watchType, selector, value, p
                 ...existing.textWatch,
                 enabled: true,
                 selector,
-                sourceMode: 'selectorText',
+                sourceMode: isSelectorBasedTextSourceMode(existing.textWatch?.sourceMode)
+                    ? normalizeTextSourceMode(existing.textWatch.sourceMode)
+                    : 'elementText',
                 previewText: previewText || existing.textWatch?.previewText || ''
             }
         }, tabUrl)

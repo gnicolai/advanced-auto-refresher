@@ -177,7 +177,7 @@
     "message": "Faire un don"
   },
   "footer_donateText": {
-    "message": "Vous aimez l'extension?"
+    "message": "Vous aimez l'extension ?"
   },
   "picker_title": {
     "message": "Sélectionnez un élément à surveiller"
@@ -276,19 +276,19 @@
     "message": "HTML complet de la page"
   },
   "numericWatch_title": {
-    "message": "Surveiller un nombre"
+    "message": "Moniteur de nombres"
   },
   "numericWatch_enable": {
     "message": "Surveiller un nombre"
   },
   "textWatch_title": {
-    "message": "Surveiller le texte"
+    "message": "Moniteur texte / mots-clés / zone"
   },
   "textWatch_enable": {
-    "message": "Surveiller le texte ou les mots-cles"
+    "message": "Surveiller le texte, les mots-clés ou les changements de zone"
   },
   "textWatch_help": {
-    "message": "Surveille le texte d'un element, tout le texte de la page ou le HTML complet. Les mots-cles restent optionnels et s'ajoutent au reste."
+    "message": "Surveillez un élément sélectionné, une zone du DOM ou la page entière. Le HTML de zone est recommandé pour les changements cosmétiques ou révélés au survol."
   },
   "textWatch_method": {
     "message": "Methode de selection"
@@ -324,16 +324,16 @@
     "message": "Texte de l'element selectionne"
   },
   "textWatch_sourcePageText": {
-    "message": "Texte complet de la page"
+    "message": "Texte de la page"
   },
   "textWatch_sourcePageHtml": {
-    "message": "HTML complet de la page"
+    "message": "HTML de la page"
   },
   "textWatch_alertMode": {
     "message": "Mode dalerte texte"
   },
   "textWatch_alertModeChange": {
-    "message": "Toute apparition, disparition ou modification du texte"
+    "message": "Toute apparition, disparition ou modification du contenu"
   },
   "textWatch_alertModeKeywords": {
     "message": "Keyword state changes"
@@ -468,36 +468,105 @@
     "message": "Actualisation automatique en pause car l'onglet a ouvert une autre page."
   },
   "contentWatch_numberTarget": {
-    "message": "Nombre ? surveiller"
+    "message": "Nombre à surveiller"
   },
   "contentWatch_numberCandidatesEmpty": {
-    "message": "S?lectionnez ou testez un ?l?ment pour voir tous les nombres d?tect?s."
+    "message": "Sélectionnez ou testez un élément pour voir tous les nombres détectés."
   },
   "contentWatch_numberCandidatesFound": {
-    "message": "Nombres d?tect?s"
+    "message": "Nombres détectés"
   },
   "contentWatch_numberCandidatesSingle": {
-    "message": "Nombre d?tect?"
+    "message": "Nombre détecté"
   },
   "urlLock_enable": {
-    "message": "Verrouiller la surveillance ? la port?e actuelle de l?URL"
+    "message": "Verrouiller la surveillance à la portée actuelle de l'URL"
   },
   "urlLock_help": {
-    "message": "Choisissez ? quel point l?actualisation automatique doit rester attach?e ? la page o? la surveillance a d?marr?."
+    "message": "Choisissez à quel point l'actualisation automatique doit rester attachée à la page où la surveillance a démarré."
   },
   "urlLock_mode": {
-    "message": "Mode de verrouillage d?URL"
+    "message": "Mode de verrouillage d'URL"
   },
   "urlLock_modeExact": {
     "message": "URL exacte"
   },
   "urlLock_modePath": {
-    "message": "M?me chemin"
+    "message": "Même chemin"
   },
   "urlLock_modeOrigin": {
-    "message": "M?me domaine"
+    "message": "Même domaine"
   },
   "urlLock_resumedToast": {
-    "message": "L?actualisation automatique a repris apr?s le retour sur la page surveill?e."
+    "message": "L'actualisation automatique a repris après le retour sur la page surveillée."
+  },
+  "monitoring_title": {
+    "message": "Surveillance"
+  },
+  "monitoring_help": {
+    "message": "Surveille les nombres, le texte, les mots-clés ou les changements de zone DOM après chaque actualisation."
+  },
+  "monitoring_summary": {
+    "message": "Une seule section Surveillance avec des outils séparés pour les nombres et pour le texte/les zones."
+  },
+  "timer_help": {
+    "message": "Configurez le moment où l'onglet se recharge automatiquement."
+  },
+  "alertRouting_help": {
+    "message": "Utilisez une alarme partagée pour tous les déclencheurs, ou des alarmes séparées pour la surveillance numérique et textuelle."
+  },
+  "numericWatch_help": {
+    "message": "Surveille une valeur numérique à partir d'un élément de page sélectionné ou d'un sélecteur."
+  },
+  "textWatch_groupHelp": {
+    "message": "Surveille le texte, les mots-clés ou les changements de HTML d'une zone DOM dans une région sélectionnée ou sur toute la page."
+  },
+  "textWatch_sourceHelp": {
+    "message": "Choisissez si vous voulez analyser le texte visible ou le HTML brut d'un élément sélectionné, d'une zone DOM ou de toute la page. Le HTML de zone est recommandé pour les changements cosmétiques, cachés ou révélés au survol."
+  },
+  "textWatch_pickArea": {
+    "message": "Cliquer pour sélectionner une zone"
+  },
+  "textWatch_selectedArea": {
+    "message": "Zone sélectionnée :"
+  },
+  "textWatch_sourceElementText": {
+    "message": "Texte de l'élément"
+  },
+  "textWatch_sourceAreaText": {
+    "message": "Texte de la zone"
+  },
+  "textWatch_sourceAreaHtml": {
+    "message": "HTML de la zone"
+  },
+  "textWatch_alertModeHelp": {
+    "message": "Choisissez si les alertes doivent réagir à tout changement de contenu, à l’apparition ou la disparition de mots-clés, ou aux deux."
+  },
+  "clickStop_help": {
+    "message": "Mettez l’actualisation automatique en pause dès que vous interagissez avec la page surveillée."
+  },
+  "telegram_help": {
+    "message": "Envoyez des alertes automatiques vers votre téléphone avec votre propre bot Telegram."
+  },
+  "lists_help": {
+    "message": "Utilisez des jokers pour ignorer l’actualisation sur les URL correspondantes ou les autoriser explicitement."
+  },
+  "visualFeedback_duration": {
+    "message": "Durée de l'alerte"
+  },
+  "visualFeedback_help": {
+    "message": "Choisissez combien de temps le toast et la surbrillance restent visibles dans la page."
+  },
+  "visualFeedback_duration5s": {
+    "message": "5 secondes"
+  },
+  "visualFeedback_duration30s": {
+    "message": "30 secondes"
+  },
+  "visualFeedback_durationManual": {
+    "message": "Fermeture manuelle"
+  },
+  "toast_close": {
+    "message": "Fermer"
   }
 }
