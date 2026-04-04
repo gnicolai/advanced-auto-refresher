@@ -26,6 +26,12 @@ const SELECTOR_TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml', 'area
 const MEDIA_TEXT_SOURCE_MODES = ['areaMedia'];
 
 document.addEventListener('click', handleMonitoredPageClick, true);
+window.addEventListener('pageshow', requestInitialMonitorStateSync);
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        requestInitialMonitorStateSync();
+    }
+});
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.type) {
@@ -111,6 +117,17 @@ function isSelectorBasedTextSourceMode(sourceMode = '') {
 
 function isMediaSourceMode(sourceMode = '') {
     return MEDIA_TEXT_SOURCE_MODES.includes(normalizeTextSourceMode(sourceMode));
+}
+
+function requestInitialMonitorStateSync() {
+    chrome.runtime.sendMessage({ type: 'GET_CONTENT_SCRIPT_STATE' })
+        .then((response) => {
+            stopOnClickEnabled = Boolean(response?.stopOnClickEnabled);
+            if (!stopOnClickEnabled) {
+                clickPauseSent = false;
+            }
+        })
+        .catch(() => { });
 }
 
 function startPicker(watchType, sourceMode = 'elementText') {
@@ -805,6 +822,7 @@ function extractAreaMediaSnapshot(element) {
     }
 
     const signatureSet = new Set();
+    const linkedMediaAnchors = new WeakSet();
     const roots = [element, ...element.querySelectorAll('*')];
 
     roots.forEach((node) => {
@@ -818,7 +836,19 @@ function extractAreaMediaSnapshot(element) {
             const hasEmbeddedMedia = Boolean(node.querySelector('img, video, picture, source'));
             if (href && (hrefLooksMedia || hasEmbeddedMedia)) {
                 signatureSet.add(`link:${href}`);
+                linkedMediaAnchors.add(node);
             }
+        }
+    });
+
+    roots.forEach((node) => {
+        if (!(node instanceof Element)) {
+            return;
+        }
+
+        const enclosingAnchor = node.closest('a[href]');
+        if (enclosingAnchor && linkedMediaAnchors.has(enclosingAnchor)) {
+            return;
         }
 
         if (node.matches('img')) {
@@ -1048,4 +1078,5 @@ function getSelectedNumericValue(candidates = [], candidateIndex = null) {
     return Number.isFinite(value) ? value : null;
 }
 
+requestInitialMonitorStateSync();
 console.log('Auto Refresh & Page Monitor content script loaded');

@@ -110,6 +110,9 @@ async function handleMessage(message, sender) {
         case 'USER_PAGE_CLICK':
             return handleUserPageClick(sender.tab?.id);
 
+        case 'GET_CONTENT_SCRIPT_STATE':
+            return getContentScriptState(sender.tab?.id);
+
         default:
             return null;
     }
@@ -626,6 +629,25 @@ async function handleUserPageClick(tabId) {
     return { success: true, settings: pausedState };
 }
 
+async function getContentScriptState(tabId) {
+    if (!tabId) {
+        return {
+            success: false,
+            isActive: false,
+            stopOnClickEnabled: false,
+            pendingRefresh: false
+        };
+    }
+
+    const state = await getTabSettings(tabId);
+    return {
+        success: true,
+        isActive: Boolean(state?.isActive),
+        stopOnClickEnabled: Boolean(state?.isActive && state?.stopOnClick),
+        pendingRefresh: Boolean(state?.pendingRefresh)
+    };
+}
+
 async function scheduleNextRefresh(tabId, state, { resetAlarm = false } = {}) {
     const intervalMs = calculateNextInterval(state);
     const nextRefreshAt = Date.now() + intervalMs;
@@ -763,6 +785,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
     }, state.tabUrl);
 
     tabStates.set(tabId, nextState);
+    startBadgeCountdown(tabId, nextState);
     await saveTabStates();
 
     try {
@@ -1313,13 +1336,13 @@ function startBadgeCountdown(tabId, state) {
     clearBadgeCountdown(tabId);
     updateBadge(tabId, state);
 
-    if (!state.isActive || !state.schedule?.nextRefreshAt) {
+    if (!state.isActive || (!state.pendingRefresh && !state.schedule?.nextRefreshAt)) {
         return;
     }
 
     const interval = setInterval(() => {
         const currentState = tabStates.get(tabId);
-        if (!currentState?.isActive || !currentState.schedule?.nextRefreshAt) {
+        if (!currentState?.isActive || (!currentState.pendingRefresh && !currentState.schedule?.nextRefreshAt)) {
             clearBadgeCountdown(tabId);
             return;
         }
@@ -1338,18 +1361,22 @@ function clearBadgeCountdown(tabId) {
 }
 
 function updateBadge(tabId, state) {
-    const remainingMs = Math.max(0, (state.schedule?.nextRefreshAt || 0) - Date.now());
-    const text = formatBadgeText(remainingMs);
-
+    const text = formatBadgeText(state);
+    const color = state?.pendingRefresh ? '#f59e0b' : '#6366f1';
     chrome.action.setBadgeText({ text, tabId }).catch(() => { });
-    chrome.action.setBadgeBackgroundColor({ color: '#6366f1', tabId }).catch(() => { });
+    chrome.action.setBadgeBackgroundColor({ color, tabId }).catch(() => { });
 
-    if (!text) {
+    if (!text && !state?.pendingRefresh) {
         clearBadgeCountdown(tabId);
     }
 }
 
-function formatBadgeText(remainingMs) {
+function formatBadgeText(state) {
+    if (state?.pendingRefresh) {
+        return '...';
+    }
+
+    const remainingMs = Math.max(0, (state?.schedule?.nextRefreshAt || 0) - Date.now());
     if (!remainingMs) {
         return '';
     }
