@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.0.24-blue.svg" alt="Version">
+<img src="https://img.shields.io/badge/version-1.1.0-blue.svg" alt="Version">
   <img src="https://img.shields.io/badge/manifest-v3-green.svg" alt="Manifest V3">
   <img src="https://img.shields.io/badge/languages-9-orange.svg" alt="Languages">
   <img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License">
@@ -72,6 +72,9 @@ Pick a target -> refresh on schedule -> detect a change -> highlight it -> alert
 - Works in parallel with numeric monitoring, not as a replacement
 - Monitor:
   - selected element text
+  - selected area text
+  - selected area HTML
+  - selected area media for new image/video detection
   - full page text
   - full page HTML
 - Text detection modes:
@@ -79,6 +82,7 @@ Pick a target -> refresh on schedule -> detect a change -> highlight it -> alert
   - keyword state changes
   - text change or keyword change
   - keyword appearance/disappearance only
+  - new media added in the selected area
 - Keywords and phrases are entered one per line
 - Separate sound and volume for text alerts when using split alert mode
 
@@ -92,6 +96,10 @@ Pick a target -> refresh on schedule -> detect a change -> highlight it -> alert
 
 - Highlight the changed monitored element after refresh
 - In-page toast with clickable actions
+- Configurable alert duration:
+  - 5 seconds
+  - 30 seconds
+  - manual close
 - Jump directly to:
   - the numeric target
   - the text target
@@ -109,6 +117,8 @@ Pick a target -> refresh on schedule -> detect a change -> highlight it -> alert
 #### Safety / control
 
 - Optional "Stop refresh when user clicks on the page"
+- Optional keyboard shortcut to pause or resume refresh on the monitored page
+- Shortcut ignores typing inside inputs, selects, textareas, and editors
 - Useful for time-sensitive interactions where refresh should pause immediately
 
 #### Scope control
@@ -175,11 +185,21 @@ Built-in UI language switching:
 1. Enable `Monitor text or keywords`.
 2. Choose the source:
    - selected element text
+   - selected area text
+   - selected area HTML
+   - selected area media
    - full page text
    - full page HTML
 3. Choose the text detection mode.
 4. Enter keywords or phrases one per line if needed.
 5. Optionally enable debug to show captured content on the page after refresh.
+
+#### Pause / resume controls
+
+1. Enable `Stop refresh when user clicks on the page` if you want instant pause on interaction.
+2. Optionally enable `Stop refresh with keyboard shortcut`.
+3. Choose your shortcut combination.
+4. Press the same shortcut on the monitored page to pause or resume refresh.
 
 #### Telegram
 
@@ -301,6 +321,9 @@ Scegli il target -> fai refresh -> rileva il cambio -> evidenzialo -> avvisa -> 
 - Funziona in parallelo al monitor numerico, non lo sostituisce
 - Puoi monitorare:
   - testo dell'elemento selezionato
+  - testo dell'area selezionata
+  - HTML dell'area selezionata
+  - media dell'area selezionata per rilevare nuove immagini o video
   - testo dell'intera pagina
   - HTML dell'intera pagina
 - Modalita monitor testo:
@@ -308,6 +331,7 @@ Scegli il target -> fai refresh -> rileva il cambio -> evidenzialo -> avvisa -> 
   - cambio stato parole chiave
   - cambio testo o parole chiave
   - solo comparsa o scomparsa parole chiave
+  - aggiunta di nuovi media nell'area selezionata
 - Parole chiave e frasi da inserire una per riga
 - Suono e volume separati per il monitor testuale quando usi gli allarmi separati
 
@@ -321,6 +345,10 @@ Scegli il target -> fai refresh -> rileva il cambio -> evidenzialo -> avvisa -> 
 
 - Highlight dell'elemento cambiato dopo il refresh
 - Toast in pagina con azioni cliccabili
+- Durata alert configurabile:
+  - 5 secondi
+  - 30 secondi
+  - chiusura manuale
 - Salto diretto a:
   - target numerico
   - target testuale
@@ -338,6 +366,8 @@ Scegli il target -> fai refresh -> rileva il cambio -> evidenzialo -> avvisa -> 
 #### Sicurezza / controllo
 
 - Opzione `Ferma il refresh quando l'utente clicca sulla pagina`
+- Opzione con scorciatoia da tastiera per mettere in pausa o riavviare il refresh nella pagina monitorata
+- La scorciatoia ignora la digitazione dentro input, select, textarea ed editor
 - Utile quando devi interagire velocemente senza rischiare un refresh immediato
 
 #### Controllo scope
@@ -402,11 +432,21 @@ Scegli il target -> fai refresh -> rileva il cambio -> evidenzialo -> avvisa -> 
 1. Abilita `Monitora testo o parole chiave`.
 2. Scegli la sorgente:
    - testo elemento selezionato
+   - testo area selezionata
+   - HTML area selezionata
+   - media area selezionata
    - testo intera pagina
    - HTML intera pagina
 3. Scegli la modalita monitor testo.
 4. Inserisci parole chiave o frasi una per riga se ti servono.
 5. Se vuoi, abilita il debug per vedere in pagina il contenuto catturato dopo il refresh.
+
+#### Pausa / ripresa
+
+1. Abilita `Ferma il refresh quando l'utente clicca sulla pagina` se vuoi una pausa immediata all'interazione.
+2. Se vuoi, abilita anche `Ferma il refresh con una scorciatoia da tastiera`.
+3. Scegli la combinazione di tasti.
+4. Premi la stessa scorciatoia nella pagina monitorata per mettere in pausa o far ripartire il refresh.
 
 #### Telegram
 

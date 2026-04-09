@@ -9,7 +9,9 @@ let pickerSourceMode = 'elementText';
 let pickerOverlay = null;
 let highlightedOverlay = null;
 let stopOnClickEnabled = false;
-let clickPauseSent = false;
+let stopOnShortcutEnabled = false;
+let stopShortcutCombo = 'primaryShiftX';
+let pauseSignalSent = false;
 let lastTextDebugPayload = null;
 let activeMonitorToast = null;
 let activeMonitorToastTimeout = null;
@@ -24,8 +26,10 @@ const LEGACY_TEXT_SOURCE_MODE_MAP = {
 const TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml', 'areaMedia', 'pageText', 'pageHtml'];
 const SELECTOR_TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml', 'areaMedia'];
 const MEDIA_TEXT_SOURCE_MODES = ['areaMedia'];
+const STOP_SHORTCUT_COMBOS = ['primaryShiftX', 'primaryAltS', 'altShiftS'];
 
 document.addEventListener('click', handleMonitoredPageClick, true);
+document.addEventListener('keydown', handleDocumentKeyDown, true);
 window.addEventListener('pageshow', requestInitialMonitorStateSync);
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
@@ -90,10 +94,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             break;
 
         case 'SYNC_MONITOR_STATE':
-            stopOnClickEnabled = Boolean(message.stopOnClickEnabled);
-            if (!stopOnClickEnabled) {
-                clickPauseSent = false;
-            }
+            applyStopInteractionState(message);
             sendResponse({ success: true });
             break;
 
@@ -119,13 +120,27 @@ function isMediaSourceMode(sourceMode = '') {
     return MEDIA_TEXT_SOURCE_MODES.includes(normalizeTextSourceMode(sourceMode));
 }
 
+function normalizeStopShortcutCombo(combo = '') {
+    return STOP_SHORTCUT_COMBOS.includes(combo)
+        ? combo
+        : 'primaryShiftX';
+}
+
+function applyStopInteractionState(state = {}) {
+    const isActive = Boolean(state.isActive);
+    stopOnClickEnabled = Boolean(state.stopOnClickEnabled);
+    stopOnShortcutEnabled = Boolean(state.stopOnShortcutEnabled);
+    stopShortcutCombo = normalizeStopShortcutCombo(state.stopShortcutCombo);
+
+    if (!isActive || (!stopOnClickEnabled && !stopOnShortcutEnabled)) {
+        pauseSignalSent = false;
+    }
+}
+
 function requestInitialMonitorStateSync() {
     chrome.runtime.sendMessage({ type: 'GET_CONTENT_SCRIPT_STATE' })
         .then((response) => {
-            stopOnClickEnabled = Boolean(response?.stopOnClickEnabled);
-            if (!stopOnClickEnabled) {
-                clickPauseSent = false;
-            }
+            applyStopInteractionState(response || {});
         })
         .catch(() => { });
 }
@@ -142,7 +157,6 @@ function startPicker(watchType, sourceMode = 'elementText') {
     document.addEventListener('mouseover', handleMouseOver, true);
     document.addEventListener('mouseout', handleMouseOut, true);
     document.addEventListener('click', handlePickerClick, true);
-    document.addEventListener('keydown', handleKeyDown, true);
 }
 
 function stopPicker() {
@@ -152,7 +166,6 @@ function stopPicker() {
     document.removeEventListener('mouseover', handleMouseOver, true);
     document.removeEventListener('mouseout', handleMouseOut, true);
     document.removeEventListener('click', handlePickerClick, true);
-    document.removeEventListener('keydown', handleKeyDown, true);
 }
 
 function createPickerOverlay() {
@@ -272,19 +285,8 @@ function handlePickerClick(event) {
     });
 }
 
-function handleKeyDown(event) {
-    if (!isPickerActive) {
-        return;
-    }
-
-    if (event.key === 'Escape') {
-        event.preventDefault();
-        stopPicker();
-    }
-}
-
 function handleMonitoredPageClick(event) {
-    if (!stopOnClickEnabled || clickPauseSent || isPickerActive) {
+    if (!stopOnClickEnabled || pauseSignalSent || isPickerActive) {
         return;
     }
 
@@ -292,10 +294,73 @@ function handleMonitoredPageClick(event) {
         return;
     }
 
-    clickPauseSent = true;
-    chrome.runtime.sendMessage({ type: 'USER_PAGE_CLICK' }).catch(() => {
-        clickPauseSent = false;
+    sendPauseSignal('USER_PAGE_CLICK');
+}
+
+function handleDocumentKeyDown(event) {
+    if (isPickerActive) {
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            stopPicker();
+        }
+        return;
+    }
+
+    if (!stopOnShortcutEnabled || pauseSignalSent || event.repeat) {
+        return;
+    }
+
+    if (!event.isTrusted || isExtensionUiElement(event.target) || isEditableTarget(event.target)) {
+        return;
+    }
+
+    if (!matchesStopShortcut(event, stopShortcutCombo)) {
+        return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    sendPauseSignal('USER_PAGE_SHORTCUT');
+}
+
+function sendPauseSignal(type) {
+    pauseSignalSent = true;
+    chrome.runtime.sendMessage({ type }).catch(() => {
+        pauseSignalSent = false;
     });
+}
+
+function isEditableTarget(target) {
+    if (!(target instanceof Element)) {
+        return false;
+    }
+
+    if (target instanceof HTMLElement && target.isContentEditable) {
+        return true;
+    }
+
+    return Boolean(target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])'));
+}
+
+function isMacPlatform() {
+    return /mac/i.test(navigator.platform || '');
+}
+
+function matchesStopShortcut(event, combo) {
+    const key = String(event.key || '').toLowerCase();
+    const mac = isMacPlatform();
+    const primaryPressed = mac ? event.metaKey : event.ctrlKey;
+    const secondaryPrimaryPressed = mac ? event.ctrlKey : event.metaKey;
+
+    switch (normalizeStopShortcutCombo(combo)) {
+        case 'primaryAltS':
+            return primaryPressed && event.altKey && !event.shiftKey && !secondaryPrimaryPressed && key === 's';
+        case 'altShiftS':
+            return !event.ctrlKey && !event.metaKey && event.altKey && event.shiftKey && key === 's';
+        case 'primaryShiftX':
+        default:
+            return primaryPressed && event.shiftKey && !event.altKey && !secondaryPrimaryPressed && key === 'x';
+    }
 }
 
 function generateSelector(element) {

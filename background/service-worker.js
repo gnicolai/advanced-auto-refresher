@@ -40,6 +40,7 @@ const LEGACY_TEXT_SOURCE_MODE_MAP = {
 const TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml', 'areaMedia', 'pageText', 'pageHtml'];
 const SELECTOR_TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml', 'areaMedia'];
 const MEDIA_TEXT_SOURCE_MODES = ['areaMedia'];
+const STOP_SHORTCUT_COMBOS = ['primaryShiftX', 'primaryAltS', 'altShiftS'];
 
 chrome.runtime.onInstalled.addListener(async () => {
     console.log('Auto Refresh & Page Monitor installed');
@@ -110,6 +111,9 @@ async function handleMessage(message, sender) {
         case 'USER_PAGE_CLICK':
             return handleUserPageClick(sender.tab?.id);
 
+        case 'USER_PAGE_SHORTCUT':
+            return handleUserPageShortcut(sender.tab?.id, sender.tab?.url);
+
         case 'GET_CONTENT_SCRIPT_STATE':
             return getContentScriptState(sender.tab?.id);
 
@@ -164,6 +168,8 @@ function getDefaultTabSettings(tabUrl = '') {
             pausedByMismatch: false
         },
         stopOnClick: false,
+        stopOnShortcut: false,
+        stopShortcutCombo: 'primaryShiftX',
         schedule: {
             nextRefreshAt: null,
             lastScheduledIntervalMs: null,
@@ -218,6 +224,12 @@ function isSelectorBasedTextSourceMode(sourceMode = '') {
 
 function isMediaSourceMode(sourceMode = '') {
     return MEDIA_TEXT_SOURCE_MODES.includes(normalizeTextSourceMode(sourceMode));
+}
+
+function normalizeStopShortcutCombo(combo = '') {
+    return STOP_SHORTCUT_COMBOS.includes(combo)
+        ? combo
+        : 'primaryShiftX';
 }
 
 function normalizeTextDetectMode(detectMode = '', sourceMode = 'elementText') {
@@ -358,6 +370,8 @@ function normalizeSettings(settings = {}, tabUrl = settings.tabUrl || '') {
     normalized.urlLock.lockedUrl = normalized.urlLock.lockedUrl || normalized.tabUrl || '';
     normalized.urlLock.pausedByMismatch = Boolean(normalized.urlLock.pausedByMismatch);
     normalized.stopOnClick = Boolean(normalized.stopOnClick);
+    normalized.stopOnShortcut = Boolean(normalized.stopOnShortcut);
+    normalized.stopShortcutCombo = normalizeStopShortcutCombo(normalized.stopShortcutCombo);
     normalized.isActive = Boolean(normalized.isActive);
 
     return normalized;
@@ -614,18 +628,64 @@ async function pauseTimer(tabId, { keepState = false, reason = 'manual' } = {}) 
 }
 
 async function handleUserPageClick(tabId) {
+    return pauseFromUserInteraction(tabId, {
+        isEnabled: (state) => Boolean(state.stopOnClick),
+        reason: 'user-click',
+        toastKey: 'clickStop_pausedToast',
+        fallbackMessage: 'Auto-refresh paused after click.'
+    });
+}
+
+async function handleUserPageShortcut(tabId, tabUrl) {
     if (!tabId) {
         return { success: false };
     }
 
     const state = await getTabSettings(tabId);
-    if (!state.isActive || !state.stopOnClick) {
+    if (!state.stopOnShortcut) {
         return { success: false };
     }
 
-    const pausedState = await pauseTimer(tabId, { keepState: true, reason: 'user-click' });
     const i18n = await getRuntimeI18nContext();
-    await showPageSummary(tabId, i18n.t('clickStop_pausedToast', 'Auto-refresh paused after click.'));
+
+    if (state.isActive) {
+        const pausedState = await pauseTimer(tabId, { keepState: true, reason: 'user-shortcut' });
+        await showPageSummary(tabId, i18n.t('clickStop_shortcutPausedToast', 'Auto-refresh paused after keyboard shortcut.'));
+        return { success: true, settings: pausedState };
+    }
+
+    const resumedState = normalizeSettings({
+        ...state,
+        isActive: true,
+        tabUrl: tabUrl || state.tabUrl,
+        urlLock: {
+            ...state.urlLock,
+            enabled: state.urlLock?.enabled !== false,
+            mode: ['exact', 'path', 'origin'].includes(state.urlLock?.mode) ? state.urlLock.mode : 'exact',
+            lockedUrl: tabUrl || state.tabUrl || state.urlLock?.lockedUrl || '',
+            pausedByMismatch: false
+        }
+    }, tabUrl || state.tabUrl);
+
+    await primeMonitoringState(tabId, resumedState);
+    await startTimer(tabId, resumedState);
+    await showPageSummary(tabId, i18n.t('clickStop_shortcutResumedToast', 'Auto-refresh resumed after keyboard shortcut.'));
+    return { success: true, settings: resumedState };
+}
+
+async function pauseFromUserInteraction(tabId, { isEnabled, reason, toastKey, fallbackMessage }) {
+    if (!tabId) {
+        return { success: false };
+    }
+
+    const state = await getTabSettings(tabId);
+    if (!state.isActive || typeof isEnabled !== 'function' || !isEnabled(state)) {
+        return { success: false };
+    }
+
+    const pausedState = await pauseTimer(tabId, { keepState: true, reason: reason || 'user-interaction' });
+    const i18n = await getRuntimeI18nContext();
+    await showPageSummary(tabId, i18n.t(toastKey, fallbackMessage));
     return { success: true, settings: pausedState };
 }
 
@@ -635,6 +695,8 @@ async function getContentScriptState(tabId) {
             success: false,
             isActive: false,
             stopOnClickEnabled: false,
+            stopOnShortcutEnabled: false,
+            stopShortcutCombo: 'primaryShiftX',
             pendingRefresh: false
         };
     }
@@ -644,6 +706,8 @@ async function getContentScriptState(tabId) {
         success: true,
         isActive: Boolean(state?.isActive),
         stopOnClickEnabled: Boolean(state?.isActive && state?.stopOnClick),
+        stopOnShortcutEnabled: Boolean(state?.stopOnShortcut),
+        stopShortcutCombo: normalizeStopShortcutCombo(state?.stopShortcutCombo),
         pendingRefresh: Boolean(state?.pendingRefresh)
     };
 }
@@ -1314,7 +1378,9 @@ async function syncContentScriptState(tabId, state) {
         await chrome.tabs.sendMessage(tabId, {
             type: 'SYNC_MONITOR_STATE',
             isActive: Boolean(state.isActive),
-            stopOnClickEnabled: Boolean(state.isActive && state.stopOnClick)
+            stopOnClickEnabled: Boolean(state.isActive && state.stopOnClick),
+            stopOnShortcutEnabled: Boolean(state.stopOnShortcut),
+            stopShortcutCombo: normalizeStopShortcutCombo(state.stopShortcutCombo)
         });
     } catch {
         // Content script may not be ready yet.

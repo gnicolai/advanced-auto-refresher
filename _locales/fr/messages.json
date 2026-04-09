@@ -568,5 +568,29 @@
   },
   "toast_close": {
     "message": "Fermer"
+  },
+  "clickStop_shortcutEnable": {
+    "message": "Arreter le refresh avec un raccourci clavier"
+  },
+  "clickStop_shortcutPausedToast": {
+    "message": "Auto-refresh en pause apres le raccourci clavier."
+  },
+  "clickStop_shortcutLabel": {
+    "message": "Raccourci clavier"
+  },
+  "clickStop_shortcutOptionPrimaryShiftX": {
+    "message": "Ctrl+Shift+X / Cmd+Shift+X"
+  },
+  "clickStop_shortcutOptionPrimaryAltS": {
+    "message": "Ctrl+Alt+S / Cmd+Option+S"
+  },
+  "clickStop_shortcutOptionAltShiftS": {
+    "message": "Alt+Shift+S / Option+Shift+S"
+  },
+  "clickStop_shortcutHelp": {
+    "message": "Met en pause ou relance l'auto-refresh quand vous appuyez sur le raccourci choisi sur la page surveillee. La saisie dans les champs ou editeurs est ignoree."
+  },
+  "clickStop_shortcutResumedToast": {
+    "message": "Auto-refresh relance apres le raccourci clavier."
   }
 }

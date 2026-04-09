@@ -392,6 +392,23 @@
 
       <div class="control-group">
         <div class="checkbox-row">
+          <input type="checkbox" id="stopOnShortcut" class="checkbox">
+          <label for="stopOnShortcut" data-i18n="clickStop.shortcutEnable">Stop refresh with keyboard shortcut</label>
+          <span class="tooltip" data-i18n-tooltip="clickStop.shortcutHelp" data-tooltip="Pause auto-refresh when you press the selected shortcut on the monitored page. Typing inside inputs or editors is ignored.">?</span>
+        </div>
+      </div>
+
+      <div class="control-group hidden" id="stopShortcutComboGroup">
+        <label for="stopShortcutCombo" data-i18n="clickStop.shortcutLabel">Keyboard shortcut</label>
+        <select id="stopShortcutCombo" class="select-field">
+          <option value="primaryShiftX" data-i18n="clickStop.shortcutOptionPrimaryShiftX">Ctrl+Shift+X / Cmd+Shift+X</option>
+          <option value="primaryAltS" data-i18n="clickStop.shortcutOptionPrimaryAltS">Ctrl+Alt+S / Cmd+Option+S</option>
+          <option value="altShiftS" data-i18n="clickStop.shortcutOptionAltShiftS">Alt+Shift+S / Option+Shift+S</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <div class="checkbox-row">
           <input type="checkbox" id="urlLockEnabled" class="checkbox">
           <label for="urlLockEnabled" data-i18n="urlLock.enable">Lock monitoring to the current URL scope</label>
           <span class="tooltip" data-i18n-tooltip="urlLock.help" data-tooltip="Keep monitoring tied to the original page, path, or domain.">?</span>
@@ -507,7 +524,7 @@
     </div>
 
     <footer class="footer">
-          <span class="version" id="versionText">v1.0.24</span>
+          <span class="version" id="versionText">v1.1.0</span>
       <a href="https://giulionicolai.com" target="_blank" class="creator-link" data-i18n="footer.createdBy">Created by Giulio Nicolai</a>
       <div class="donate-section">
         <span class="donate-text" data-i18n="footer.donateText">Enjoying the extension?</span>

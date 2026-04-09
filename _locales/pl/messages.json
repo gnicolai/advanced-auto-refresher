@@ -568,5 +568,29 @@
   },
   "toast_close": {
     "message": "Zamknij"
+  },
+  "clickStop_shortcutEnable": {
+    "message": "Zatrzymaj refresh skrotem klawiszowym"
+  },
+  "clickStop_shortcutPausedToast": {
+    "message": "Auto-refresh wstrzymany po skrocie klawiszowym."
+  },
+  "clickStop_shortcutLabel": {
+    "message": "Skrot klawiszowy"
+  },
+  "clickStop_shortcutOptionPrimaryShiftX": {
+    "message": "Ctrl+Shift+X / Cmd+Shift+X"
+  },
+  "clickStop_shortcutOptionPrimaryAltS": {
+    "message": "Ctrl+Alt+S / Cmd+Option+S"
+  },
+  "clickStop_shortcutOptionAltShiftS": {
+    "message": "Alt+Shift+S / Option+Shift+S"
+  },
+  "clickStop_shortcutHelp": {
+    "message": "Wstrzymuje lub wznawia auto-refresh po nacisnieciu wybranego skrotu na monitorowanej stronie. Pisanie w polach i edytorach jest ignorowane."
+  },
+  "clickStop_shortcutResumedToast": {
+    "message": "Auto-refresh wznowiony po skrocie klawiszowym."
   }
 }

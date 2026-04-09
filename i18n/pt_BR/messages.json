@@ -568,5 +568,29 @@
   },
   "toast_close": {
     "message": "Fechar"
+  },
+  "clickStop_shortcutEnable": {
+    "message": "Parar o refresh com atalho de teclado"
+  },
+  "clickStop_shortcutPausedToast": {
+    "message": "Auto-refresh pausado apos o atalho de teclado."
+  },
+  "clickStop_shortcutLabel": {
+    "message": "Atalho de teclado"
+  },
+  "clickStop_shortcutOptionPrimaryShiftX": {
+    "message": "Ctrl+Shift+X / Cmd+Shift+X"
+  },
+  "clickStop_shortcutOptionPrimaryAltS": {
+    "message": "Ctrl+Alt+S / Cmd+Option+S"
+  },
+  "clickStop_shortcutOptionAltShiftS": {
+    "message": "Alt+Shift+S / Option+Shift+S"
+  },
+  "clickStop_shortcutHelp": {
+    "message": "Pausa ou retoma o auto-refresh quando voce pressiona o atalho escolhido na pagina monitorada. A digitacao em campos ou editores e ignorada."
+  },
+  "clickStop_shortcutResumedToast": {
+    "message": "Auto-refresh retomado apos o atalho de teclado."
   }
 }

@@ -568,5 +568,29 @@
   },
   "toast_close": {
     "message": "Chiudi"
+  },
+  "clickStop_shortcutEnable": {
+    "message": "Ferma il refresh con una scorciatoia da tastiera"
+  },
+  "clickStop_shortcutPausedToast": {
+    "message": "Auto-refresh in pausa dopo la scorciatoia da tastiera."
+  },
+  "clickStop_shortcutLabel": {
+    "message": "Scorciatoia da tastiera"
+  },
+  "clickStop_shortcutOptionPrimaryShiftX": {
+    "message": "Ctrl+Shift+X / Cmd+Shift+X"
+  },
+  "clickStop_shortcutOptionPrimaryAltS": {
+    "message": "Ctrl+Alt+S / Cmd+Option+S"
+  },
+  "clickStop_shortcutOptionAltShiftS": {
+    "message": "Alt+Shift+S / Option+Shift+S"
+  },
+  "clickStop_shortcutHelp": {
+    "message": "Mette in pausa o riavvia l'auto-refresh quando premi la scorciatoia scelta nella pagina monitorata. La digitazione in campi o editor viene ignorata."
+  },
+  "clickStop_shortcutResumedToast": {
+    "message": "Auto-refresh riavviato dopo la scorciatoia da tastiera."
   }
 }

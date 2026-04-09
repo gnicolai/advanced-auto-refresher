@@ -568,5 +568,29 @@
   },
   "toast_close": {
     "message": "Schließen"
+  },
+  "clickStop_shortcutEnable": {
+    "message": "Refresh mit Tastenkombination stoppen"
+  },
+  "clickStop_shortcutPausedToast": {
+    "message": "Auto-Refresh nach der Tastenkombination pausiert."
+  },
+  "clickStop_shortcutLabel": {
+    "message": "Tastenkombination"
+  },
+  "clickStop_shortcutOptionPrimaryShiftX": {
+    "message": "Ctrl+Shift+X / Cmd+Shift+X"
+  },
+  "clickStop_shortcutOptionPrimaryAltS": {
+    "message": "Ctrl+Alt+S / Cmd+Option+S"
+  },
+  "clickStop_shortcutOptionAltShiftS": {
+    "message": "Alt+Shift+S / Option+Shift+S"
+  },
+  "clickStop_shortcutHelp": {
+    "message": "Pausiert oder startet den Auto-Refresh neu, wenn du die gewaehlte Tastenkombination auf der ueberwachten Seite drueckst. Eingaben in Feldern oder Editoren werden ignoriert."
+  },
+  "clickStop_shortcutResumedToast": {
+    "message": "Auto-Refresh nach der Tastenkombination fortgesetzt."
   }
 }

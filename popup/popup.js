@@ -70,6 +70,9 @@ const elements = {
   alertDuration: document.getElementById('alertDuration'),
 
   stopOnClick: document.getElementById('stopOnClick'),
+  stopOnShortcut: document.getElementById('stopOnShortcut'),
+  stopShortcutComboGroup: document.getElementById('stopShortcutComboGroup'),
+  stopShortcutCombo: document.getElementById('stopShortcutCombo'),
   urlLockEnabled: document.getElementById('urlLockEnabled'),
   urlLockModeGroup: document.getElementById('urlLockModeGroup'),
   urlLockMode: document.getElementById('urlLockMode'),
@@ -105,6 +108,7 @@ const LEGACY_TEXT_SOURCE_MODE_MAP = {
 const TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml', 'areaMedia', 'pageText', 'pageHtml'];
 const SELECTOR_TEXT_SOURCE_MODES = ['elementText', 'areaText', 'areaHtml', 'areaMedia'];
 const MEDIA_TEXT_SOURCE_MODES = ['areaMedia'];
+const STOP_SHORTCUT_COMBOS = ['primaryShiftX', 'primaryAltS', 'altShiftS'];
 
 function getDefaults() {
   return {
@@ -148,7 +152,9 @@ function getDefaults() {
       mode: 'exact',
       lockedUrl: ''
     },
-    stopOnClick: false
+    stopOnClick: false,
+    stopOnShortcut: false,
+    stopShortcutCombo: 'primaryShiftX'
   };
 }
 
@@ -175,6 +181,12 @@ function isSelectorBasedTextSourceMode(sourceMode = '') {
 
 function isMediaSourceMode(sourceMode = '') {
   return MEDIA_TEXT_SOURCE_MODES.includes(normalizeTextSourceMode(sourceMode));
+}
+
+function normalizeStopShortcutCombo(combo = '') {
+  return STOP_SHORTCUT_COMBOS.includes(combo)
+    ? combo
+    : 'primaryShiftX';
 }
 
 function normalizeTextDetectMode(detectMode = '', sourceMode = 'elementText') {
@@ -325,7 +337,10 @@ async function loadTabSettings() {
     urlLock: {
       ...defaults.urlLock,
       ...(response?.urlLock || {})
-    }
+    },
+    stopOnClick: Boolean(response?.stopOnClick),
+    stopOnShortcut: Boolean(response?.stopOnShortcut),
+    stopShortcutCombo: normalizeStopShortcutCombo(response?.stopShortcutCombo)
   };
 }
 
@@ -370,6 +385,13 @@ function updateTimerUI() {
   if (!isElementBeingEdited(elements.stopOnClick)) {
     elements.stopOnClick.checked = Boolean(tabSettings.stopOnClick);
   }
+  if (!isElementBeingEdited(elements.stopOnShortcut)) {
+    elements.stopOnShortcut.checked = Boolean(tabSettings.stopOnShortcut);
+  }
+  if (!isElementBeingEdited(elements.stopShortcutCombo)) {
+    elements.stopShortcutCombo.value = normalizeStopShortcutCombo(tabSettings.stopShortcutCombo);
+  }
+  elements.stopShortcutComboGroup.classList.toggle('hidden', !elements.stopOnShortcut.checked);
   if (!isElementBeingEdited(elements.urlLockEnabled)) {
     elements.urlLockEnabled.checked = tabSettings.urlLock?.enabled !== false;
   }
@@ -642,6 +664,11 @@ function setupEventListeners() {
   elements.alertDuration.addEventListener('change', saveSettings);
 
   elements.stopOnClick.addEventListener('change', saveSettings);
+  elements.stopOnShortcut.addEventListener('change', () => {
+    elements.stopShortcutComboGroup.classList.toggle('hidden', !elements.stopOnShortcut.checked);
+    saveSettings();
+  });
+  elements.stopShortcutCombo.addEventListener('change', saveSettings);
   elements.urlLockEnabled.addEventListener('change', () => {
     elements.urlLockModeGroup.classList.toggle('hidden', !elements.urlLockEnabled.checked);
     saveSettings();
@@ -795,6 +822,15 @@ function startStatePolling() {
           ...response.visualFeedback
         };
       }
+      if ('stopOnClick' in response) {
+        tabSettings.stopOnClick = Boolean(response.stopOnClick);
+      }
+      if ('stopOnShortcut' in response) {
+        tabSettings.stopOnShortcut = Boolean(response.stopOnShortcut);
+      }
+      if ('stopShortcutCombo' in response) {
+        tabSettings.stopShortcutCombo = normalizeStopShortcutCombo(response.stopShortcutCombo);
+      }
       if (response.urlLock) {
         tabSettings.urlLock = {
           ...tabSettings.urlLock,
@@ -873,7 +909,9 @@ function getSettingsFromUI() {
       mode: elements.urlLockMode.value || 'exact',
       lockedUrl: tabSettings.urlLock?.lockedUrl || currentTabUrl || ''
     },
-    stopOnClick: elements.stopOnClick.checked
+    stopOnClick: elements.stopOnClick.checked,
+    stopOnShortcut: elements.stopOnShortcut.checked,
+    stopShortcutCombo: normalizeStopShortcutCombo(elements.stopShortcutCombo.value)
   };
 }
 
